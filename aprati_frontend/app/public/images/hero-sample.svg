@@ -1,0 +1,35 @@
+<!-- Sample hero image content -->
+<svg width="1200" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="600" fill="url(#heroGrad)" />
+  
+  <!-- Background pattern -->
+  <circle cx="100" cy="100" r="30" fill="rgba(255,255,255,0.1)" />
+  <circle cx="300" cy="150" r="40" fill="rgba(255,255,255,0.08)" />
+  <circle cx="800" cy="120" r="25" fill="rgba(255,255,255,0.12)" />
+  <circle cx="1000" cy="200" r="35" fill="rgba(255,255,255,0.06)" />
+  <circle cx="200" cy="400" r="20" fill="rgba(255,255,255,0.1)" />
+  <circle cx="900" cy="450" r="45" fill="rgba(255,255,255,0.07)" />
+  
+  <!-- Main content -->
+  <text x="600" y="250" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
+    Aprati Food Company
+  </text>
+  <text x="600" y="300" font-family="Arial, sans-serif" font-size="24" fill="white" text-anchor="middle" opacity="0.9">
+    Premium Quality Food Products
+  </text>
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" opacity="0.8">
+    Fresh • Natural • Trusted
+  </text>
+  
+  <!-- Decorative elements -->
+  <rect x="400" y="380" width="400" height="2" fill="rgba(255,255,255,0.6)" />
+  <rect x="500" y="420" width="200" height="1" fill="rgba(255,255,255,0.4)" />
+</svg>

@@ -1,0 +1,74 @@
+API 404 ERROR FIX - DEPLOYMENT INSTRUCTIONS
+================================================
+
+FILES IN THIS PACKAGE:
+- fix-routes-production.php: Cache clearing and optimization script
+- api-test.php: Simple API connectivity test
+- check-api-endpoints.php: Full route diagnostic tool
+- DEPLOY.txt: This file
+
+DEPLOYMENT STEPS:
+================================================
+
+1. UPLOAD FILES TO SERVER
+   - Upload 'fix-routes-production.php' to: /path/to/aprati_backend/
+   - Upload 'api-test.php' to: /path/to/aprati_backend/public/
+   - Upload 'check-api-endpoints.php' to: /path/to/aprati_backend/
+
+2. FIX ROUTES AND CACHE (via SSH or cPanel Terminal)
+   cd /path/to/aprati_backend
+   php fix-routes-production.php
+
+3. TEST API CONNECTIVITY
+   Visit: https://sdev.apratifoods.asia/api-test.php
+   Should show: "status": "success"
+
+4. RUN FULL DIAGNOSTIC
+   php check-api-endpoints.php
+
+5. TEST SPECIFIC ENDPOINT
+   Visit: https://sdev.apratifoods.asia/api/brands
+   Should return JSON with brand data
+
+COMMON ISSUES AND FIXES:
+================================================
+
+Issue: Still getting 404 errors after running script
+Fix: Check Apache/Nginx configuration
+  - Document root MUST point to: /path/to/aprati_backend/public
+  - NOT to: /path/to/aprati_backend
+
+Issue: "Internal Server Error" instead of 404
+Fix: Check file permissions
+  chmod -R 755 storage bootstrap/cache
+  chmod -R 644 .env
+
+Issue: Routes work locally but not on server
+Fix: Enable mod_rewrite (Apache)
+  sudo a2enmod rewrite
+  sudo service apache2 restart
+
+Issue: .htaccess not working
+Fix: Enable AllowOverride in Apache config
+  In /etc/apache2/sites-available/your-site.conf:
+  <Directory /path/to/aprati_backend/public>
+      AllowOverride All
+  </Directory>
+
+VERIFICATION CHECKLIST:
+================================================
+[ ] Routes cached successfully
+[ ] Config cached successfully
+[ ] api-test.php returns success
+[ ] Document root points to 'public' directory
+[ ] .htaccess file exists in public directory
+[ ] mod_rewrite enabled (Apache)
+[ ] File permissions correct (755 for directories, 644 for files)
+[ ] All API endpoints return 200 status
+
+NEED MORE HELP?
+================================================
+Run diagnostic: php check-api-endpoints.php
+Check Laravel logs: tail -f storage/logs/laravel.log
+Test single endpoint: curl -v https://sdev.apratifoods.asia/api/brands
+

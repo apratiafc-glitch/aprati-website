@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend-Backend Connection Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .content { padding: 30px; }
+        .test-section {
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .section-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 18px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .section-body { padding: 20px; }
+        .endpoint-test {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .status-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            min-width: 30px;
+        }
+        .endpoint-info { flex: 1; }
+        .endpoint-url {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .endpoint-description {
+            font-size: 13px;
+            color: #666;
+        }
+        .response-time {
+            font-size: 12px;
+            color: #999;
+            margin-left: 10px;
+        }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+        .warning { background: #fff3cd; }
+        .testing { background: #cfe2ff; }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .summary-card .number {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .summary-card .label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .card-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .card-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .card-total {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        .response-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 100px;
+            overflow: auto;
+            color: #333;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading { animation: spin 1s linear infinite; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Frontend-Backend Connection Test</h1>
+            <p>Tests all API endpoints that the Nuxt frontend uses</p>
+        </div>
+        <div class="content">
+            <div id="summary" style="display: none;">
+                <div class="summary">
+                    <div class="summary-card card-total">
+                        <div class="number" id="total-count">0</div>
+                        <div class="label">Total Endpoints</div>
+                    </div>
+                    <div class="summary-card card-success">
+                        <div class="number" id="success-count">0</div>
+                        <div class="label">✅ Working</div>
+                    </div>
+                    <div class="summary-card card-error">
+                        <div class="number" id="error-count">0</div>
+                        <div class="label">❌ Failed</div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="test-btn" class="btn" onclick="runTests()">🚀 Run Connection Tests</button>
+
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        
+        const endpoints = [
+            {
+                category: 'Core Content',
+                tests: [
+                    { name: 'Hero Content', url: '/api/hero-content', description: 'Main hero section content' },
+                    { name: 'Hero Image', url: '/api/hero-image', description: 'Hero background image' },
+                    { name: 'Information Sections', url: '/api/information-sections', description: 'About/info sections' },
+                ]
+            },
+            {
+                category: 'Settings & Configuration',
+                tests: [
+                    { name: 'Header Settings', url: '/api/header-settings', description: 'Navigation menu items' },
+                    { name: 'Footer Settings', url: '/api/footer-settings', description: 'Footer content & links' },
+                ]
+            },
+            {
+                category: 'Brand & Products',
+                tests: [
+                    { name: 'Brands List', url: '/api/brands', description: 'All brands (Aprati, Frutati, Mocati)' },
+                ]
+            },
+            {
+                category: 'Media & Assets',
+                tests: [
+                    { name: 'Admin Profile Image', url: '/api/admin-profile-image', description: 'Profile/contact image' },
+                    { name: 'Default Hero SVG', url: '/images/default-hero.svg', description: 'Fallback hero image' },
+                ]
+            },
+            {
+                category: 'Authentication (Optional)',
+                tests: [
+                    { name: 'Sanctum CSRF Cookie', url: '/sanctum/csrf-cookie', description: 'CSRF token for auth', optional: true },
+                ]
+            }
+        ];
+
+        let totalTests = 0;
+        let successCount = 0;
+        let errorCount = 0;
+
+        async function testEndpoint(url) {
+            const startTime = Date.now();
+            try {
+                const response = await fetch(API_BASE + url);
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+                
+                let data;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    data = text.substring(0, 200);
+                }
+
+                return {
+                    success: response.ok,
+                    status: response.status,
+                    data: data,
+                    responseTime: responseTime
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    status: 0,
+                    error: error.message,
+                    responseTime: Date.now() - startTime
+                };
+            }
+        }
+
+        function createEndpointElement(test, result) {
+            const div = document.createElement('div');
+            div.className = `endpoint-test ${result.success ? 'success' : 'error'}`;
+            
+            const icon = result.success ? '✅' : '❌';
+            const statusText = result.success ? `${result.status} OK` : `${result.status || 'Failed'}`;
+            
+            let preview = '';
+            if (result.success && result.data) {
+                const dataStr = typeof result.data === 'string' 
+                    ? result.data 
+                    : JSON.stringify(result.data, null, 2);
+                preview = `<div class="response-preview">${dataStr.substring(0, 150)}${dataStr.length > 150 ? '...' : ''}</div>`;
+            } else if (result.error) {
+                preview = `<div class="response-preview" style="color: #dc3545;">Error: ${result.error}</div>`;
+            }
+
+            div.innerHTML = `
+                <div class="status-icon">${icon}</div>
+                <div class="endpoint-info">
+                    <div class="endpoint-url">
+                        ${test.name}
+                        <span class="response-time">${result.responseTime}ms</span>
+                    </div>
+                    <div class="endpoint-description">
+                        ${test.url} - ${statusText}
+                        ${test.optional ? ' (optional)' : ''}
+                    </div>
+                    ${preview}
+                </div>
+            `;
+            
+            return div;
+        }
+
+        async function runTests() {
+            const btn = document.getElementById('test-btn');
+            const resultsDiv = document.getElementById('results');
+            const summaryDiv = document.getElementById('summary');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading">⏳</span> Testing...';
+            resultsDiv.innerHTML = '';
+            summaryDiv.style.display = 'none';
+            
+            totalTests = 0;
+            successCount = 0;
+            errorCount = 0;
+
+            for (const category of endpoints) {
+                const section = document.createElement('div');
+                section.className = 'test-section';
+                
+                const header = document.createElement('div');
+                header.className = 'section-header';
+                header.textContent = category.category;
+                section.appendChild(header);
+                
+                const body = document.createElement('div');
+                body.className = 'section-body';
+                section.appendChild(body);
+                
+                resultsDiv.appendChild(section);
+
+                for (const test of category.tests) {
+                    totalTests++;
+                    
+                    const testDiv = document.createElement('div');
+                    testDiv.className = 'endpoint-test testing';
+                    testDiv.innerHTML = `
+                        <div class="status-icon">⏳</div>
+                        <div class="endpoint-info">
+                            <div class="endpoint-url">${test.name}</div>
+                            <div class="endpoint-description">Testing ${test.url}...</div>
+                        </div>
+                    `;
+                    body.appendChild(testDiv);
+
+                    const result = await testEndpoint(test.url);
+                    
+                    if (result.success || test.optional) {
+                        successCount++;
+                    } else {
+                        errorCount++;
+                    }
+
+                    const newElement = createEndpointElement(test, result);
+                    body.replaceChild(newElement, testDiv);
+                }
+            }
+
+            // Update summary
+            document.getElementById('total-count').textContent = totalTests;
+            document.getElementById('success-count').textContent = successCount;
+            document.getElementById('error-count').textContent = errorCount;
+            summaryDiv.style.display = 'block';
+
+            btn.disabled = false;
+            btn.innerHTML = errorCount === 0 
+                ? '✅ All Tests Passed - Run Again' 
+                : '🔄 Run Tests Again';
+        }
+    </script>
+</body>
+</html>

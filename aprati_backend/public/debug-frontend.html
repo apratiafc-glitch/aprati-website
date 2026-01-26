@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Debug Tool</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .content { padding: 30px; }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .section h2 { margin-bottom: 15px; color: #333; }
+        pre {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        .error { color: #dc3545; }
+        .success { color: #28a745; }
+        .warning { color: #ffc107; }
+        .info { color: #0dcaf0; }
+        .btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover { background: #5568d3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Frontend Debug Tool</h1>
+            <p>Diagnose why frontend is not showing data</p>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2>1. Check Frontend Files</h2>
+                <button class="btn" onclick="checkFrontendFiles()">Check Files</button>
+                <pre id="files-result">Click button to check...</pre>
+            </div>
+
+            <div class="section">
+                <h2>2. Check API Configuration in Frontend</h2>
+                <button class="btn" onclick="checkAPIConfig()">Check Config</button>
+                <pre id="config-result">Click button to check...</pre>
+            </div>
+
+            <div class="section">
+                <h2>3. Test Direct API Call</h2>
+                <button class="btn" onclick="testAPICall()">Test API</button>
+                <pre id="api-result">Click button to test...</pre>
+            </div>
+
+            <div class="section">
+                <h2>4. Check Browser Console Errors</h2>
+                <p>Open browser DevTools (F12) on your frontend and check:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Console tab - Look for red errors</li>
+                    <li>Network tab - Check if API calls are being made</li>
+                    <li>Look for CORS errors</li>
+                </ul>
+                <button class="btn" onclick="window.open('https://sdev.apratifoods.asia/', '_blank')">Open Frontend</button>
+            </div>
+
+            <div class="section">
+                <h2>5. Possible Issues & Solutions</h2>
+                <div id="issues"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = window.location.origin;
+
+        async function checkFrontendFiles() {
+            const result = document.getElementById('files-result');
+            result.innerHTML = 'Checking frontend files...';
+            
+            const filesToCheck = [
+                '/index.html',
+                '/_nuxt/',
+                '/200.html',
+                '/404.html'
+            ];
+
+            let output = '';
+            for (const file of filesToCheck) {
+                try {
+                    const response = await fetch(baseURL + file);
+                    const status = response.ok ? '✅' : '❌';
+                    output += `${status} ${file} - ${response.status} ${response.statusText}\n`;
+                } catch (error) {
+                    output += `❌ ${file} - Error: ${error.message}\n`;
+                }
+            }
+
+            result.innerHTML = output;
+        }
+
+        async function checkAPIConfig() {
+            const result = document.getElementById('config-result');
+            result.innerHTML = 'Checking API configuration...';
+
+            try {
+                // Fetch the main index.html to check if it has proper base URL
+                const response = await fetch(baseURL + '/index.html');
+                const html = await response.text();
+
+                let output = '';
+
+                // Check if _nuxt files exist
+                if (html.includes('_nuxt')) {
+                    output += '✅ Nuxt build files referenced in HTML\n\n';
+                } else {
+                    output += '❌ No Nuxt build files found in HTML\n\n';
+                }
+
+                // Check for common API base URLs
+                const indexResponse = await fetch(baseURL + '/_nuxt/');
+                output += `✅ _nuxt folder accessible: ${indexResponse.ok}\n\n`;
+
+                // Try to find JS files
+                const matches = html.match(/_nuxt\/[^"']+\.js/g);
+                if (matches) {
+                    output += `Found ${matches.length} JavaScript files:\n`;
+                    output += matches.slice(0, 5).join('\n') + '\n';
+                } else {
+                    output += '❌ No JavaScript files found\n';
+                }
+
+                result.innerHTML = output;
+            } catch (error) {
+                result.innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+
+        async function testAPICall() {
+            const result = document.getElementById('api-result');
+            result.innerHTML = 'Testing API calls...';
+
+            const endpoints = [
+                '/api/hero-content',
+                '/api/brands',
+                '/api/information-sections'
+            ];
+
+            let output = '';
+            for (const endpoint of endpoints) {
+                try {
+                    const startTime = Date.now();
+                    const response = await fetch(baseURL + endpoint);
+                    const endTime = Date.now();
+                    const data = await response.json();
+
+                    output += `\n✅ ${endpoint} (${endTime - startTime}ms)\n`;
+                    output += `   Status: ${response.status}\n`;
+                    output += `   Data: ${JSON.stringify(data).substring(0, 100)}...\n`;
+                } catch (error) {
+                    output += `\n❌ ${endpoint}\n`;
+                    output += `   Error: ${error.message}\n`;
+                }
+            }
+
+            result.innerHTML = output;
+        }
+
+        // Display common issues
+        document.getElementById('issues').innerHTML = `
+            <div style="line-height: 1.8;">
+                <h3 style="margin-bottom: 10px;">Common Issues:</h3>
+                
+                <p><strong class="error">1. Browser Cache:</strong></p>
+                <p>Solution: Clear browser cache or hard refresh (Ctrl + Shift + R)</p>
+                
+                <p><strong class="error">2. Frontend Not Regenerated:</strong></p>
+                <p>Solution: Run <code>npm run generate</code> in frontend and re-upload _nuxt folder</p>
+                
+                <p><strong class="error">3. Wrong API Base URL:</strong></p>
+                <p>Check nuxt.config.ts has: <code>baseURL: 'https://sdev.apratifoods.asia'</code></p>
+                
+                <p><strong class="error">4. CORS Issues:</strong></p>
+                <p>Check Laravel config/cors.php allows your domain</p>
+                
+                <p><strong class="error">5. JavaScript Errors:</strong></p>
+                <p>Open browser DevTools (F12) → Console tab</p>
+            </div>
+        `;
+    </script>
+</body>
+</html>

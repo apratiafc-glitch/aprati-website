@@ -1,0 +1,205 @@
+import { computed, mergeProps, unref, ref, readonly, useSSRContext } from 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue/index.mjs';
+import { ssrRenderAttrs, ssrRenderAttr, ssrRenderStyle, ssrInterpolate, ssrRenderList } from 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue/server-renderer/index.mjs';
+import { _ as _imports_12, a as _imports_13, b as _imports_14, c as _imports_15, d as _imports_10, e as _imports_11 } from './virtual_public-B_jtVuV9.mjs';
+import { a as useSeoMeta, b as useRuntimeConfig } from './server.mjs';
+import '../_/nitro.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/h3/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ufo/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/destr/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/hookable/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ofetch/dist/node.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/node-mock-http/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/klona/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/defu/dist/defu.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/scule/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/radix3/dist/index.mjs';
+import 'node:fs';
+import 'node:url';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/pathe/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ipx/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unstorage/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unstorage/drivers/fs.mjs';
+import 'file:///D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/nuxt/dist/core/runtime/nitro/utils/cache-driver.js';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unstorage/drivers/fs-lite.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ohash/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unctx/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/pinia/dist/pinia.prod.cjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue-router/dist/vue-router.node.mjs';
+import '../_/renderer.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unhead/dist/server.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/devalue/index.js';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unhead/dist/plugins.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unhead/dist/utils.mjs';
+
+const useContact = () => {
+  const config = useRuntimeConfig();
+  const apiBase = config.public.apiBase || "http://127.0.0.1:8000/api";
+  const contactData = ref({
+    contact: {},
+    company: {},
+    social: {},
+    businessHours: {}
+  });
+  const loading = ref(false);
+  const error = ref("");
+  const loadContactData = async () => {
+    try {
+      loading.value = true;
+      error.value = "";
+      const timestamp = Date.now();
+      const response = await fetch(`${apiBase.replace("/api", "")}/api/footer-settings?ts=${timestamp}`, {
+        cache: "no-cache",
+        headers: {
+          "Cache-Control": "no-cache",
+          "Pragma": "no-cache"
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.status === "success" && data.data) {
+          contactData.value = {
+            ...contactData.value,
+            ...data.data
+          };
+          if (data.data.contact) {
+            const businessHours = {};
+            if (data.data.contact.business_hours_monday_friday) {
+              businessHours["Monday - Friday"] = data.data.contact.business_hours_monday_friday;
+            }
+            if (data.data.contact.business_hours_saturday) {
+              businessHours["Saturday"] = data.data.contact.business_hours_saturday;
+            }
+            if (data.data.contact.business_hours_sunday) {
+              businessHours["Sunday"] = data.data.contact.business_hours_sunday;
+            }
+            if (Object.keys(businessHours).length === 0) {
+              businessHours["Monday - Friday"] = "8:00 AM - 6:00 PM";
+              businessHours["Saturday"] = "9:00 AM - 4:00 PM";
+              businessHours["Sunday"] = "Closed";
+            }
+            contactData.value.businessHours = businessHours;
+          }
+        }
+      } else {
+        throw new Error("Failed to load contact data");
+      }
+    } catch (err) {
+      console.error("Error loading contact data:", err);
+      error.value = "Failed to load contact information";
+    } finally {
+      loading.value = false;
+    }
+  };
+  const getFormattedAddress = computed(() => {
+    const contact = contactData.value.contact || {};
+    const addressParts = [
+      contact.contact_address_line1,
+      contact.contact_address_line2,
+      contact.contact_address_line3
+    ].filter(Boolean);
+    return addressParts.length > 0 ? addressParts.join(", ") : "123 Food Street, Phnom Penh, Cambodia";
+  });
+  const getPhone = computed(() => {
+    return contactData.value.contact?.contact_phone || "+855 12 345 678";
+  });
+  const getEmail = computed(() => {
+    return contactData.value.contact?.contact_email || "info@aprati.com";
+  });
+  const getCompanyDescription = computed(() => {
+    return contactData.value.company?.company_description || "Enhanced introduction website with advanced product search, career management, and comprehensive inventory system for the modern food industry.";
+  });
+  const getSocialLinks = computed(() => {
+    return contactData.value.social || {};
+  });
+  const submitContactForm = async (formData) => {
+    try {
+      loading.value = true;
+      error.value = "";
+      await new Promise((resolve) => setTimeout(resolve, 1e3));
+      return { success: true, message: "Message sent successfully!" };
+    } catch (err) {
+      console.error("Error submitting contact form:", err);
+      error.value = "Failed to send message";
+      return { success: false, error: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+  return {
+    contactData: readonly(contactData),
+    loading: readonly(loading),
+    error: readonly(error),
+    loadContactData,
+    getFormattedAddress,
+    getPhone,
+    getEmail,
+    getCompanyDescription,
+    getSocialLinks,
+    submitContactForm
+  };
+};
+const _sfc_main = {
+  __name: "contact",
+  __ssrInlineRender: true,
+  setup(__props) {
+    const {
+      contactData,
+      getFormattedAddress,
+      getPhone,
+      getEmail,
+      getSocialLinks
+    } = useContact();
+    const hasSocialLinks = computed(() => {
+      const social = getSocialLinks.value;
+      return social.social_facebook || social.social_twitter || social.social_instagram || social.social_linkedin;
+    });
+    useSeoMeta({
+      title: "Contact Us - Aprati Food Company",
+      description: "Get in touch with Aprati Food Company. Contact information and business hours."
+    });
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-gray-50 relative overflow-hidden" }, _attrs))}><div class="absolute inset-0 overflow-hidden pointer-events-none"><img${ssrRenderAttr("src", _imports_12)} alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float"><img${ssrRenderAttr("src", _imports_13)} alt="" class="absolute bottom-1/4 right-1/6 w-20 h-20 object-contain opacity-20 animate-float-delayed"><img${ssrRenderAttr("src", _imports_14)} alt="" class="absolute top-1/3 right-1/4 w-16 h-16 object-contain opacity-15 animate-float" style="${ssrRenderStyle({ "animation-delay": "0.5s" })}"><img${ssrRenderAttr("src", _imports_15)} alt="" class="absolute bottom-1/3 left-1/4 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "1s" })}"><img${ssrRenderAttr("src", _imports_10)} alt="" class="absolute top-1/6 right-1/6 w-14 h-14 object-contain opacity-12 animate-float" style="${ssrRenderStyle({ "animation-delay": "1.5s" })}"><img${ssrRenderAttr("src", _imports_11)} alt="" class="absolute bottom-1/6 left-1/3 w-16 h-16 object-contain opacity-16 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "2s" })}"><img${ssrRenderAttr("src", _imports_12)} alt="" class="absolute top-2/3 right-1/5 w-14 h-14 object-contain opacity-14 animate-float" style="${ssrRenderStyle({ "animation-delay": "0.8s" })}"><img${ssrRenderAttr("src", _imports_13)} alt="" class="absolute bottom-2/5 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "1.3s" })}"><img${ssrRenderAttr("src", _imports_14)} alt="" class="absolute top-2/5 left-2/5 w-20 h-20 object-contain opacity-13 animate-float" style="${ssrRenderStyle({ "animation-delay": "1.7s" })}"><img${ssrRenderAttr("src", _imports_15)} alt="" class="absolute bottom-3/5 right-2/5 w-14 h-14 object-contain opacity-11 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "0.4s" })}"><img${ssrRenderAttr("src", _imports_10)} alt="" class="absolute top-4/5 left-1/4 w-16 h-16 object-contain opacity-19 animate-float" style="${ssrRenderStyle({ "animation-delay": "2.1s" })}"><img${ssrRenderAttr("src", _imports_11)} alt="" class="absolute bottom-4/5 right-1/4 w-20 h-20 object-contain opacity-16 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "0.9s" })}"><img${ssrRenderAttr("src", _imports_12)} alt="" class="absolute top-1/5 left-3/5 w-14 h-14 object-contain opacity-12 animate-float" style="${ssrRenderStyle({ "animation-delay": "1.4s" })}"><img${ssrRenderAttr("src", _imports_13)} alt="" class="absolute bottom-1/5 right-3/5 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "0.6s" })}"><img${ssrRenderAttr("src", _imports_14)} alt="" class="absolute top-3/5 left-1/8 w-20 h-20 object-contain opacity-14 animate-float" style="${ssrRenderStyle({ "animation-delay": "2.3s" })}"><img${ssrRenderAttr("src", _imports_15)} alt="" class="absolute bottom-3/4 right-1/8 w-16 h-16 object-contain opacity-15 animate-float-delayed" style="${ssrRenderStyle({ "animation-delay": "1.1s" })}"></div><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div class="text-center mb-12"><h1 class="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1><p class="text-xl text-gray-600">Get in touch with Aprati Food Company</p></div><div class="grid grid-cols-1 lg:grid-cols-1 gap-12"><div class="space-y-8"><div class="bg-white rounded-lg shadow-lg p-8"><h2 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2><div class="space-y-4"><div class="flex items-start"><svg class="w-6 h-6 text-blue-600 mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><div><h3 class="font-semibold text-gray-900">Address</h3><p class="text-gray-600">${ssrInterpolate(unref(getFormattedAddress))}</p></div></div><div class="flex items-start"><svg class="w-6 h-6 text-blue-600 mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg><div><h3 class="font-semibold text-gray-900">Phone</h3><p class="text-gray-600"><a${ssrRenderAttr("href", `tel:${unref(getPhone)}`)} class="hover:text-blue-600 transition-colors">${ssrInterpolate(unref(getPhone))}</a></p></div></div><div class="flex items-start"><svg class="w-6 h-6 text-blue-600 mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg><div><h3 class="font-semibold text-gray-900">Email</h3><p class="text-gray-600"><a${ssrRenderAttr("href", `mailto:${unref(getEmail)}`)} class="hover:text-blue-600 transition-colors">${ssrInterpolate(unref(getEmail))}</a></p></div></div></div>`);
+      if (unref(hasSocialLinks)) {
+        _push(`<div class="mt-6 pt-6 border-t border-gray-200"><h3 class="font-semibold text-gray-900 mb-4">Follow Us</h3><div class="flex space-x-4">`);
+        if (unref(getSocialLinks).social_facebook) {
+          _push(`<a${ssrRenderAttr("href", unref(getSocialLinks).social_facebook)} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg></a>`);
+        } else {
+          _push(`<!---->`);
+        }
+        if (unref(getSocialLinks).social_twitter) {
+          _push(`<a${ssrRenderAttr("href", unref(getSocialLinks).social_twitter)} target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-500 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a>`);
+        } else {
+          _push(`<!---->`);
+        }
+        if (unref(getSocialLinks).social_instagram) {
+          _push(`<a${ssrRenderAttr("href", unref(getSocialLinks).social_instagram)} target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-700 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.596-3.185-1.534-.456-.582-.729-1.314-.729-2.108 0-.794.273-1.526.729-2.108.737-.938 1.888-1.534 3.185-1.534s2.448.596 3.185 1.534c.456.582.729 1.314.729 2.108s-.273 1.526-.729 2.108c-.737.938-1.888 1.534-3.185 1.534z"></path></svg></a>`);
+        } else {
+          _push(`<!---->`);
+        }
+        if (unref(getSocialLinks).social_linkedin) {
+          _push(`<a${ssrRenderAttr("href", unref(getSocialLinks).social_linkedin)} target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-800 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div><div class="bg-white rounded-lg shadow-lg p-8"><h2 class="text-2xl font-bold text-gray-900 mb-6">Business Hours</h2><div class="space-y-2"><!--[-->`);
+      ssrRenderList(unref(contactData).businessHours, (hours, day) => {
+        _push(`<div class="flex justify-between"><span class="text-gray-600">${ssrInterpolate(day)}</span><span class="font-semibold">${ssrInterpolate(hours)}</span></div>`);
+      });
+      _push(`<!--]--></div></div></div></div></div></div>`);
+    };
+  }
+};
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/contact.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+
+export { _sfc_main as default };
+//# sourceMappingURL=contact-4x9if2tB.mjs.map

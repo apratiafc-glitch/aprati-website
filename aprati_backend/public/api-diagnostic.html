@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Configuration Diagnostics - Aprati Foods</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-error {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .status-warning {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .info-item label {
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .info-item .value {
+            color: #333;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+        
+        .test-section {
+            margin-top: 20px;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .endpoint-url {
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .test-result {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .timestamp {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 API Configuration Diagnostics</h1>
+            <p class="subtitle">Testing API endpoints and configuration for Aprati Foods website</p>
+        </div>
+        
+        <div class="card">
+            <h2>⚙️ Configuration Detection</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Current Domain</label>
+                    <div class="value" id="currentDomain">Detecting...</div>
+                </div>
+                <div class="info-item">
+                    <label>Expected API Base</label>
+                    <div class="value">/api</div>
+                </div>
+                <div class="info-item">
+                    <label>Full API URL</label>
+                    <div class="value" id="fullApiUrl">Calculating...</div>
+                </div>
+                <div class="info-item">
+                    <label>Laravel Backend Path</label>
+                    <div class="value">/aprati_backend/public/</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🧪 Endpoint Testing <span id="testStatus" class="status-badge status-warning">Not Started</span></h2>
+            <button id="testBtn" onclick="runTests()">Run All Tests</button>
+            <div id="testResults" class="test-section"></div>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Problem Analysis</h2>
+            <div id="analysis"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Detect configuration
+        const currentDomain = window.location.origin;
+        const apiBase = '/api';
+        const fullApiUrl = currentDomain + apiBase;
+        
+        document.getElementById('currentDomain').textContent = currentDomain;
+        document.getElementById('fullApiUrl').textContent = fullApiUrl;
+        
+        // Test endpoints
+        const endpoints = [
+            { name: 'Hero Content', path: '/hero-content', method: 'GET' },
+            { name: 'Hero Image', path: '/hero-image', method: 'GET' },
+            { name: 'Information Sections', path: '/information-sections', method: 'GET' },
+            { name: 'Brands', path: '/brands', method: 'GET' },
+            { name: 'Header Settings', path: '/header-settings', method: 'GET' },
+            { name: 'Footer Settings', path: '/footer-settings', method: 'GET' },
+            { name: 'Admin Profile Image', path: '/admin-profile-image', method: 'GET' }
+        ];
+        
+        async function testEndpoint(endpoint) {
+            const startTime = Date.now();
+            const testUrl = fullApiUrl + endpoint.path;
+            
+            try {
+                const response = await fetch(testUrl, {
+                    method: endpoint.method,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const duration = Date.now() - startTime;
+                const data = await response.json();
+                
+                return {
+                    success: response.ok,
+                    status: response.status,
+                    statusText: response.statusText,
+                    duration: duration,
+                    data: data,
+                    url: testUrl
+                };
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                return {
+                    success: false,
+                    status: 0,
+                    statusText: 'Network Error',
+                    duration: duration,
+                    error: error.message,
+                    url: testUrl
+                };
+            }
+        }
+        
+        async function runTests() {
+            const testBtn = document.getElementById('testBtn');
+            const testResults = document.getElementById('testResults');
+            const testStatus = document.getElementById('testStatus');
+            
+            testBtn.disabled = true;
+            testBtn.innerHTML = 'Testing... <span class="loading"></span>';
+            testStatus.textContent = 'Running';
+            testStatus.className = 'status-badge status-warning';
+            testResults.innerHTML = '';
+            
+            let successCount = 0;
+            let failCount = 0;
+            const problems = [];
+            
+            for (const endpoint of endpoints) {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'endpoint';
+                resultDiv.innerHTML = `
+                    <div class="endpoint-url">${endpoint.method} ${endpoint.name}</div>
+                    <div>Testing: <code>${fullApiUrl + endpoint.path}</code></div>
+                    <div class="test-result">⏳ Testing...</div>
+                `;
+                testResults.appendChild(resultDiv);
+                
+                const result = await testEndpoint(endpoint);
+                const resultElement = resultDiv.querySelector('.test-result');
+                
+                if (result.success) {
+                    successCount++;
+                    resultElement.className = 'test-result success';
+                    resultElement.innerHTML = `
+                        ✅ SUCCESS - ${result.status} ${result.statusText} (${result.duration}ms)<br>
+                        Response: ${JSON.stringify(result.data).substring(0, 100)}...
+                    `;
+                } else {
+                    failCount++;
+                    resultElement.className = 'test-result error';
+                    resultElement.innerHTML = `
+                        ❌ FAILED - ${result.status} ${result.statusText} (${result.duration}ms)<br>
+                        ${result.error ? 'Error: ' + result.error : 'HTTP Error'}
+                    `;
+                    
+                    problems.push({
+                        endpoint: endpoint.name,
+                        url: result.url,
+                        status: result.status,
+                        error: result.error || result.statusText
+                    });
+                }
+            }
+            
+            // Update status
+            if (failCount === 0) {
+                testStatus.textContent = `All Passed (${successCount}/${endpoints.length})`;
+                testStatus.className = 'status-badge status-success';
+            } else {
+                testStatus.textContent = `${failCount} Failed, ${successCount} Passed`;
+                testStatus.className = 'status-badge status-error';
+            }
+            
+            testBtn.disabled = false;
+            testBtn.textContent = 'Run Tests Again';
+            
+            // Show analysis
+            showAnalysis(problems, successCount, failCount);
+        }
+        
+        function showAnalysis(problems, successCount, failCount) {
+            const analysis = document.getElementById('analysis');
+            
+            if (problems.length === 0) {
+                analysis.innerHTML = `
+                    <div class="success" style="padding: 20px; border-radius: 10px;">
+                        <h3 style="color: #065f46; margin-bottom: 10px;">✅ All Tests Passed!</h3>
+                        <p>All ${successCount} API endpoints are working correctly.</p>
+                        <p style="margin-top: 10px;">Your frontend should now load without any 500 errors.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <div class="error" style="padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: #991b1b; margin-bottom: 10px;">❌ ${failCount} Endpoint(s) Failed</h3>
+                    <p><strong>Success Rate:</strong> ${Math.round((successCount / (successCount + failCount)) * 100)}%</p>
+                </div>
+                
+                <h3 style="margin-bottom: 15px; color: #667eea;">Common Issues:</h3>
+            `;
+            
+            // Check if all failures are 500 errors
+            const all500 = problems.every(p => p.status === 500);
+            
+            if (all500) {
+                html += `
+                    <div class="info-item" style="margin-bottom: 15px;">
+                        <label>🔴 All endpoints returning 500 Internal Server Error</label>
+                        <div style="margin-top: 10px;">
+                            <p><strong>Likely Causes:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>Laravel routes not configured in <code>/aprati_backend/routes/api.php</code></li>
+                                <li>Laravel .htaccess not routing /api/* correctly</li>
+                                <li>Database connection issues in Laravel</li>
+                                <li>Missing Laravel controllers or methods</li>
+                                <li>PHP errors in Laravel backend</li>
+                            </ul>
+                            
+                            <div class="code-block">
+                                <strong>Check Laravel error log:</strong>
+                                <pre>/home/apratifoodscom/public_html/sdev.apratifoods.asia/aprati_backend/storage/logs/laravel.log</pre>
+                            </div>
+                            
+                            <div class="code-block" style="margin-top: 10px;">
+                                <strong>Check .htaccess at root:</strong>
+                                <pre>RewriteRule ^api/(.*)$ /aprati_backend/public/index.php [L,QSA]</pre>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // List failed endpoints
+            html += `
+                <h3 style="margin-top: 20px; margin-bottom: 15px; color: #667eea;">Failed Endpoints:</h3>
+            `;
+            
+            problems.forEach(problem => {
+                html += `
+                    <div class="endpoint">
+                        <div class="endpoint-url">${problem.endpoint}</div>
+                        <div><strong>URL:</strong> <code>${problem.url}</code></div>
+                        <div><strong>Status:</strong> ${problem.status} ${problem.error}</div>
+                    </div>
+                `;
+            });
+            
+            analysis.innerHTML = html;
+        }
+        
+        // Add timestamp
+        const timestamp = new Date().toLocaleString();
+        document.querySelector('.subtitle').innerHTML += `<div class="timestamp">Last updated: ${timestamp}</div>`;
+    </script>
+</body>
+</html>

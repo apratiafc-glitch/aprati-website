@@ -1,0 +1,15 @@
+# Simple .htaccess for testing
+
+# Enable rewrite
+RewriteEngine On
+
+# Block direct access to aprati_backend (except public folder)
+RewriteRule ^aprati_backend/(?!public/) - [F,L]
+
+# TEST: Route API calls to test file first
+RewriteRule ^api/(.*)$ test-api.php [L,QSA]
+
+# Everything else goes to index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [L]

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Diagnostics - Aprati Foods</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .check-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .check-icon {
+            font-size: 1.5em;
+            min-width: 30px;
+            text-align: center;
+        }
+        .check-details {
+            flex: 1;
+        }
+        .check-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        .check-value {
+            color: #666;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: transform 0.2s;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        .error-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .error-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #fff5f5;
+            border-left: 3px solid #e53e3e;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .copy-btn {
+            background: #28a745;
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .timestamp {
+            text-align: center;
+            color: #999;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Admin Diagnostics</h1>
+        <p class="subtitle">Comprehensive system check for admin panel issues</p>
+
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button class="btn" onclick="runAllTests()">🔄 Run All Tests</button>
+            <button class="btn copy-btn" onclick="copyResults()">📋 Copy Results</button>
+        </div>
+
+        <!-- System Info -->
+        <div class="section">
+            <h2>🖥️ System Information <span class="status info" id="system-status">READY</span></h2>
+            <div id="system-info" class="loading">Click "Run All Tests" to begin...</div>
+        </div>
+
+        <!-- Asset Checks -->
+        <div class="section">
+            <h2>📦 Asset Files <span class="status info" id="assets-status">PENDING</span></h2>
+            <div id="assets-checks" class="loading">Waiting...</div>
+        </div>
+
+        <!-- API Checks -->
+        <div class="section">
+            <h2>🌐 API Connectivity <span class="status info" id="api-status">PENDING</span></h2>
+            <div id="api-checks" class="loading">Waiting...</div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="section">
+            <h2>🔐 Authentication <span class="status info" id="auth-status">PENDING</span></h2>
+            <div id="auth-checks" class="loading">Waiting...</div>
+        </div>
+
+        <!-- Route Checks -->
+        <div class="section">
+            <h2>🛣️ Admin Routes <span class="status info" id="routes-status">PENDING</span></h2>
+            <div id="routes-checks" class="loading">Waiting...</div>
+        </div>
+
+        <!-- Console Errors -->
+        <div class="section">
+            <h2>⚠️ Console Errors <span class="status info" id="errors-status">PENDING</span></h2>
+            <div id="errors-checks" class="loading">Waiting...</div>
+        </div>
+
+        <div class="timestamp" id="timestamp"></div>
+    </div>
+
+    <script>
+        let consoleErrors = [];
+        let allResults = {};
+
+        // Capture console errors
+        (function() {
+            const originalError = console.error;
+            console.error = function(...args) {
+                consoleErrors.push({
+                    time: new Date().toISOString(),
+                    message: args.join(' ')
+                });
+                originalError.apply(console, args);
+            };
+        })();
+
+        // Capture network errors
+        window.addEventListener('error', (e) => {
+            if (e.filename) {
+                consoleErrors.push({
+                    time: new Date().toISOString(),
+                    message: `Failed to load: ${e.filename}`
+                });
+            }
+        }, true);
+
+        async function checkFileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return { exists: response.ok, status: response.status };
+            } catch (error) {
+                return { exists: false, status: 'ERROR', error: error.message };
+            }
+        }
+
+        async function runSystemInfo() {
+            const info = {
+                currentURL: window.location.href,
+                protocol: window.location.protocol,
+                hostname: window.location.hostname,
+                port: window.location.port || 'default',
+                pathname: window.location.pathname,
+                userAgent: navigator.userAgent,
+                viewport: `${window.innerWidth}x${window.innerHeight}`,
+                cookiesEnabled: navigator.cookieEnabled,
+                localStorage: typeof(Storage) !== "undefined",
+                timestamp: new Date().toISOString()
+            };
+
+            allResults.system = info;
+
+            let html = '<div class="grid">';
+            html += `<div class="check-item">
+                <div class="check-icon">🌐</div>
+                <div class="check-details">
+                    <div class="check-label">Current URL</div>
+                    <div class="check-value">${info.currentURL}</div>
+                </div>
+            </div>`;
+            html += `<div class="check-item">
+                <div class="check-icon">🖥️</div>
+                <div class="check-details">
+                    <div class="check-label">Host</div>
+                    <div class="check-value">${info.hostname}:${info.port}</div>
+                </div>
+            </div>`;
+            html += `<div class="check-item">
+                <div class="check-icon">🍪</div>
+                <div class="check-details">
+                    <div class="check-label">Cookies</div>
+                    <div class="check-value">${info.cookiesEnabled ? '✅ Enabled' : '❌ Disabled'}</div>
+                </div>
+            </div>`;
+            html += `<div class="check-item">
+                <div class="check-icon">💾</div>
+                <div class="check-details">
+                    <div class="check-label">Local Storage</div>
+                    <div class="check-value">${info.localStorage ? '✅ Available' : '❌ Not available'}</div>
+                </div>
+            </div>`;
+            html += '</div>';
+
+            document.getElementById('system-info').innerHTML = html;
+            document.getElementById('system-status').className = 'status success';
+            document.getElementById('system-status').textContent = 'OK';
+        }
+
+        async function checkAssets() {
+            const baseURL = window.location.origin;
+            const assetsToCheck = [
+                '/_nuxt/entry.BDTBZ547.css',
+                '/_nuxt/_1d6aRf6.js',
+                '/200.html',
+                '/404.html',
+                '/admin/index.html',
+                '/images/web.ico'
+            ];
+
+            const results = [];
+            for (const asset of assetsToCheck) {
+                const result = await checkFileExists(baseURL + asset);
+                results.push({
+                    path: asset,
+                    ...result
+                });
+            }
+
+            allResults.assets = results;
+
+            let html = '';
+            let allOk = true;
+            
+            for (const result of results) {
+                const icon = result.exists ? '✅' : '❌';
+                const statusClass = result.exists ? 'success' : 'error';
+                allOk = allOk && result.exists;
+
+                html += `<div class="check-item">
+                    <div class="check-icon">${icon}</div>
+                    <div class="check-details">
+                        <div class="check-label">${result.path}</div>
+                        <div class="check-value">Status: ${result.status} ${result.error ? '- ' + result.error : ''}</div>
+                    </div>
+                    <span class="status ${statusClass}">${result.exists ? 'FOUND' : 'MISSING'}</span>
+                </div>`;
+            }
+
+            document.getElementById('assets-checks').innerHTML = html;
+            document.getElementById('assets-status').className = `status ${allOk ? 'success' : 'error'}`;
+            document.getElementById('assets-status').textContent = allOk ? 'PASSED' : 'FAILED';
+        }
+
+        async function checkAPI() {
+            const apiBase = 'https://sdev.apratifoods.asia';
+            const endpoints = [
+                '/sanctum/csrf-cookie',
+                '/api/brands',
+                '/api/users'
+            ];
+
+            const results = [];
+            for (const endpoint of endpoints) {
+                try {
+                    const start = Date.now();
+                    const response = await fetch(apiBase + endpoint, {
+                        credentials: 'include'
+                    });
+                    const duration = Date.now() - start;
+                    results.push({
+                        endpoint: endpoint,
+                        status: response.status,
+                        ok: response.ok,
+                        duration: duration + 'ms'
+                    });
+                } catch (error) {
+                    results.push({
+                        endpoint: endpoint,
+                        status: 'ERROR',
+                        ok: false,
+                        error: error.message
+                    });
+                }
+            }
+
+            allResults.api = results;
+
+            let html = '';
+            let allOk = true;
+
+            for (const result of results) {
+                const icon = result.ok ? '✅' : '❌';
+                const statusClass = result.ok ? 'success' : 'error';
+                allOk = allOk && result.ok;
+
+                html += `<div class="check-item">
+                    <div class="check-icon">${icon}</div>
+                    <div class="check-details">
+                        <div class="check-label">${result.endpoint}</div>
+                        <div class="check-value">Status: ${result.status} | Time: ${result.duration || 'N/A'}</div>
+                        ${result.error ? `<div class="check-value" style="color: #e53e3e;">${result.error}</div>` : ''}
+                    </div>
+                    <span class="status ${statusClass}">${result.ok ? 'OK' : 'FAILED'}</span>
+                </div>`;
+            }
+
+            document.getElementById('api-checks').innerHTML = html;
+            document.getElementById('api-status').className = `status ${allOk ? 'success' : 'warning'}`;
+            document.getElementById('api-status').textContent = allOk ? 'ONLINE' : 'ISSUES';
+        }
+
+        async function checkAuth() {
+            const cookies = document.cookie.split(';').map(c => c.trim());
+            const authCookies = cookies.filter(c => 
+                c.includes('XSRF-TOKEN') || 
+                c.includes('laravel_session') ||
+                c.includes('aprati_')
+            );
+
+            const localStorage = [];
+            try {
+                for (let i = 0; i < window.localStorage.length; i++) {
+                    const key = window.localStorage.key(i);
+                    if (key.includes('auth') || key.includes('token') || key.includes('user')) {
+                        localStorage.push(key);
+                    }
+                }
+            } catch (e) {
+                localStorage.push('Error accessing localStorage');
+            }
+
+            allResults.auth = { cookies: authCookies, localStorage };
+
+            let html = '';
+            html += `<div class="check-item">
+                <div class="check-icon">🍪</div>
+                <div class="check-details">
+                    <div class="check-label">Auth Cookies</div>
+                    <div class="check-value">${authCookies.length > 0 ? authCookies.join(', ') : 'No auth cookies found'}</div>
+                </div>
+                <span class="status ${authCookies.length > 0 ? 'success' : 'warning'}">${authCookies.length > 0 ? 'FOUND' : 'NONE'}</span>
+            </div>`;
+
+            html += `<div class="check-item">
+                <div class="check-icon">💾</div>
+                <div class="check-details">
+                    <div class="check-label">LocalStorage Auth Data</div>
+                    <div class="check-value">${localStorage.length > 0 ? localStorage.join(', ') : 'No auth data found'}</div>
+                </div>
+                <span class="status ${localStorage.length > 0 ? 'success' : 'warning'}">${localStorage.length > 0 ? 'FOUND' : 'NONE'}</span>
+            </div>`;
+
+            document.getElementById('auth-checks').innerHTML = html;
+            const hasAuth = authCookies.length > 0 || localStorage.length > 0;
+            document.getElementById('auth-status').className = `status ${hasAuth ? 'success' : 'warning'}`;
+            document.getElementById('auth-status').textContent = hasAuth ? 'DETECTED' : 'NO AUTH';
+        }
+
+        async function checkRoutes() {
+            const adminRoutes = [
+                '/admin',
+                '/admin/brands',
+                '/admin/users',
+                '/admin/products',
+                '/admin/careers',
+                '/admin/job-applications',
+                '/admin/information-sections'
+            ];
+
+            const results = [];
+            for (const route of adminRoutes) {
+                const result = await checkFileExists(window.location.origin + route);
+                results.push({
+                    route: route,
+                    ...result
+                });
+            }
+
+            allResults.routes = results;
+
+            let html = '';
+            let allOk = true;
+
+            for (const result of results) {
+                const icon = result.exists ? '✅' : '❌';
+                const statusClass = result.exists ? 'success' : 'error';
+                allOk = allOk && result.exists;
+
+                html += `<div class="check-item">
+                    <div class="check-icon">${icon}</div>
+                    <div class="check-details">
+                        <div class="check-label">${result.route}</div>
+                        <div class="check-value">HTTP Status: ${result.status}</div>
+                    </div>
+                    <span class="status ${statusClass}">${result.exists ? 'ACCESSIBLE' : 'NOT FOUND'}</span>
+                </div>`;
+            }
+
+            document.getElementById('routes-checks').innerHTML = html;
+            document.getElementById('routes-status').className = `status ${allOk ? 'success' : 'error'}`;
+            document.getElementById('routes-status').textContent = allOk ? 'ALL OK' : 'ISSUES';
+        }
+
+        function checkErrors() {
+            allResults.errors = consoleErrors;
+
+            let html = '';
+            if (consoleErrors.length === 0) {
+                html = '<div class="check-item"><div class="check-icon">✅</div><div class="check-details"><div class="check-label">No console errors detected</div></div></div>';
+                document.getElementById('errors-status').className = 'status success';
+                document.getElementById('errors-status').textContent = 'CLEAN';
+            } else {
+                html = `<div class="error-list">`;
+                consoleErrors.forEach((error, index) => {
+                    html += `<div class="error-item">
+                        <strong>#${index + 1}</strong> [${error.time}]<br>
+                        ${error.message}
+                    </div>`;
+                });
+                html += '</div>';
+                document.getElementById('errors-status').className = 'status error';
+                document.getElementById('errors-status').textContent = `${consoleErrors.length} ERRORS`;
+            }
+
+            document.getElementById('errors-checks').innerHTML = html;
+        }
+
+        async function runAllTests() {
+            // Reset
+            consoleErrors = [];
+            allResults = {};
+
+            // Update timestamp
+            document.getElementById('timestamp').textContent = `Test run at: ${new Date().toLocaleString()}`;
+
+            // Run tests
+            await runSystemInfo();
+            await checkAssets();
+            await checkAPI();
+            await checkAuth();
+            await checkRoutes();
+            checkErrors();
+        }
+
+        function copyResults() {
+            const text = JSON.stringify(allResults, null, 2);
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Diagnostic results copied to clipboard!');
+            }).catch(() => {
+                alert('❌ Failed to copy. Please manually select and copy the console output.');
+                console.log('DIAGNOSTIC RESULTS:', text);
+            });
+        }
+
+        // Auto-run on page load
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{
+  "home": "ទំព័រដើម",
+  "about": "អំពីយើង",
+  "contact": "ទំនាក់ទំនង",
+  "products": "ផលិតផល",
+  "careers": "ឱកាសការងារ",
+  "welcome": "សូមស្វាគមន៍មកកាន់ Aprati Foods Cambodia",
+  "login": "ចូល",
+  "register": "ចុះឈ្មោះ",
+  "dashboard": "ផ្ទាំងគ្រប់គ្រង",
+  "profile": "ប្រវត្តិរូប",
+  "logout": "ចេញ",
+  "nav": {
+    "home": "ទំព័រដើម",
+    "about": "អំពីយើង",
+    "contact": "ទំនាក់ទំនង",
+    "careers": "ឱកាសការងារ",
+    "management": "ការគ្រប់គ្រង",
+    "brands": "ម៉ាករបស់យើង"
+  },
+  "hero": {
+    "welcome_badge": "សូមស្វាគមន៍មកកាន់ Aprati Foods (កម្ពុជា) Ltd",
+    "title": "សូមស្វាគមន៍មកកាន់ <span class=\"bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent\">Aprati</span> Food Company",
+    "subtitle": "វេបសាយការណ៍ផ្តើមដ៏ទំនើបជាមួយនឹងការស្វែងរកផលិតផលកម្រិតខ្ពស់ ការគ្រប់គ្រងអាជីព និងប្រព័ន្ធគ្រប់គ្រងសារពើភ័ណ្ឌទូលំទូលាយ។",
+    "primary_button": "រកមើលម៉ាករបស់យើង",
+    "secondary_button": "ចូលរួមជាមួយយើង"
+  },
+  "information": {
+    "section_title": "ព័ត៌មានរបស់យើង",
+    "section_subtitle": "រកឃើញព័ត៌មានថ្មីៗ ព័ត៌មាន និងការច្នៃប្រឌិតពីប្រព័ន្ធដ៏សកម្មរបស់យើង",
+    "loading": "កំពុងផ្ទុកមាតិកាព័ត៌មាន...",
+    "view_details": "មើលព័ត៌មានលម្អិត",
+    "coming_soon": "មកដល់ឆាប់ៗនេះ",
+    "coming_soon_desc": "យើងកំពុងត្រៀមអ្វីមួយដ៏ពិសេសសម្រាប់អ្នក។ សូមរង់ចាំព័ត៌មានថ្មីៗ ការច្នៃប្រឌិត និងសេចក្តីប្រកាសដ៏រំភើប។",
+    "get_notified": "ទទួលបានការជូនដំណឹង",
+    "learn_more": "ស្វែងយល់បន្ថែម"
+  },
+  "brands": {
+    "section_badge": "ម៉ាករបស់យើង",
+    "section_title": "ម៉ាក <span class=\"bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent\">ពិសេស</span>",
+    "section_subtitle": "រកឃើញកម្រងផលិតផលម៉ាកអាហារដែលមានគុណភាពខ្ពស់របស់យើង",
+    "explore_products": "រកមើលផលិតផល",
+    "products_count": "ផលិតផល",
+    "featured_products": "ផលិតផលពិសេស",
+    "no_brands": "មិនមានម៉ាកទេ",
+    "no_brands_desc": "បច្ចុប្បន្នមិនមានម៉ាកសកម្មដើម្បីបង្ហាញទេ។ សូមត្រឡប់មកមើលពេលក្រោយ ឬទំនាក់ទំនងជាមួយអ្នកគ្រប់គ្រង។",
+    "contact_admin": "ទំនាក់ទំនងអ្នកគ្រប់គ្រង"
+  },
+  "cta": {
+    "badge": "រួចរាល់ដើម្បីចាប់ផ្តើម",
+    "title": "រួចរាល់ដើម្បីរកឃើញ <span class=\"bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent\">វេទិកាដ៏ទំនើបរបស់យើង?</span>",
+    "subtitle": "រកឃើញលក្ខណៈពិសេសកម្រិតខ្ពស់ និងផលិតផលអាហារដែលមានគុណភាពខ្ពស់សម្រាប់ពិភពលោកទំនើប",
+    "primary_button": "រកមើលម៉ាករបស់យើង",
+    "secondary_button": "ទំនាក់ទំនងយើង",
+    "stats": {
+      "brands": "ម៉ាកខ្ពស់",
+      "support": "ការគាំទ្រ",
+      "quality": "គុណភាព"
+    }
+  },
+  "modal": {
+    "information_details": "ព័ត៌មានលម្អិត",
+    "detailed_info": "ព័ត៌មានលម្អិត និងការយល់ដឹង",
+    "featured_image": "រូបភាពពិសេស",
+    "detail_view": "ទិដ្ឋភាពលម្អិត",
+    "close": "បិទ"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "home": "Home",
+  "about": "About",
+  "contact": "Contact",
+  "products": "Products",
+  "careers": "Careers",
+  "welcome": "Welcome to Aprati Foods Cambodia",
+  "login": "Login",
+  "register": "Register",
+  "dashboard": "Dashboard",
+  "profile": "Profile",
+  "logout": "Logout",
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "careers": "Careers",
+    "management": "Management",
+    "brands": "Our Brands"
+  },
+  "hero": {
+    "welcome_badge": "Welcome to Aprati Foods (Cambodia) Ltd",
+    "title": "Welcome to <span class=\"bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent\">Aprati</span> Food Company",
+    "subtitle": "Enhanced introduction website with advanced product search, career management, and comprehensive inventory system.",
+    "primary_button": "Explore Our Brands",
+    "secondary_button": "Join Our Team"
+  },
+  "information": {
+    "section_title": "OUR Information",
+    "section_subtitle": "Discover the latest updates, news, and innovations from our dynamic ecosystem",
+    "loading": "Loading information content...",
+    "view_details": "View Details",
+    "coming_soon": "Coming Soon",
+    "coming_soon_desc": "We're preparing something extraordinary for you. Stay tuned for the latest updates, innovations, and exciting announcements.",
+    "get_notified": "Get Notified",
+    "learn_more": "Learn More"
+  },
+  "brands": {
+    "section_badge": "Our Brands",
+    "section_title": "Featured <span class=\"bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent\">Brands</span>",
+    "section_subtitle": "Discover our premium food brand collection crafted with excellence",
+    "explore_products": "Explore Products",
+    "products_count": "Products",
+    "featured_products": "Featured Products",
+    "no_brands": "No Brands Available",
+    "no_brands_desc": "Currently there are no active brands to display. Please check back later or contact the administrator.",
+    "contact_admin": "Contact Admin"
+  },
+  "cta": {
+    "badge": "Ready to Start",
+    "title": "Ready to Explore Our <span class=\"bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent\">Enhanced Platform?</span>",
+    "subtitle": "Discover our advanced features and premium food products designed for the modern world",
+    "primary_button": "Explore Our Brands",
+    "secondary_button": "Contact Us",
+    "stats": {
+      "brands": "Premium Brands",
+      "support": "Support",
+      "quality": "Quality"
+    }
+  },
+  "modal": {
+    "information_details": "Information Details",
+    "detailed_info": "Detailed information and insights",
+    "featured_image": "Featured Image",
+    "detail_view": "Detail View",
+    "close": "Close"
+  }
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Instructions - Aprati Foods</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 50px auto; padding: 20px; background: #f5f5f5; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 3px solid #f44336; padding-bottom: 10px; }
+        h2 { color: #4CAF50; margin-top: 30px; }
+        .error { color: #f44336; background: #ffebee; padding: 15px; margin: 15px 0; border-radius: 4px; font-weight: bold; }
+        .success { color: #4CAF50; background: #e8f5e9; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .warning { color: #ff9800; background: #fff3e0; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .info { color: #2196F3; background: #e3f2fd; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        pre { background: #263238; color: #aed581; padding: 15px; border-radius: 4px; overflow-x: auto; }
+        ol { line-height: 2; }
+        code { background: #263238; color: #aed581; padding: 2px 8px; border-radius: 3px; }
+        .step { background: #e3f2fd; padding: 15px; margin: 15px 0; border-left: 4px solid #2196F3; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>❌ Laravel Application Files Missing!</h1>
+    
+    <div class="error">
+        <strong>CRITICAL ISSUE DETECTED:</strong><br>
+        Your server is missing the Laravel application files. Only deploy.php was uploaded.
+    </div>
+    
+    <h2>📋 What You Need to Upload:</h2>
+    
+    <div class="step">
+        <strong>Step 1: Prepare Files on Your Computer</strong>
+        <ol>
+            <li>Locate your <code>aprati_backend</code> folder on your computer</li>
+            <li>Make sure it contains these folders:
+                <ul>
+                    <li><code>app/</code></li>
+                    <li><code>bootstrap/</code></li>
+                    <li><code>config/</code></li>
+                    <li><code>database/</code></li>
+                    <li><code>public/</code></li>
+                    <li><code>routes/</code></li>
+                    <li><code>storage/</code></li>
+                    <li><code>vendor/</code></li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <strong>Step 2: Upload via cPanel File Manager</strong>
+        <ol>
+            <li>Login to cPanel</li>
+            <li>Open <strong>File Manager</strong></li>
+            <li>Navigate to: <code>/home/apratifoodscom/public_html/</code></li>
+            <li>Create a ZIP file of your <code>aprati_backend</code> folder</li>
+            <li>Upload the ZIP file</li>
+            <li>Right-click the ZIP → Extract</li>
+            <li>You should now see all Laravel folders in <code>public_html/aprati_backend/</code></li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <strong>Step 3: Configure Document Root in cPanel</strong>
+        <ol>
+            <li>Go to cPanel → <strong>Domains</strong></li>
+            <li>Find <strong>sdev.apratifoods.asia</strong></li>
+            <li>Click <strong>Manage</strong></li>
+            <li>Change <strong>Document Root</strong> to:<br>
+                <code>/home/apratifoodscom/public_html/aprati_backend/public</code>
+            </li>
+            <li>Click <strong>Save</strong></li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <strong>Step 4: Create .env File</strong>
+        <ol>
+            <li>Go to File Manager → <code>aprati_backend/</code></li>
+            <li>Find <code>.env.example</code> file</li>
+            <li>Right-click → Copy</li>
+            <li>Rename copied file to <code>.env</code></li>
+            <li>Right-click <code>.env</code> → Edit</li>
+            <li>Update these values:
+<pre>APP_URL=https://sdev.apratifoods.asia
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password</pre>
+            </li>
+            <li>Save the file</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <strong>Step 5: Set Permissions</strong>
+        <ol>
+            <li>In File Manager, navigate to <code>aprati_backend/</code></li>
+            <li>Right-click <code>storage</code> folder → Change Permissions</li>
+            <li>Set to <code>755</code></li>
+            <li>Check "Recurse into subdirectories"</li>
+            <li>Click <strong>Save</strong></li>
+            <li>Repeat for <code>bootstrap/cache</code> folder</li>
+        </ol>
+    </div>
+    
+    <div class="step">
+        <strong>Step 6: Verify Upload</strong>
+        <ol>
+            <li>Refresh this page after uploading</li>
+            <li>If successful, you'll see the deployment menu</li>
+            <li>Then run these actions in order:
+                <ol>
+                    <li>Check/Fix .env</li>
+                    <li>Clear All Cache</li>
+                    <li>Check Permissions</li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+    
+    <h2>📊 Current Status:</h2>
+    
+    <?php
+    $basePath = '/home/apratifoodscom/public_html';
+    $checks = [
+        'aprati_backend folder' => is_dir($basePath . '/aprati_backend'),
+        'app/ folder' => is_dir($basePath . '/aprati_backend/app'),
+        'public/ folder' => is_dir($basePath . '/aprati_backend/public'),
+        'vendor/ folder' => is_dir($basePath . '/aprati_backend/vendor'),
+        'artisan file' => file_exists($basePath . '/aprati_backend/artisan'),
+        '.env file' => file_exists($basePath . '/aprati_backend/.env'),
+        'frontend/ folder' => is_dir($basePath . '/aprati_backend/public/frontend'),
+        '_nuxt/ folder' => is_dir($basePath . '/aprati_backend/public/_nuxt'),
+    ];
+    
+    foreach ($checks as $name => $exists) {
+        if ($exists) {
+            echo "<div class='success'>✅ $name - Found</div>";
+        } else {
+            echo "<div class='error'>❌ $name - Missing</div>";
+        }
+    }
+    
+    $allGood = !in_array(false, $checks);
+    
+    if ($allGood) {
+        echo '<div class="success"><h3>✅ All files uploaded successfully!</h3>';
+        echo '<p>You can now use <a href="deploy.php?password=aprati2025secure">deploy.php</a> to complete setup.</p></div>';
+    } else {
+        echo '<div class="error"><h3>❌ Files are missing! Please complete the upload steps above.</h3></div>';
+    }
+    ?>
+    
+    <h2>🔄 Quick Actions:</h2>
+    <p><a href="?refresh=1" style="display: inline-block; background: #2196F3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">🔄 Refresh Status Check</a></p>
+    
+    <div class="warning">
+        <strong>⚠️ Alternative Upload Method - FTP:</strong><br>
+        If File Manager is too slow:
+        <ol>
+            <li>Use FileZilla or WinSCP</li>
+            <li>Connect to your server via FTP</li>
+            <li>Upload <code>aprati_backend</code> folder to <code>public_html/</code></li>
+        </ol>
+    </div>
+    
+    <div class="info">
+        <strong>📞 Need Help?</strong><br>
+        • Check your Laravel project is fully built (ran build-production.bat)<br>
+        • Ensure all folders are included in the upload<br>
+        • Document root MUST point to the public/ directory<br>
+        • Contact hosting support if you have permission issues
+    </div>
+</div>
+</body>
+</html>

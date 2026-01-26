@@ -1,0 +1,273 @@
+import { _ as __nuxt_component_0 } from './nuxt-link-BAlktP_E.mjs';
+import { ref, computed, mergeProps, withCtx, unref, createTextVNode, createBlock, createCommentVNode, openBlock, toDisplayString, useSSRContext } from 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue/index.mjs';
+import { ssrRenderAttrs, ssrRenderComponent, ssrInterpolate, ssrIncludeBooleanAttr, ssrLooseContain, ssrLooseEqual, ssrRenderList, ssrRenderAttr, ssrRenderClass } from 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue/server-renderer/index.mjs';
+import { u as useApi } from './useApi-CO9TAo9a.mjs';
+import { a as useSeoMeta } from './server.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ufo/dist/index.mjs';
+import './cookie-D4T41UgU.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/cookie-es/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/h3/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/destr/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ohash/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/klona/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ofetch/dist/node.mjs';
+import '../_/nitro.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/hookable/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/node-mock-http/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/defu/dist/defu.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/scule/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/radix3/dist/index.mjs';
+import 'node:fs';
+import 'node:url';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/pathe/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/ipx/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unstorage/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unstorage/drivers/fs.mjs';
+import 'file:///D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/nuxt/dist/core/runtime/nitro/utils/cache-driver.js';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unstorage/drivers/fs-lite.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unctx/dist/index.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/pinia/dist/pinia.prod.cjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue-router/dist/vue-router.node.mjs';
+import '../_/renderer.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unhead/dist/server.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/devalue/index.js';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unhead/dist/plugins.mjs';
+import 'file://D:/xammp/htdocs/aprati_web_backup/aprati_frontend/node_modules/unhead/dist/utils.mjs';
+
+const _sfc_main = {
+  __name: "careers",
+  __ssrInlineRender: true,
+  setup(__props) {
+    const { careers: careerApi } = useApi();
+    const careers = ref([]);
+    const loading = ref(true);
+    const error = ref("");
+    const submitting = ref(false);
+    const formError = ref("");
+    const totalApplications = ref(0);
+    const totalPendingApplications = ref(0);
+    const showCreateModal = ref(false);
+    const showEditModal = ref(false);
+    const showViewModal = ref(false);
+    ref(null);
+    const viewingCareer = ref(null);
+    const filterStatus = ref("");
+    const filterDepartment = ref("");
+    const filterJobType = ref("");
+    const form = ref({
+      title_job: "",
+      career_information: "",
+      job_description: "",
+      job_requirements: "",
+      salary_range: "",
+      position: "",
+      location: "",
+      job_type: "Full-time",
+      department: "",
+      status: "active"
+    });
+    const activeCareers = computed(() => careers.value.filter((c) => c.status === "active").length);
+    const inactiveCareers = computed(() => careers.value.filter((c) => c.status === "inactive").length);
+    const closedCareers = computed(() => careers.value.filter((c) => c.status === "closed").length);
+    const totalCareers = computed(() => careers.value.length);
+    const departments = computed(() => {
+      const depts = [...new Set(careers.value.map((c) => c.department).filter(Boolean))];
+      return depts.sort();
+    });
+    const filteredCareers = computed(() => {
+      let filtered = careers.value;
+      if (filterStatus.value) {
+        filtered = filtered.filter((c) => c.status === filterStatus.value);
+      }
+      if (filterDepartment.value) {
+        filtered = filtered.filter((c) => c.department === filterDepartment.value);
+      }
+      if (filterJobType.value) {
+        filtered = filtered.filter((c) => c.job_type === filterJobType.value);
+      }
+      return filtered;
+    });
+    const formatDate = (dateString) => {
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    };
+    useSeoMeta({
+      title: "Career Management - Admin - Aprati Food Company",
+      description: "Admin panel for managing career opportunities and job postings."
+    });
+    return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtLink = __nuxt_component_0;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-gray-50" }, _attrs))}><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"><div class="mb-8"><div class="flex justify-between items-center mb-6"><div><h1 class="text-3xl font-bold text-gray-900">Career Management</h1><p class="text-gray-600 mt-2">Manage job postings and career opportunities</p></div></div><div class="flex justify-end space-x-4">`);
+      _push(ssrRenderComponent(_component_NuxtLink, {
+        to: "/admin/job-applications",
+        class: "relative bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(` View Applications `);
+            if (unref(totalPendingApplications) > 0) {
+              _push2(`<span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center animate-bounce"${_scopeId}>${ssrInterpolate(unref(totalPendingApplications) > 99 ? "99+" : unref(totalPendingApplications))}</span>`);
+            } else {
+              _push2(`<!---->`);
+            }
+          } else {
+            return [
+              createTextVNode(" View Applications "),
+              unref(totalPendingApplications) > 0 ? (openBlock(), createBlock("span", {
+                key: 0,
+                class: "absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center animate-bounce"
+              }, toDisplayString(unref(totalPendingApplications) > 99 ? "99+" : unref(totalPendingApplications)), 1)) : createCommentVNode("", true)
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(ssrRenderComponent(_component_NuxtLink, {
+        to: "/careers",
+        class: "bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(` View Public Page `);
+          } else {
+            return [
+              createTextVNode(" View Public Page ")
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(`<button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"> + Add New Career </button></div></div><div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8"><div class="bg-white rounded-lg shadow p-6"><div class="flex items-center"><div class="p-2 bg-green-100 rounded-lg"><svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><div class="ml-4"><p class="text-sm font-medium text-gray-600">Active Jobs</p><p class="text-2xl font-semibold text-gray-900">${ssrInterpolate(unref(activeCareers))}</p></div></div></div><div class="bg-white rounded-lg shadow p-6"><div class="flex items-center"><div class="p-2 bg-yellow-100 rounded-lg"><svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg></div><div class="ml-4"><p class="text-sm font-medium text-gray-600">Inactive Jobs</p><p class="text-2xl font-semibold text-gray-900">${ssrInterpolate(unref(inactiveCareers))}</p></div></div></div><div class="bg-white rounded-lg shadow p-6"><div class="flex items-center"><div class="p-2 bg-red-100 rounded-lg"><svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg></div><div class="ml-4"><p class="text-sm font-medium text-gray-600">Closed Jobs</p><p class="text-2xl font-semibold text-gray-900">${ssrInterpolate(unref(closedCareers))}</p></div></div></div><div class="bg-white rounded-lg shadow p-6"><div class="flex items-center"><div class="p-2 bg-blue-100 rounded-lg"><svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div><div class="ml-4"><p class="text-sm font-medium text-gray-600">Total Applications</p><p class="text-2xl font-semibold text-gray-900">${ssrInterpolate(unref(totalApplications))}</p>`);
+      if (unref(totalPendingApplications) > 0) {
+        _push(`<div class="flex items-center mt-1"><span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800"><span class="animate-pulse mr-1">●</span> ${ssrInterpolate(unref(totalPendingApplications))} Pending </span></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div></div></div><div class="bg-white rounded-lg shadow p-6"><div class="flex items-center"><div class="p-2 bg-gray-100 rounded-lg"><svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg></div><div class="ml-4"><p class="text-sm font-medium text-gray-600">Total Jobs</p><p class="text-2xl font-semibold text-gray-900">${ssrInterpolate(unref(totalCareers))}</p></div></div></div></div>`);
+      if (unref(totalPendingApplications) > 0) {
+        _push(`<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8"><div class="flex"><div class="flex-shrink-0"><svg class="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg></div><div class="ml-3"><p class="text-sm text-yellow-700"><strong>${ssrInterpolate(unref(totalPendingApplications))}</strong> new job ${ssrInterpolate(unref(totalPendingApplications) === 1 ? "application" : "applications")} waiting for review. `);
+        _push(ssrRenderComponent(_component_NuxtLink, {
+          to: "/admin/job-applications",
+          class: "font-medium underline hover:text-yellow-900"
+        }, {
+          default: withCtx((_, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(` Review now → `);
+            } else {
+              return [
+                createTextVNode(" Review now → ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent));
+        _push(`</p></div></div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`<div class="bg-white rounded-lg shadow p-6 mb-8"><div class="grid grid-cols-1 md:grid-cols-4 gap-4"><div><label class="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label><select class="w-full px-3 py-2 border border-gray-300 rounded-md"><option value=""${ssrIncludeBooleanAttr(Array.isArray(unref(filterStatus)) ? ssrLooseContain(unref(filterStatus), "") : ssrLooseEqual(unref(filterStatus), "")) ? " selected" : ""}>All Statuses</option><option value="active"${ssrIncludeBooleanAttr(Array.isArray(unref(filterStatus)) ? ssrLooseContain(unref(filterStatus), "active") : ssrLooseEqual(unref(filterStatus), "active")) ? " selected" : ""}>Active</option><option value="inactive"${ssrIncludeBooleanAttr(Array.isArray(unref(filterStatus)) ? ssrLooseContain(unref(filterStatus), "inactive") : ssrLooseEqual(unref(filterStatus), "inactive")) ? " selected" : ""}>Inactive</option><option value="closed"${ssrIncludeBooleanAttr(Array.isArray(unref(filterStatus)) ? ssrLooseContain(unref(filterStatus), "closed") : ssrLooseEqual(unref(filterStatus), "closed")) ? " selected" : ""}>Closed</option></select></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Filter by Department</label><select class="w-full px-3 py-2 border border-gray-300 rounded-md"><option value=""${ssrIncludeBooleanAttr(Array.isArray(unref(filterDepartment)) ? ssrLooseContain(unref(filterDepartment), "") : ssrLooseEqual(unref(filterDepartment), "")) ? " selected" : ""}>All Departments</option><!--[-->`);
+      ssrRenderList(unref(departments), (dept) => {
+        _push(`<option${ssrRenderAttr("value", dept)}${ssrIncludeBooleanAttr(Array.isArray(unref(filterDepartment)) ? ssrLooseContain(unref(filterDepartment), dept) : ssrLooseEqual(unref(filterDepartment), dept)) ? " selected" : ""}>${ssrInterpolate(dept)}</option>`);
+      });
+      _push(`<!--]--></select></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Filter by Job Type</label><select class="w-full px-3 py-2 border border-gray-300 rounded-md"><option value=""${ssrIncludeBooleanAttr(Array.isArray(unref(filterJobType)) ? ssrLooseContain(unref(filterJobType), "") : ssrLooseEqual(unref(filterJobType), "")) ? " selected" : ""}>All Types</option><option value="Full-time"${ssrIncludeBooleanAttr(Array.isArray(unref(filterJobType)) ? ssrLooseContain(unref(filterJobType), "Full-time") : ssrLooseEqual(unref(filterJobType), "Full-time")) ? " selected" : ""}>Full-time</option><option value="Part-time"${ssrIncludeBooleanAttr(Array.isArray(unref(filterJobType)) ? ssrLooseContain(unref(filterJobType), "Part-time") : ssrLooseEqual(unref(filterJobType), "Part-time")) ? " selected" : ""}>Part-time</option><option value="Contract"${ssrIncludeBooleanAttr(Array.isArray(unref(filterJobType)) ? ssrLooseContain(unref(filterJobType), "Contract") : ssrLooseEqual(unref(filterJobType), "Contract")) ? " selected" : ""}>Contract</option><option value="Internship"${ssrIncludeBooleanAttr(Array.isArray(unref(filterJobType)) ? ssrLooseContain(unref(filterJobType), "Internship") : ssrLooseEqual(unref(filterJobType), "Internship")) ? " selected" : ""}>Internship</option></select></div><div class="flex items-end"><button class="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"> Clear Filters </button></div></div></div>`);
+      if (unref(loading)) {
+        _push(`<div class="text-center py-12"><div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div><p class="mt-2 text-gray-600">Loading careers...</p></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      if (unref(error)) {
+        _push(`<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">${ssrInterpolate(unref(error))}</div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      if (!unref(loading) && !unref(error)) {
+        _push(`<div class="bg-white shadow rounded-lg overflow-hidden"><div class="px-6 py-4 border-b border-gray-200"><h3 class="text-lg font-medium text-gray-900"> Career Listings (${ssrInterpolate(unref(filteredCareers).length)} of ${ssrInterpolate(unref(careers).length)}) </h3></div>`);
+        if (unref(filteredCareers).length === 0) {
+          _push(`<div class="text-center py-12"><svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6.586l1.293-1.293a1 1 0 111.414 1.414L19 16.414V18a2 2 0 01-2 2h-4a2 2 0 01-2-2v-1.586l-1.293 1.293a1 1 0 11-1.414-1.414L11 14.414V8a2 2 0 012-2h4a2 2 0 012 2z"></path></svg><h3 class="text-xl font-semibold text-gray-900 mb-2">No careers found</h3><p class="text-gray-600 mb-4">${ssrInterpolate(unref(careers).length === 0 ? "No careers have been created yet." : "No careers match your current filters.")}</p><button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"> Add First Career </button></div>`);
+        } else {
+          _push(`<div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Details</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applications</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department &amp; Location</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expired</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th><th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><!--[-->`);
+          ssrRenderList(unref(filteredCareers), (career) => {
+            _push(`<tr class="hover:bg-gray-50"><td class="px-6 py-4"><div><div class="text-sm font-medium text-gray-900">${ssrInterpolate(career.title_job)}</div><div class="text-sm text-gray-500">${ssrInterpolate(career.position)}</div><div class="text-xs text-gray-400 mt-1">${ssrInterpolate(career.job_type)}</div></div></td><td class="px-6 py-4"><div class="space-y-1"><div class="flex items-center space-x-2"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg> ${ssrInterpolate(career.applications_count || 0)} Total </span></div>`);
+            if (career.pending_applications_count > 0) {
+              _push(`<div class="flex items-center space-x-2"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 animate-pulse"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ${ssrInterpolate(career.pending_applications_count)} Pending </span></div>`);
+            } else {
+              _push(`<!---->`);
+            }
+            if (career.applications_count > 0) {
+              _push(`<div class="flex flex-wrap gap-1 mt-1">`);
+              if (career.reviewed_applications_count > 0) {
+                _push(`<span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700">${ssrInterpolate(career.reviewed_applications_count)} Reviewed </span>`);
+              } else {
+                _push(`<!---->`);
+              }
+              if (career.accepted_applications_count > 0) {
+                _push(`<span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-50 text-green-700">${ssrInterpolate(career.accepted_applications_count)} Accepted </span>`);
+              } else {
+                _push(`<!---->`);
+              }
+              if (career.rejected_applications_count > 0) {
+                _push(`<span class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700">${ssrInterpolate(career.rejected_applications_count)} Rejected </span>`);
+              } else {
+                _push(`<!---->`);
+              }
+              _push(`</div>`);
+            } else {
+              _push(`<!---->`);
+            }
+            _push(`</div></td><td class="px-6 py-4"><div class="text-sm text-gray-900">${ssrInterpolate(career.department || "N/A")}</div><div class="text-sm text-gray-500">${ssrInterpolate(career.location || "N/A")}</div></td><td class="px-6 py-4"><div class="text-sm text-gray-900">${ssrInterpolate(career.salary_range)}</div></td><td class="px-6 py-4"><span class="${ssrRenderClass([
+              "inline-flex px-2 py-1 text-xs font-semibold rounded-full",
+              career.status === "active" ? "bg-green-100 text-green-800" : career.status === "inactive" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+            ])}">${ssrInterpolate(career.status)}</span></td><td class="px-6 py-4 text-sm text-gray-500">${ssrInterpolate(formatDate(career.created_at))}</td><td class="px-6 py-4 text-right text-sm font-medium"><div class="flex justify-end space-x-2"><button class="text-indigo-600 hover:text-indigo-900" title="View Details"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button><button class="text-blue-600 hover:text-blue-900" title="Edit"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button><button class="${ssrRenderClass([
+              "hover:opacity-75",
+              career.status === "active" ? "text-yellow-600" : "text-green-600"
+            ])}"${ssrRenderAttr("title", career.status === "active" ? "Deactivate" : "Activate")}><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">`);
+            if (career.status === "active") {
+              _push(`<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636"></path>`);
+            } else {
+              _push(`<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>`);
+            }
+            _push(`</svg></button><button class="text-red-600 hover:text-red-900" title="Delete"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1V4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div></td></tr>`);
+          });
+          _push(`<!--]--></tbody></table></div>`);
+        }
+        _push(`</div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div>`);
+      if (unref(showCreateModal) || unref(showEditModal)) {
+        _push(`<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"><div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"><div class="p-6"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-gray-900">${ssrInterpolate(unref(showEditModal) ? "Edit Job Position" : "Create New Job Position")}</h2><button class="text-gray-400 hover:text-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div>`);
+        if (unref(formError)) {
+          _push(`<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">${ssrInterpolate(unref(formError))}</div>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`<form class="space-y-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="block text-sm font-medium text-gray-700 mb-2">Job Title *</label><input${ssrRenderAttr("value", unref(form).title_job)} type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Food Technologist"></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Position *</label><input${ssrRenderAttr("value", unref(form).position)} type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Senior, Junior, Manager"></div></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Career Information *</label><textarea required rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Brief overview of the career opportunity...">${ssrInterpolate(unref(form).career_information)}</textarea></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Job Description *</label><textarea required rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Detailed job description and responsibilities...">${ssrInterpolate(unref(form).job_description)}</textarea></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Job Requirements *</label><textarea required rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Required qualifications, skills, and experience...">${ssrInterpolate(unref(form).job_requirements)}</textarea></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div><label class="block text-sm font-medium text-gray-700 mb-2">Expired *</label><input${ssrRenderAttr("value", unref(form).salary_range)} type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. $3000-5000"></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Job Type</label><select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="Full-time"${ssrIncludeBooleanAttr(Array.isArray(unref(form).job_type) ? ssrLooseContain(unref(form).job_type, "Full-time") : ssrLooseEqual(unref(form).job_type, "Full-time")) ? " selected" : ""}>Full-time</option><option value="Part-time"${ssrIncludeBooleanAttr(Array.isArray(unref(form).job_type) ? ssrLooseContain(unref(form).job_type, "Part-time") : ssrLooseEqual(unref(form).job_type, "Part-time")) ? " selected" : ""}>Part-time</option><option value="Contract"${ssrIncludeBooleanAttr(Array.isArray(unref(form).job_type) ? ssrLooseContain(unref(form).job_type, "Contract") : ssrLooseEqual(unref(form).job_type, "Contract")) ? " selected" : ""}>Contract</option><option value="Internship"${ssrIncludeBooleanAttr(Array.isArray(unref(form).job_type) ? ssrLooseContain(unref(form).job_type, "Internship") : ssrLooseEqual(unref(form).job_type, "Internship")) ? " selected" : ""}>Internship</option></select></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Status</label><select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="active"${ssrIncludeBooleanAttr(Array.isArray(unref(form).status) ? ssrLooseContain(unref(form).status, "active") : ssrLooseEqual(unref(form).status, "active")) ? " selected" : ""}>Active</option><option value="inactive"${ssrIncludeBooleanAttr(Array.isArray(unref(form).status) ? ssrLooseContain(unref(form).status, "inactive") : ssrLooseEqual(unref(form).status, "inactive")) ? " selected" : ""}>Inactive</option><option value="closed"${ssrIncludeBooleanAttr(Array.isArray(unref(form).status) ? ssrLooseContain(unref(form).status, "closed") : ssrLooseEqual(unref(form).status, "closed")) ? " selected" : ""}>Closed</option></select></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="block text-sm font-medium text-gray-700 mb-2">Department</label><input${ssrRenderAttr("value", unref(form).department)} type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. R&amp;D, Marketing, Quality Control"></div><div><label class="block text-sm font-medium text-gray-700 mb-2">Location</label><input${ssrRenderAttr("value", unref(form).location)} type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Phnom Penh, Siem Reap"></div></div><div class="flex justify-end space-x-4 pt-6"><button type="button" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"> Cancel </button><button type="submit"${ssrIncludeBooleanAttr(unref(submitting)) ? " disabled" : ""} class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50">${ssrInterpolate(unref(submitting) ? "Saving..." : unref(showEditModal) ? "Update Position" : "Create Position")}</button></div></form></div></div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      if (unref(showViewModal) && unref(viewingCareer)) {
+        _push(`<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"><div class="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto"><div class="p-6"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-gray-900">${ssrInterpolate(unref(viewingCareer).title_job)}</h2><button class="text-gray-400 hover:text-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button></div><div class="space-y-6"><div><h3 class="text-lg font-semibold text-gray-900 mb-2">Position Information</h3><div class="bg-gray-50 p-4 rounded-lg"><div class="grid grid-cols-2 gap-4"><div><p class="text-sm text-gray-600">Position</p><p class="font-medium">${ssrInterpolate(unref(viewingCareer).position)}</p></div><div><p class="text-sm text-gray-600">Department</p><p class="font-medium">${ssrInterpolate(unref(viewingCareer).department || "N/A")}</p></div><div><p class="text-sm text-gray-600">Location</p><p class="font-medium">${ssrInterpolate(unref(viewingCareer).location || "N/A")}</p></div><div><p class="text-sm text-gray-600">Salary Range</p><p class="font-medium">${ssrInterpolate(unref(viewingCareer).salary_range)}</p></div><div><p class="text-sm text-gray-600">Job Type</p><p class="font-medium">${ssrInterpolate(unref(viewingCareer).job_type)}</p></div><div><p class="text-sm text-gray-600">Status</p><span class="${ssrRenderClass([
+          "inline-flex px-2 py-1 text-xs font-semibold rounded-full",
+          unref(viewingCareer).status === "active" ? "bg-green-100 text-green-800" : unref(viewingCareer).status === "inactive" ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"
+        ])}">${ssrInterpolate(unref(viewingCareer).status)}</span></div></div></div></div><div><h3 class="text-lg font-semibold text-gray-900 mb-2">Career Information</h3><p class="text-gray-700">${ssrInterpolate(unref(viewingCareer).career_information)}</p></div><div><h3 class="text-lg font-semibold text-gray-900 mb-2">Job Description</h3><p class="text-gray-700 whitespace-pre-line">${ssrInterpolate(unref(viewingCareer).job_description)}</p></div><div><h3 class="text-lg font-semibold text-gray-900 mb-2">Job Requirements</h3><p class="text-gray-700 whitespace-pre-line">${ssrInterpolate(unref(viewingCareer).job_requirements)}</p></div><div class="flex justify-end space-x-4 pt-6"><button class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"> Close </button><button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"> Edit Career </button></div></div></div></div></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+      _push(`</div>`);
+    };
+  }
+};
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/admin/careers.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+
+export { _sfc_main as default };
+//# sourceMappingURL=careers-Oa8I45xR.mjs.map

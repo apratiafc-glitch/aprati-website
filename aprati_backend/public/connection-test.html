@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 API Connection Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .test-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #17a2b8;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 10px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .metric {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .image-test {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .image-test img {
+            max-width: 100px;
+            max-height: 100px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 API Connection Test</h1>
+
+        <!-- Summary -->
+        <div class="test-section">
+            <h2>📊 Test Summary</h2>
+            <div class="grid">
+                <div class="metric">
+                    <div class="metric-value" id="total-tests">0</div>
+                    <div class="metric-label">Total Tests</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="passed-tests">0</div>
+                    <div class="metric-label">✅ Passed</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="failed-tests">0</div>
+                    <div class="metric-label">❌ Failed</div>
+                </div>
+            </div>
+            <button class="test-button" onclick="runAllTests()">🚀 Run All Tests</button>
+            <button class="test-button" onclick="clearCache()">🧹 Clear Cache & Reload</button>
+        </div>
+
+        <!-- Test 1: Information Sections (THE PROBLEM!) -->
+        <div class="test-section">
+            <h2>🔥 Information Sections API (Current Issue)</h2>
+            <div id="test1-status" class="loading">
+                <div class="spinner"></div>
+                <p>Testing...</p>
+            </div>
+        </div>
+
+        <!-- Test 2: Basic Connectivity -->
+        <div class="test-section">
+            <h2>2️⃣ Basic API Connectivity</h2>
+            <div id="test2-status" class="loading">
+                <div class="spinner"></div>
+                <p>Testing...</p>
+            </div>
+        </div>
+
+        <!-- Test 3: Brands API -->
+        <div class="test-section">
+            <h2>3️⃣ Brands API</h2>
+            <div id="test3-status" class="loading">
+                <div class="spinner"></div>
+                <p>Testing...</p>
+            </div>
+        </div>
+
+        <!-- Test 4: Brand Logos -->
+        <div class="test-section">
+            <h2>4️⃣ Brand Logo Images</h2>
+            <div id="test4-status" class="loading">
+                <div class="spinner"></div>
+                <p>Testing...</p>
+            </div>
+        </div>
+
+        <!-- Test 5: JavaScript Files -->
+        <div class="test-section">
+            <h2>5️⃣ Frontend JavaScript Files</h2>
+            <div id="test5-status" class="loading">
+                <div class="spinner"></div>
+                <p>Testing...</p>
+            </div>
+        </div>
+
+        <!-- Test 6: Browser Info -->
+        <div class="test-section">
+            <h2>6️⃣ Browser Information</h2>
+            <div id="test6-status" class="loading">
+                <div class="spinner"></div>
+                <p>Testing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalTests = 0;
+        let passedTests = 0;
+        let failedTests = 0;
+
+        function updateSummary() {
+            document.getElementById('total-tests').textContent = totalTests;
+            document.getElementById('passed-tests').textContent = passedTests;
+            document.getElementById('failed-tests').textContent = failedTests;
+        }
+
+        function showStatus(elementId, status, message, data = null) {
+            const element = document.getElementById(elementId);
+            let html = `<div class="status status-${status}">${message}</div>`;
+            
+            if (data) {
+                html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+            
+            element.innerHTML = html;
+        }
+
+        function clearCache() {
+            if (confirm('This will clear cache and reload the page. Continue?')) {
+                // Clear cache and reload
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+                location.reload(true);
+            }
+        }
+
+        async function test1_InformationSections() {
+            try {
+                const url = '/information-sections?t=' + Date.now();
+                const response = await fetch(url, { 
+                    cache: 'no-cache',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+                const data = await response.json();
+                
+                console.log('Information Sections Response:', data);
+                
+                if (response.ok && data.success) {
+                    const sections = Array.isArray(data.data) 
+                        ? data.data 
+                        : (data.data.sections || data.data.data || []);
+                    
+                    const activeCount = sections.filter(s => s.is_active).length;
+                    
+                    if (sections.length > 0) {
+                        passedTests++;
+                        showStatus('test1-status', 'success', 
+                            `✅ SUCCESS: Found ${sections.length} sections (${activeCount} active)\n\n` +
+                            `This means:\n` +
+                            `• API is working correctly ✅\n` +
+                            `• Data exists in database ✅\n` +
+                            `• If homepage shows "Coming Soon" = Frontend not updated yet\n\n` +
+                            `Solution: Upload frontend-update.zip and hard refresh (Ctrl+Shift+R)`, 
+                            { 
+                                url, 
+                                totalSections: sections.length, 
+                                activeSections: activeCount,
+                                sections: sections.map(s => ({
+                                    id: s.id,
+                                    title: s.title,
+                                    is_active: s.is_active,
+                                    has_image: !!s.image_url
+                                }))
+                            }
+                        );
+                    } else {
+                        failedTests++;
+                        showStatus('test1-status', 'warning', 
+                            `⚠️ WARNING: API returns no sections`, 
+                            data
+                        );
+                    }
+                } else {
+                    failedTests++;
+                    showStatus('test1-status', 'error', 
+                        `❌ FAILED: API error`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                failedTests++;
+                showStatus('test1-status', 'error', 
+                    `❌ FAILED: ${error.message}`,
+                    { error: error.toString(), stack: error.stack }
+                );
+            }
+            totalTests++;
+            updateSummary();
+        }
+
+        async function test2_BasicConnectivity() {
+            try {
+                const response = await fetch('/api/brands?t=' + Date.now(), { 
+                    cache: 'no-cache' 
+                });
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'success') {
+                    passedTests++;
+                    showStatus('test2-status', 'success', 
+                        `✅ SUCCESS: API is reachable (Status: ${response.status})`, 
+                        { 
+                            url: '/api/brands', 
+                            status: response.status, 
+                            contentType: response.headers.get('content-type'),
+                            timestamp: new Date().toLocaleString()
+                        }
+                    );
+                } else {
+                    failedTests++;
+                    showStatus('test2-status', 'error', 
+                        `❌ FAILED: API returned error`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                failedTests++;
+                showStatus('test2-status', 'error', 
+                    `❌ FAILED: Cannot connect to API - ${error.message}`,
+                    { error: error.toString() }
+                );
+            }
+            totalTests++;
+            updateSummary();
+        }
+
+        async function test3_BrandsAPI() {
+            try {
+                const response = await fetch('/api/brands?t=' + Date.now(), { 
+                    cache: 'no-cache' 
+                });
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'success' && data.data.brands) {
+                    const brands = data.data.brands;
+                    passedTests++;
+                    showStatus('test3-status', 'success', 
+                        `✅ SUCCESS: Found ${brands.length} brands`, 
+                        { 
+                            totalBrands: brands.length, 
+                            brands: brands.map(b => ({ 
+                                id: b.id, 
+                                name: b.name, 
+                                logo_url: b.logo_url 
+                            })) 
+                        }
+                    );
+                } else {
+                    failedTests++;
+                    showStatus('test3-status', 'error', 
+                        `❌ FAILED: Unexpected response`, 
+                        data
+                    );
+                }
+            } catch (error) {
+                failedTests++;
+                showStatus('test3-status', 'error', 
+                    `❌ FAILED: ${error.message}`,
+                    { error: error.toString() }
+                );
+            }
+            totalTests++;
+            updateSummary();
+        }
+
+        async function test4_BrandLogos() {
+            try {
+                const brandsResponse = await fetch('/api/brands?t=' + Date.now());
+                const brandsData = await brandsResponse.json();
+                
+                if (brandsData.status === 'success' && brandsData.data.brands) {
+                    const brands = brandsData.data.brands;
+                    let workingLogos = 0;
+                    let results = [];
+                    
+                    for (const brand of brands) {
+                        if (brand.logo_url) {
+                            try {
+                                const imgResponse = await fetch(brand.logo_url);
+                                const working = imgResponse.ok;
+                                if (working) workingLogos++;
+                                results.push({ 
+                                    brand: brand.name, 
+                                    url: brand.logo_url, 
+                                    status: imgResponse.status, 
+                                    ok: working 
+                                });
+                            } catch (e) {
+                                results.push({ 
+                                    brand: brand.name, 
+                                    url: brand.logo_url, 
+                                    error: e.message 
+                                });
+                            }
+                        }
+                    }
+                    
+                    if (workingLogos === brands.length) {
+                        passedTests++;
+                        showStatus('test4-status', 'success', 
+                            `✅ SUCCESS: All ${workingLogos} brand logos loading`, 
+                            results
+                        );
+                    } else if (workingLogos > 0) {
+                        failedTests++;
+                        showStatus('test4-status', 'warning', 
+                            `⚠️ PARTIAL: ${workingLogos}/${brands.length} logos loading`, 
+                            results
+                        );
+                    } else {
+                        failedTests++;
+                        showStatus('test4-status', 'error', 
+                            `❌ FAILED: No logos loading`, 
+                            results
+                        );
+                    }
+                } else {
+                    failedTests++;
+                    showStatus('test4-status', 'error', 
+                        `❌ FAILED: Cannot load brands`, 
+                        brandsData
+                    );
+                }
+            } catch (error) {
+                failedTests++;
+                showStatus('test4-status', 'error', 
+                    `❌ FAILED: ${error.message}`,
+                    { error: error.toString() }
+                );
+            }
+            totalTests++;
+            updateSummary();
+        }
+
+        async function test5_FrontendJS() {
+            try {
+                // Check if main entry JS exists
+                const scripts = Array.from(document.scripts);
+                const nuxtScripts = scripts.filter(s => s.src.includes('_nuxt'));
+                
+                let results = {
+                    totalScripts: scripts.length,
+                    nuxtScripts: nuxtScripts.length,
+                    scripts: nuxtScripts.map(s => ({
+                        src: s.src,
+                        loaded: true
+                    }))
+                };
+                
+                // Try to detect if it's the old or new build
+                const bodyHTML = document.body.innerHTML;
+                const hasFilterBug = bodyHTML.includes('response.data.filter') || bodyHTML.includes('.filter(section');
+                
+                if (nuxtScripts.length > 0) {
+                    passedTests++;
+                    showStatus('test5-status', 'success', 
+                        `✅ SUCCESS: Frontend JavaScript loaded (${nuxtScripts.length} Nuxt scripts)\n\n` +
+                        `Note: This test shows JS files are loading, but cannot detect if it's the OLD or NEW build.\n` +
+                        `If homepage still shows "Coming Soon", you need to upload frontend-update.zip`,
+                        results
+                    );
+                } else {
+                    failedTests++;
+                    showStatus('test5-status', 'warning', 
+                        `⚠️ WARNING: No Nuxt scripts detected`, 
+                        results
+                    );
+                }
+            } catch (error) {
+                failedTests++;
+                showStatus('test5-status', 'error', 
+                    `❌ FAILED: ${error.message}`,
+                    { error: error.toString() }
+                );
+            }
+            totalTests++;
+            updateSummary();
+        }
+
+        async function test6_BrowserInfo() {
+            try {
+                const info = {
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language,
+                    cookieEnabled: navigator.cookieEnabled,
+                    onLine: navigator.onLine,
+                    currentURL: window.location.href,
+                    referrer: document.referrer || 'Direct navigation',
+                    timestamp: new Date().toLocaleString(),
+                    cacheControl: 'Check if hard refresh (Ctrl+Shift+R) was used',
+                    localStorage: (() => {
+                        try {
+                            return 'Available (' + Object.keys(localStorage).length + ' items)';
+                        } catch (e) {
+                            return 'Not available';
+                        }
+                    })()
+                };
+                
+                passedTests++;
+                showStatus('test6-status', 'info', 
+                    `ℹ️ Browser Information`, 
+                    info
+                );
+            } catch (error) {
+                failedTests++;
+                showStatus('test6-status', 'error', 
+                    `❌ FAILED: ${error.message}`,
+                    { error: error.toString() }
+                );
+            }
+            totalTests++;
+            updateSummary();
+        }
+
+        async function runAllTests() {
+            // Reset counters
+            totalTests = 0;
+            passedTests = 0;
+            failedTests = 0;
+            updateSummary();
+            
+            // Reset all status sections
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`test${i}-status`).innerHTML = 
+                    '<div class="loading"><div class="spinner"></div><p>Testing...</p></div>';
+            }
+            
+            console.log('=== Starting Connection Tests ===');
+            console.log('Time:', new Date().toLocaleString());
+            
+            // Run tests in sequence
+            await test1_InformationSections();
+            await test2_BasicConnectivity();
+            await test3_BrandsAPI();
+            await test4_BrandLogos();
+            await test5_FrontendJS();
+            await test6_BrowserInfo();
+            
+            console.log('=== Tests Complete ===');
+            console.log(`Passed: ${passedTests}/${totalTests}`);
+            console.log(`Failed: ${failedTests}/${totalTests}`);
+        }
+
+        // Auto-run on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Connection Test Page Loaded');
+            runAllTests();
+        });
+    </script>
+</body>
+</html>

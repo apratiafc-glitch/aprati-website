@@ -1,0 +1,111 @@
+================================================================================
+  URGENT: UPLOAD THESE FILES TO FIX API REDIRECT
+================================================================================
+
+PROBLEM: https://sdev.apratifoods.asia/api/brands redirects to homepage
+
+SOLUTION: Upload 2 files to production
+
+================================================================================
+  FILES TO UPLOAD
+================================================================================
+
+1. FROM: d:\xammp\htdocs\aprati_web_backup\aprati_backend\public\.htaccess
+   TO:   /home/apratifoodscom/public_html/sdev.apratifoods.asia/.htaccess
+   
+2. FROM: d:\xammp\htdocs\aprati_web_backup\aprati_backend\public\laravel-bootstrap.php
+   TO:   /home/apratifoodscom/public_html/sdev.apratifoods.asia/laravel-bootstrap.php
+
+3. FROM: d:\xammp\htdocs\aprati_web_backup\aprati_backend\public\test-frontend-api-connection.html
+   TO:   /home/apratifoodscom/public_html/sdev.apratifoods.asia/test-frontend-api-connection.html
+   (This is for testing - upload this to verify the connection)
+
+================================================================================
+  UPLOAD STEPS (via cPanel File Manager)
+================================================================================
+
+1. Login to cPanel at your hosting provider
+
+2. Click "File Manager"
+
+3. Navigate to: /home/apratifoodscom/public_html/sdev.apratifoods.asia/
+
+4. BACKUP CURRENT .htaccess:
+   - Find existing .htaccess file
+   - Right-click → Rename → .htaccess.backup
+
+5. UPLOAD NEW .htaccess:
+   - Click "Upload" button
+   - Select: d:\xammp\htdocs\aprati_web_backup\aprati_backend\public\.htaccess
+   - Wait for upload to complete
+
+6. VERIFY/UPLOAD laravel-bootstrap.php:
+   - Check if laravel-bootstrap.php already exists
+   - If NOT, upload: d:\xammp\htdocs\aprati_web_backup\aprati_backend\public\laravel-bootstrap.php
+
+7. TEST WITH THE CONNECTION TESTER:
+   - Open browser
+   - Visit: https://sdev.apratifoods.asia/test-frontend-api-connection.html
+   - Click "Run All Tests" button
+   - All tests should show ✅ SUCCESS
+   
+   OR test API directly:
+   - Visit: https://sdev.apratifoods.asia/api/brands
+   - Should see JSON data (not homepage!)
+
+================================================================================
+  EXPECTED RESULT AFTER UPLOAD
+================================================================================
+
+curl https://sdev.apratifoods.asia/api/brands
+
+Should return JSON like:
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Aprati",
+      "slug": "aprati",
+      ...
+    }
+  ]
+}
+
+Should NOT redirect to homepage!
+
+================================================================================
+  IF STILL NOT WORKING
+================================================================================
+
+1. Check if aprati_backend folder exists at:
+   /home/apratifoodscom/public_html/aprati_backend/
+
+2. Verify laravel-bootstrap.php can find it:
+   - Edit laravel-bootstrap.php on production
+   - Check line: $laravelPath = __DIR__ . '/aprati_backend';
+   - Adjust path if needed
+
+3. Check file permissions:
+   - .htaccess should be 644
+   - laravel-bootstrap.php should be 644
+
+4. Clear browser cache and try again
+
+5. Run diagnostics:
+   Upload diagnose-api-error.php and visit:
+   https://sdev.apratifoods.asia/diagnose-api-error.php?password=aprati2025secure
+
+================================================================================
+  IMPORTANT NOTES
+================================================================================
+
+- The .htaccess file is ALREADY FIXED in your local copy
+- You just need to UPLOAD it to production
+- Without uploading, production still uses old .htaccess
+- Old .htaccess routes everything to index.html (homepage)
+- New .htaccess routes /api/* to laravel-bootstrap.php (Laravel API)
+
+================================================================================
+
+READY? Upload those 2 files now! 🚀

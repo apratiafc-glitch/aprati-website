@@ -1,0 +1,60 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Prevent direct access to Laravel application files (except public assets)
+    RewriteRule ^aprati_backend/(?!public/) - [F,L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Route API requests to Laravel
+    RewriteCond %{REQUEST_URI} ^/api/
+    RewriteRule ^(.*)$ laravel-bootstrap.php [L,QSA]
+
+    # Route storage requests to Laravel storage
+    RewriteCond %{REQUEST_URI} ^/storage/
+    RewriteRule ^(.*)$ laravel-bootstrap.php [L,QSA]
+
+    # Route admin-api requests to Laravel
+    RewriteCond %{REQUEST_URI} ^/admin-api/
+    RewriteRule ^(.*)$ laravel-bootstrap.php [L,QSA]
+
+    # Serve static files directly (_nuxt, images, etc.)
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Serve frontend HTML files
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/api/
+    RewriteCond %{REQUEST_URI} !^/storage/
+    RewriteCond %{REQUEST_URI} !^/admin-api/
+    RewriteRule ^(.*)$ index.html [L]
+
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
