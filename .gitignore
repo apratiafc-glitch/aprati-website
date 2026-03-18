@@ -1,27 +1,63 @@
-# Laravel backend
+# ========================
+# Laravel Backend
+# ========================
 aprati_backend/vendor/
 aprati_backend/.env
 aprati_backend/storage/framework/
 aprati_backend/storage/logs/
 aprati_backend/.output/
 aprati_backend/bootstrap/cache/
+aprati_backend/composer.lock
+
+# Debug & test scripts
 aprati_backend/accessor-results.txt
 aprati_backend/test-cv.pdf
-aprati_backend/test_about.php
-aprati_backend/test_price_sync.php
-aprati_backend/test_product_price.php
-aprati_backend/verify-accessors.php
-aprati_backend/verify-apply.php
-aprati_backend/verify-notifications.php
+aprati_backend/test_*.php
+aprati_backend/verify-*.php
 aprati_backend/dump-settings.php
+aprati_backend/check-*.php
+aprati_backend/fix-*.php
+aprati_backend/debug-*.php
+aprati_backend/run-*.php
+aprati_backend/update-*.php
+aprati_backend/view-*.php
 
-# Nuxt frontend
+# ========================
+# Nuxt Frontend
+# ========================
 aprati_frontend/node_modules/
 aprati_frontend/.env
 aprati_frontend/.nuxt/
 aprati_frontend/.output/
 aprati_frontend/dist/
+aprati_frontend/package-lock.json
 
-# General
+# ========================
+# Backup & Temp Files
+# ========================
+*.backup
+*.bak
+*.orig
+*.tmp
+*.log
+*.zip
+*.gz
+*.tar
+*.rar
+*.map
+
+# ========================
+# IDE & Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ========================
+# OS Files
+# ========================
 .DS_Store
 Thumbs.db
+desktop.ini
