@@ -11,52 +11,27 @@ class ManagementPost extends Model
 
     protected $fillable = [
         'name',
-        'position',
-        'department',
-        'email',
         'description',
         'bio',
-        'image_url',
-        'is_active'
+        'email',
+        'department',
+        'image',
+        'is_active',
+        'sort_order'
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime'
-    ];
+    protected $appends = ['image_url'];
 
-    /**
-     * Scope to get only active posts
-     */
-    public function scopeActive($query)
+    public function getImageUrlAttribute()
     {
-        return $query->where('is_active', true);
-    }
-
-    /**
-     * Scope to get posts by department
-     */
-    public function scopeByDepartment($query, $department)
-    {
-        return $query->where('department', $department);
-    }
-
-    /**
-     * Get the full image URL
-     */
-    public function getFullImageUrlAttribute()
-    {
-        if (!$this->image_url) {
+        if (!$this->image) {
             return null;
         }
 
-        // If it's already a full URL, return as is
-        if (str_starts_with($this->image_url, 'http')) {
-            return $this->image_url;
+        if (filter_var($this->image, FILTER_VALIDATE_URL)) {
+            return $this->image;
         }
 
-        // If it's a local path, prepend the app URL
-        return url($this->image_url);
+        return \Illuminate\Support\Facades\Storage::disk('public')->url(str_replace('/storage/', '', $this->image));
     }
 }

@@ -15,333 +15,252 @@
       <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-4/5 left-3/5 w-16 h-16 object-contain opacity-14 animate-float" style="animation-delay: 2.2s;" />
       <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-4/5 right-3/5 w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 0.6s;" />
     </div>
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
       <div class="text-center">
         <NuxtLink to="/" class="text-3xl font-bold text-blue-600">
           Aprati Foods Cambodia
         </NuxtLink>
         <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-          Administrative Access
+          {{ showOtpForm ? 'Enter Verification Code' : 'Administrative Access' }}
         </h2>
         <p class="mt-2 text-sm text-gray-600">
-          Authorized personnel only
+          {{ showOtpForm ? 'A 6-digit code has been sent to your Gmail' : 'Authorized personnel only' }}
         </p>
       </div>
     </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <!-- Login Form -->
-        <form @submit.prevent="handleLogin" class="space-y-6">
-          <!-- Email -->
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <div class="mt-1">
-              <input
-                id="email"
-                v-model="form.email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                required
-                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                :class="{ 'border-red-300': errors.email }"
-                placeholder="Enter your email"
-              />
-              <p v-if="errors.email" class="mt-2 text-sm text-red-600">
-                {{ errors.email }}
-              </p>
+
+        <!-- ── Step 1: Google Sign-In ── -->
+        <div v-if="!showOtpForm">
+          <!-- Error from Google callback -->
+          <div v-if="callbackError" class="mb-5 rounded-md bg-red-50 p-4">
+            <div class="flex">
+              <ExclamationTriangleIcon class="h-5 w-5 text-red-400 flex-shrink-0" />
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">Access Denied</h3>
+                <p class="mt-1 text-sm text-red-700">{{ callbackErrorMessage }}</p>
+              </div>
             </div>
           </div>
 
-          <!-- Password -->
+          <p class="text-sm text-gray-500 text-center mb-6">
+            Sign in using your registered admin Gmail account
+          </p>
+
+          <!-- Google Sign-In Button -->
+          <a
+            :href="`${apiBase}/auth/google`"
+            class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Sign in with Google
+          </a>
+
+          <div class="mt-4 text-center">
+            <NuxtLink to="/" class="text-sm font-medium text-blue-600 hover:text-blue-500">
+              Return to website
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- ── Step 2: OTP Verification ── -->
+        <form v-else @submit.prevent="handleVerifyOTP" class="space-y-6">
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">
-              Password
+            <label for="otp" class="block text-sm font-medium text-gray-700 text-center">
+              Verification Code
             </label>
-            <div class="mt-1">
+            <div class="mt-4 flex justify-center">
               <input
-                id="password"
-                v-model="form.password"
-                name="password"
-                type="password"
-                autocomplete="current-password"
+                id="otp"
+                v-model="otpCode"
+                type="text"
+                inputmode="numeric"
+                maxlength="6"
                 required
-                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                :class="{ 'border-red-300': errors.password }"
-                placeholder="Enter your password"
+                autofocus
+                class="text-center text-3xl font-bold tracking-widest w-64 px-4 py-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="000000"
+                @input="formatOTP"
               />
-              <p v-if="errors.password" class="mt-2 text-sm text-red-600">
-                {{ errors.password }}
-              </p>
             </div>
+            <p class="mt-2 text-xs text-gray-500 text-center">
+              Check your Gmail inbox for the 6-digit code
+            </p>
           </div>
 
-          <!-- Remember me -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input
-                id="remember-me"
-                v-model="form.remember"
-                name="remember-me"
-                type="checkbox"
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
-            </div>
-
-            <div class="text-sm">
-              <NuxtLink to="/" class="font-medium text-blue-600 hover:text-blue-500">
-                Return to website
-              </NuxtLink>
-            </div>
+          <!-- Timer -->
+          <div v-if="otpExpiresIn > 0" class="text-center">
+            <p class="text-sm text-gray-600">
+              Code expires in
+              <span class="font-semibold text-blue-600">
+                {{ Math.floor(otpExpiresIn / 60) }}:{{ String(otpExpiresIn % 60).padStart(2, '0') }}
+              </span>
+            </p>
           </div>
 
           <!-- Error Message -->
           <div v-if="errorMessage" class="rounded-md bg-red-50 p-4">
             <div class="flex">
-              <ExclamationTriangleIcon class="h-5 w-5 text-red-400" />
+              <ExclamationTriangleIcon class="h-5 w-5 text-red-400 flex-shrink-0" />
               <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">
-                  Access Denied
-                </h3>
-                <div class="mt-2 text-sm text-red-700">
-                  {{ errorMessage }}
-                </div>
+                <h3 class="text-sm font-medium text-red-800">Verification Failed</h3>
+                <p class="mt-1 text-sm text-red-700">{{ errorMessage }}</p>
               </div>
             </div>
           </div>
 
-          <!-- Submit Button -->
-          <div>
+          <!-- Buttons -->
+          <div class="space-y-3">
             <button
               type="submit"
-              :disabled="loading"
+              :disabled="loading || otpCode.length !== 6"
               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {{ loading ? 'Authenticating...' : 'Access System' }}
+              {{ loading ? 'Verifying...' : 'Verify & Access System' }}
+            </button>
+
+            <button
+              type="button"
+              @click="cancelOTP"
+              class="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            >
+              Use a different account
             </button>
           </div>
         </form>
 
-        <!-- Demo Credentials (only show in development) -->
-        <div v-if="$config.public.dev" class="mt-6">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-300" />
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">Development Mode</span>
-            </div>
-          </div>
-
-          <div class="mt-4">
-            <button
-              @click="fillAdminCredentials"
-              class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              <UserIcon class="h-5 w-5 mr-2 text-blue-500" />
-              Fill Demo Credentials
-            </button>
-          </div>
-          
-          <div class="mt-4 text-xs text-gray-500 text-center">
-            <p><strong>Email:</strong> admin@aprati.com</p>
-            <p><strong>Password:</strong> admin123</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ExclamationTriangleIcon, UserIcon } from '@heroicons/vue/24/outline'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
-// Page meta
 useSeoMeta({
   title: 'System Access - Aprati Food Company',
   description: 'Administrative system access',
-  robots: 'noindex, nofollow' // Prevent search engines from indexing this page
+  robots: 'noindex, nofollow'
 })
 
-// Form data
-const form = ref({
-  email: '',
-  password: '',
-  remember: false
-})
+const config = useRuntimeConfig()
+const route = useRoute()
+const apiBase = config.public.apiBase
 
+const showOtpForm = ref(false)
+const otpCode = ref('')
+const userId = ref(null)
 const loading = ref(false)
-const errors = ref({})
 const errorMessage = ref('')
+const otpExpiresIn = ref(1800)
+const callbackError = ref(false)
+const callbackErrorMessage = ref('')
 
-// Demo credentials helper (only in development)
-const fillAdminCredentials = () => {
-  form.value.email = 'admin@aprati.com'
-  form.value.password = 'admin123'
-  errors.value = {}
-  errorMessage.value = ''
+let otpTimer = null
+
+const startOTPTimer = () => {
+  otpExpiresIn.value = 600
+  otpTimer = setInterval(() => {
+    otpExpiresIn.value--
+    if (otpExpiresIn.value <= 0) {
+      clearInterval(otpTimer)
+      errorMessage.value = 'Code expired. Please sign in again.'
+      setTimeout(() => cancelOTP(), 2000)
+    }
+  }, 1000)
 }
 
-// Handle login
-const handleLogin = async () => {
-  loading.value = true
-  errors.value = {}
-  errorMessage.value = ''
+const formatOTP = (event) => {
+  const input = event.target
+  otpCode.value = input.value.replace(/\D/g, '').slice(0, 6)
+}
 
+const handleVerifyOTP = async () => {
+  if (otpCode.value.length !== 6) {
+    errorMessage.value = 'Please enter the 6-digit code'
+    return
+  }
+  loading.value = true
+  errorMessage.value = ''
   try {
-    const { auth } = useApi()
-    
-    const result = await auth.adminLogin({
-      email: form.value.email,
-      password: form.value.password
+    const response = await $fetch(`${apiBase}/admin/verify-otp`, {
+      method: 'POST',
+      body: { user_id: userId.value, otp_code: otpCode.value },
     })
-    
-    console.log('Full API result:', result)
-    console.log('API result type:', typeof result)
-    console.log('API result keys:', Object.keys(result || {}))
-    
-    if (result.success) {
-      console.log('Login successful, data:', result.data)
-      console.log('Data type:', typeof result.data)
-      console.log('Data keys:', Object.keys(result.data || {}))
-      console.log('User object from API:', result.data.user)
-      console.log('User role from API:', result.data.user?.role)
-      
-      // Check if we have proper user data structure
-      if (!result.data || !result.data.user) {
-        console.error('❌ No user data in response:', result.data)
-        console.error('❌ Full result object:', JSON.stringify(result, null, 2))
-        errorMessage.value = 'Invalid response structure from server'
-        return
-      }
-      
-      const userData = result.data.user
-      const userRole = userData.role
-      
-      console.log('Extracted user data:', userData)
-      console.log('Extracted user role:', userRole)
-      
-      // Verify we have a role
-      if (!userRole) {
-        console.error('❌ No role field in user data:', userData)
-        errorMessage.value = 'User role information missing from server'
-        return
-      }
-      
-      // Store the token with 7 days expiration
-      const token = useCookie('auth-token', {
-        default: () => '',
-        maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
-        httpOnly: false,
-        secure: false,
-        sameSite: 'lax',
-        path: '/'
-      })
-      token.value = result.data.token
-      
-      // Store user data as object (useCookie handles serialization) with 7 days expiration
-      const user = useCookie('auth-user', {
-        default: () => null,
-        maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
-        httpOnly: false,
-        secure: false,
-        sameSite: 'lax',
-        path: '/'
-      })
+    if (response.success) {
+      if (otpTimer) clearInterval(otpTimer)
+      const userData = response.data.user
+      const token = useCookie('auth-token', { maxAge: 60 * 60 * 24 * 7, httpOnly: false, secure: false, sameSite: 'lax', path: '/' })
+      token.value = response.data.token
+      const user = useCookie('auth-user', { maxAge: 60 * 60 * 24 * 7, httpOnly: false, secure: false, sameSite: 'lax', path: '/' })
       user.value = userData
-      
-      console.log('Token stored:', token.value)
-      console.log('User data stored:', userData)
-      
-      // Immediately verify what was stored
-      setTimeout(() => {
-        const storedToken = useCookie('auth-token').value
-        const storedUser = useCookie('auth-user').value
-        console.log('Verification - stored token:', storedToken)
-        console.log('Verification - stored user string:', storedUser)
-        
-        if (storedUser) {
-          try {
-            // Check if storedUser is already an object or a string
-            let parsedUser
-            if (typeof storedUser === 'string') {
-              parsedUser = JSON.parse(storedUser)
-            } else {
-              // Already an object, use directly
-              parsedUser = storedUser
-            }
-            console.log('Verification - parsed user:', parsedUser)
-            console.log('Verification - parsed role:', parsedUser.role)
-          } catch (e) {
-            console.error('Verification - parse error:', e)
-          }
-        }
-      }, 100)
-      
-      // Check role for navigation
-      console.log('User role for navigation check:', userRole)
-      
-      if (userRole === 'admin') {
-        console.log('✅ Admin role confirmed, navigating to /admin')
-        // Use navigateTo with replace to ensure fresh navigation
-        await navigateTo('/admin', { replace: true })
-      } else {
-        console.error('❌ Not admin role:', userRole)
-        errorMessage.value = `Access denied. User role is "${userRole}", but admin required.`
-        // Clear stored data
-        token.value = ''
-        user.value = ''
-      }
-    } else {
-      console.error('❌ Login failed:', result)
-      errorMessage.value = result.error || 'Invalid credentials or insufficient privileges'
+      await navigateTo('/admin', { replace: true })
     }
-  } catch (error) {
-    console.error('❌ Login exception:', error)
-    console.error('❌ Error type:', error.constructor.name)
-    console.error('❌ Error message:', error.message)
-    console.error('❌ Error stack:', error.stack)
-    errorMessage.value = `Authentication failed: ${error.message || 'Please verify your credentials.'}`
+  } catch (err) {
+    errorMessage.value = err?.data?.message || 'Invalid or expired code. Please try again.'
   } finally {
     loading.value = false
   }
 }
 
-// Check if already authenticated as admin
+const cancelOTP = () => {
+  showOtpForm.value = false
+  otpCode.value = ''
+  userId.value = null
+  errorMessage.value = ''
+  if (otpTimer) clearInterval(otpTimer)
+}
+
 onMounted(() => {
+  // Check if already authenticated
   const authToken = useCookie('auth-token')
   const authUser = useCookie('auth-user')
-  
-  console.log('OnMounted - checking existing auth')
-  console.log('OnMounted - token exists:', !!authToken.value)
-  console.log('OnMounted - user exists:', !!authUser.value)
-  
   if (authToken.value && authUser.value) {
     try {
       const userData = typeof authUser.value === 'string' ? JSON.parse(authUser.value) : authUser.value
-      const userRole = userData?.role
-      console.log('OnMounted - parsed user role:', userRole)
-      
-      if (userRole === 'admin') {
-        console.log('OnMounted - already authenticated as admin, redirecting')
-        navigateTo('/admin')
+      if (userData?.role === 'admin') {
+        navigateTo('/admin', { replace: true })
+        return
       }
-    } catch (error) {
-      console.error('OnMounted - error parsing user data:', error)
-      // Clear invalid data
+    } catch (e) {
       authToken.value = ''
       authUser.value = ''
     }
   }
+
+  // Handle Google OAuth callback query params
+  const step = route.query.step
+  const uid = route.query.user_id
+  const error = route.query.error
+
+  if (error) {
+    callbackError.value = true
+    callbackErrorMessage.value = error === 'unauthorized'
+      ? 'This Google account is not registered as an admin. Please use your admin Gmail.'
+      : 'Google sign-in failed. Please try again.'
+    return
+  }
+
+  if (step === 'otp' && uid) {
+    userId.value = parseInt(uid)
+    showOtpForm.value = true
+    startOTPTimer()
+  }
+})
+
+onUnmounted(() => {
+  if (otpTimer) clearInterval(otpTimer)
 })
 </script>

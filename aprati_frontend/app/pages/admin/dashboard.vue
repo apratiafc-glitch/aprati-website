@@ -70,7 +70,7 @@
                 <p class="text-3xl font-bold text-gray-900">{{ stats.heroContent?.total || 0 }}</p>
               </div>
             </div>
-            <h3 class="text-sm font-semibold text-gray-700 mb-2">Hero Content</h3>
+            <h3 class="text-sm font-semibold text-gray-700 mb-2">Hero Slides</h3>
             <div class="flex items-center text-xs">
               <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">{{ stats.heroContent?.active || 0 }} active</span>
             </div>
@@ -199,20 +199,6 @@
             </div>
           </NuxtLink>
 
-          <NuxtLink 
-            to="/admin/hero-images" 
-            class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <div class="p-2 bg-orange-100 rounded-lg mr-4">
-              <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-gray-900">Hero Images</h3>
-              <p class="text-sm text-gray-600">Manage homepage hero image</p>
-            </div>
-          </NuxtLink>
 
           <NuxtLink 
             to="/admin/careers" 
@@ -294,7 +280,6 @@
 
           <NuxtLink 
             to="/admin/about" 
-            @click="console.log('Clicking Manage About link')"
             class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <div class="p-2 bg-purple-100 rounded-lg mr-4">
@@ -303,7 +288,7 @@
               </svg>
             </div>
             <div>
-              <h3 class="font-semibold text-gray-900">Manage About</h3>
+              <h3 class="font-semibold text-gray-900">Manage About Content</h3>
               <p class="text-sm text-gray-600">Manage about page content and sections</p>
             </div>
           </NuxtLink>
@@ -414,11 +399,11 @@
             </button>
 
             <button
-              @click="navigateTo('/admin/hero-content')"
-              class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors"
+              @click="navigateTo('/admin/hero-slides')"
+              class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors"
             >
-              <PhotoIcon class="h-8 w-8 text-green-500 mb-2" />
-              <span class="text-sm font-medium text-gray-900">Manage Hero</span>
+              <PhotoIcon class="h-8 w-8 text-blue-500 mb-2" />
+              <span class="text-sm font-medium text-gray-900">Manage Slides</span>
             </button>
 
             <button
@@ -488,23 +473,25 @@ const currentDate = computed(() => {
 // Methods
 const loadDashboardData = async () => {
   try {
-    const { $api } = useNuxtApp()
+    const { informationSections } = useApi()
     
     // Load information sections
     loadingInformationSections.value = true
-    const informationSectionsResponse = await $api('/admin/information-sections')
-    const allSections = informationSectionsResponse.data
+    const response = await informationSections.adminGetAll()
     
-    // Calculate stats
-    stats.value.informationSections = {
-      total: allSections.length,
-      active: allSections.filter(s => s.is_active).length,
-      inactive: allSections.filter(s => !s.is_active).length
+    if (response.success) {
+      const allSections = response.data || []
+      
+      // Calculate stats
+      stats.value.informationSections = {
+        total: allSections.length,
+        active: allSections.filter(s => s.is_active).length,
+        inactive: allSections.filter(s => !s.is_active).length
+      }
+      
+      // Get recent sections (last 5)
+      recentInformationSections.value = allSections.slice(0, 5)
     }
-    
-    // Get recent sections (last 5)
-    recentInformationSections.value = allSections.slice(0, 5)
-    
   } catch (error) {
     console.error('Error loading dashboard data:', error)
   } finally {
@@ -542,14 +529,18 @@ const loadCareerData = async () => {
 
 const loadOtherStats = async () => {
   try {
-    const { $api } = useNuxtApp()
+    const api = useApi()
     
     // Load hero content stats
     try {
-      const heroResponse = await $api('/admin/hero-contents')
-      stats.value.heroContent = {
-        total: heroResponse.data.length,
-        active: heroResponse.data.filter(h => h.is_active).length
+      // Hero slides
+      const heroResponse = await api.request('/hero-slides')
+      if (heroResponse.success) {
+        const slides = heroResponse.data || []
+        stats.value.heroContent = {
+          total: slides.length,
+          active: slides.filter(h => h.is_active).length
+        }
       }
     } catch (error) {
       console.warn('Hero content not available:', error)
@@ -557,10 +548,13 @@ const loadOtherStats = async () => {
     
     // Load brands stats
     try {
-      const brandsResponse = await $api('/admin/brands')
-      stats.value.brands = {
-        total: brandsResponse.data.length,
-        active: brandsResponse.data.filter(b => b.is_active).length
+      const brandsResponse = await api.brands.getAll()
+      if (brandsResponse.success) {
+        const brands = brandsResponse.data || []
+        stats.value.brands = {
+          total: brands.length,
+          active: brands.filter(b => b.is_active).length
+        }
       }
     } catch (error) {
       console.warn('Brands not available:', error)
@@ -568,10 +562,13 @@ const loadOtherStats = async () => {
     
     // Load users stats
     try {
-      const usersResponse = await $api('/users')
-      stats.value.users = {
-        total: usersResponse.data.length,
-        active: usersResponse.data.filter(u => u.is_active).length
+      const usersResponse = await api.users.getAll()
+      if (usersResponse.success) {
+        const users = usersResponse.data || []
+        stats.value.users = {
+          total: users.length,
+          active: users.filter(u => u.is_active).length
+        }
       }
     } catch (error) {
       console.warn('Users not available:', error)

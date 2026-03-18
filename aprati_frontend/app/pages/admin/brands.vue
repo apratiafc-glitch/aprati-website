@@ -618,7 +618,11 @@ const openCreateModal = () => {
 
 const editBrand = (brand) => {
   isEditing.value = true
-  brandForm.value = { ...brand }
+  brandForm.value = { 
+    ...brand,
+    // Convert is_active from integer (0/1) to boolean (false/true)
+    is_active: Boolean(brand.is_active)
+  }
   
   // Set logo preview if brand has existing logo - use logo_url for preview
   if (brand.logo_url) {

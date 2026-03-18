@@ -4,8 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\HeroSlide;
+use App\Models\InformationSection;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,71 +18,90 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::create([
+        // User::factory(10)->create();
+
+        User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@aprati.com',
-            'password' => Hash::make('admin123'),
-            'role' => User::ROLE_ADMIN,
+            'password' => '12345678',
+            'role' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'role' => 'admin',
+        ]);
+
+        // Create Brands
+        $aprati = Brand::create([
+            'name' => 'Aprati',
+            'slug' => 'aprati',
+            'description' => 'Premium candy brand',
             'is_active' => true,
         ]);
 
-        // Create sample brands
-        $brands = [
-            [
-                'name' => 'Aprati',
-                'slug' => 'aprati',
-                'description' => 'Premium food products with traditional quality',
-                'logo' => 'https://via.placeholder.com/200x200/3B82F6/ffffff?text=Aprati',
-                'website' => 'https://aprati.com',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Frutati',
-                'slug' => 'frutati',
-                'description' => 'Fresh and natural fruit products',
-                'logo' => 'https://via.placeholder.com/200x200/10B981/ffffff?text=Frutati',
-                'website' => 'https://frutati.com',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Mocati',
-                'slug' => 'mocati',
-                'description' => 'Modern catering and food service solutions',
-                'logo' => 'https://via.placeholder.com/200x200/F97316/ffffff?text=Mocati',
-                'website' => 'https://mocati.com',
-                'is_active' => true,
-            ],
-        ];
+        $frutati = Brand::create([
+            'name' => 'Frutati',
+            'slug' => 'frutati',
+            'description' => 'Fruit flavored candy',
+            'is_active' => true,
+        ]);
 
-        foreach ($brands as $brandData) {
-            Brand::create($brandData);
+        $mocati = Brand::create([
+            'name' => 'Mocati',
+            'slug' => 'mocati',
+            'description' => 'Coffee and chocolate treats',
+            'is_active' => true,
+        ]);
+
+        // Create Categories
+        $candy = Category::create(['name' => 'Candy', 'slug' => 'candy', 'is_active' => true]);
+        $chocolate = Category::create(['name' => 'Chocolate', 'slug' => 'chocolate', 'is_active' => true]);
+
+        // Create Products
+        for ($i = 1; $i <= 5; $i++) {
+            Product::create([
+                'brand_id' => $aprati->id,
+                'category_id' => $candy->id,
+                'name' => "Aprati Product $i",
+                'slug' => "aprati-product-$i",
+                'description' => 'Delicious Aprati candy.',
+                'image' => null,
+                'is_active' => true,
+            ]);
         }
 
-        // Create a brand admin user
-        $frutati = Brand::where('slug', 'frutati')->first();
-        User::create([
-            'name' => 'Frutati Admin',
-            'email' => 'frutati@aprati.com',
-            'password' => Hash::make('frutati123'),
-            'role' => User::ROLE_BRAND_ADMIN,
-            'brand_id' => $frutati->id,
+        for ($i = 1; $i <= 5; $i++) {
+            Product::create([
+                'brand_id' => $frutati->id,
+                'category_id' => $candy->id,
+                'name' => "Frutati Product $i",
+                'slug' => "frutati-product-$i",
+                'description' => 'Fruity Frutati candy.',
+                'image' => null,
+                'is_active' => true,
+            ]);
+        }
+
+        // Create Hero Slides
+        HeroSlide::create([
+            'title' => 'Welcome to Aprati',
+            'subtitle' => 'Taste the difference',
+            'image' => '', // Placeholder
+            'button_text' => 'Shop Now',
+            'button_link' => '/brands/aprati',
+            'sort_order' => 1,
             'is_active' => true,
         ]);
 
-        // Create a regular user
-        User::create([
-            'name' => 'Regular User',
-            'email' => 'user@aprati.com',
-            'password' => Hash::make('user123'),
-            'role' => User::ROLE_USER,
+        // Create Information Section
+        InformationSection::create([
+            'title' => 'About Us',
+            'description' => '<p>We are a leading candy manufacturer.</p>',
+            'image' => null,
             'is_active' => true,
-        ]);
-
-        // Run additional seeders
-        $this->call([
-            HeroContentSeeder::class,
-            InformationSectionSeeder::class,
         ]);
     }
 }

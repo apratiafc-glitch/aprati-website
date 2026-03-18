@@ -216,10 +216,10 @@ const quickLinks = [
 ]
 
 const featuredProducts = [
-  { name: 'Grape Juice', brand: 'APRATI', image: '/images/Grape Character.png', link: '/brands' },
-  { name: 'Orange Juice', brand: 'FRUTATI', image: '/images/Orange Charactor.png', link: '/brands' },
-  { name: 'Pineapple Juice', brand: 'MOCATI', image: '/images/Pineapple Character copy.png', link: '/brands' },
-  { name: 'Guava Nectar', brand: 'APRATI', image: '/images/Guava Charactor.png', link: '/brands' }
+  { name: 'Grape ', brand: 'APRATI', image: '/images/Grape Character.png', link: '/brands' },
+  { name: 'Orange ', brand: 'FRUTATI', image: '/images/Orange Charactor.png', link: '/brands' },
+  { name: 'Pineapple ', brand: 'MOCATI', image: '/images/Pineapple Character copy.png', link: '/brands' },
+  { name: 'Guava ', brand: 'APRATI', image: '/images/Guava Charactor.png', link: '/brands' }
 ]
 
 onMounted(() => {

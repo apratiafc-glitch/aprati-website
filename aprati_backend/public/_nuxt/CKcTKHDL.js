@@ -1,1 +1,0 @@
-import{ac as n,E as u,B as e}from"./DSjRKYC-.js";const d=n((r,l)=>{const{isAuthenticated:t,user:a}=u();{const o=localStorage.getItem("token"),i=localStorage.getItem("user");if(o&&i)try{t.value}catch(s){console.error("Error initializing auth:",s)}}if(!t.value)return e("/login");if(r.path.startsWith("/admin")&&a.value?.role!=="admin")return e("/")});export{d as default};

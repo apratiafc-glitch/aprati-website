@@ -353,6 +353,9 @@ definePageMeta({
   layout: 'admin'
 })
 
+// Use API Composable
+const api = useApi()
+
 // Reactive data
 const sections = ref([])
 const loading = ref(true)
@@ -380,66 +383,39 @@ const stats = computed(() => ({
   total: sections.value.length,
   active: sections.value.filter(s => s.is_active).length,
   inactive: sections.value.filter(s => !s.is_active).length,
-  withImages: sections.value.filter(s => s.image_url && !s.image_url.includes('default-info.svg')).length
+  withImages: sections.value.filter(s => s.image_url && !s.image_url.includes('placeholder')).length
 }))
 
 // Methods
-const getAuthToken = () => {
-  const token = useCookie('auth-token')
-  return token.value || ''
-}
-
 const loadSections = async () => {
-  // Only load on client side
-  if (process.server) return
-  
   loading.value = true
   try {
-    const token = getAuthToken()
-    if (!token) {
-      console.warn('No auth token found, skipping section load')
-      return
-    }
+    const response = await api.informationSections.adminGetAll()
     
-    const response = await fetch('https://sdev.apratifoods.asia/api/admin/information-sections', {
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
-    }
-    
-    const data = await response.json()
-    console.log('📦 Loaded sections:', data.data?.length || 0)
-    
-    // Add cache busting timestamp to image URLs to force reload
-    const timestamp = new Date().getTime()
-    sections.value = (data.data || []).map(section => {
-      let imageUrl = placeholderImage
+    if (response.success) {
+      const data = response.data || []
+      console.log('📦 Loaded sections:', data.length)
       
-      if (section.image_url) {
-        // Ensure absolute URL
-        if (section.image_url.startsWith('http://') || section.image_url.startsWith('https://')) {
-          imageUrl = `${section.image_url}?v=${timestamp}`
-        } else if (section.image_url.startsWith('/')) {
-          imageUrl = `https://sdev.apratifoods.asia${section.image_url}?v=${timestamp}`
-        } else {
-          imageUrl = `https://sdev.apratifoods.asia/${section.image_url}?v=${timestamp}`
+      const config = useRuntimeConfig()
+      const apiBaseUrl = config.public.apiBaseUrl
+      
+      sections.value = data.map(section => {
+        let imageUrl = placeholderImage
+        
+        if (section.image) {
+          if (section.image.startsWith('http')) {
+            imageUrl = section.image
+          } else {
+            imageUrl = `${apiBaseUrl}${section.image}`
+          }
         }
-      }
-      
-      console.log('  - Section:', section.title)
-      console.log('    API image_url:', section.image_url)
-      console.log('    Final URL:', imageUrl)
-      
-      return {
-        ...section,
-        image_url: imageUrl
-      }
-    })
+        
+        return {
+          ...section,
+          image_url: imageUrl
+        }
+      })
+    }
   } catch (error) {
     console.error('Error loading sections:', error)
     sections.value = []
@@ -463,84 +439,54 @@ const handleImageChange = (event) => {
 const submitForm = async () => {
   submitting.value = true
   try {
-    const token = getAuthToken()
-    console.log('Using auth token:', token ? 'Token present' : 'No token')
-    
     const formData = new FormData()
     formData.append('title', form.title)
     formData.append('description', form.description)
     formData.append('is_active', form.is_active ? '1' : '0')
-    formData.append('sort_order', form.sort_order.toString())
-    
-    // For PUT requests, add method override
-    if (editingSection.value) {
-      formData.append('_method', 'PUT')
-    }
+    // No sort_order in our model yet, but keeping for compatibility
     
     if (form.image) {
-      formData.append('image', form.image)
-    }
-
-    const url = editingSection.value 
-      ? `https://sdev.apratifoods.asia/api/admin/information-sections/${editingSection.value.id}`
-      : 'https://sdev.apratifoods.asia/api/admin/information-sections'
-    
-    // Always use POST when sending FormData, Laravel will handle the _method override
-    const method = 'POST'
-
-    console.log('Making API request to:', url, 'with method:', method)
-    console.log('FormData contents:')
-    for (let [key, value] of formData.entries()) {
-      console.log(key, ':', value)
-    }
-
-    const response = await fetch(url, {
-      method: method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      },
-      body: formData
-    })
-
-    console.log('Response status:', response.status)
-    const data = await response.json()
-    console.log('Response data:', data)
-    
-    if (data.success) {
-      console.log('✓ Section saved successfully!')
-      if (data.data?.image_url) {
-        console.log('✓ New image URL:', data.data.image_url)
-      }
+      // If image is selected, we should upload it first or send as multipart
+      // Our implementation plan says InformationSectionController@store accepts image as string URL
+      // So we upload it first
+      const imageFormData = new FormData()
+      imageFormData.append('image', form.image)
+      const uploadResponse = await api.informationSections.uploadImage(imageFormData)
       
-      // Save the editing state before closing modal
-      const wasEditing = !!editingSection.value
-      const sectionTitle = editingSection.value?.title || form.title
-      
-      // Close modal
-      closeModal()
-      
-      // Force reload sections with fresh data - longer delay for image processing
-      setTimeout(async () => {
-        await loadSections()
-        const message = wasEditing 
-          ? `✓ "${sectionTitle}" updated successfully! ${form.image ? 'New image has been saved.' : ''}` 
-          : '✓ Section created successfully!'
-        alert(message)
-      }, 500)
-    } else {
-      console.error('Error saving section:', data.message)
-      if (data.errors) {
-        console.error('Validation errors:', data.errors)
-        const errorMessages = Object.values(data.errors).flat().join('\n')
-        alert(`Error: ${data.message}\n\nDetails:\n${errorMessages}`)
+      if (uploadResponse.success) {
+        formData.set('image', uploadResponse.url)
       } else {
-        alert(`Error: ${data.message}`)
+        throw new Error(uploadResponse.error || 'Image upload failed')
       }
+    } else if (editingSection.value && editingSection.value.image) {
+      formData.append('image', editingSection.value.image)
+    }
+
+    // Convert FormData to object for JSON request if not using multipart for main request
+    const payload = {
+      title: form.title,
+      description: form.description,
+      is_active: form.is_active,
+      image: formData.get('image')
+    }
+
+    let response
+    if (editingSection.value) {
+      response = await api.informationSections.update(editingSection.value.id, payload)
+    } else {
+      response = await api.informationSections.create(payload)
+    }
+    
+    if (response.success) {
+      closeModal()
+      loadSections()
+      alert(editingSection.value ? 'Section updated successfully!' : 'Section created successfully!')
+    } else {
+      alert(`Error: ${response.error}`)
     }
   } catch (error) {
     console.error('Error saving section:', error)
-    // Handle error
+    alert(`Error: ${error.message}`)
   } finally {
     submitting.value = false
   }
@@ -550,33 +496,19 @@ const editSection = (section) => {
   editingSection.value = section
   form.title = section.title
   form.description = section.description
-  form.is_active = section.is_active
-  form.sort_order = section.sort_order
+  form.is_active = !!section.is_active
   form.image = null
-  
-  // Set image preview with cache busting to ensure fresh load
-  const timestamp = new Date().getTime()
-  const baseUrl = section.image_url && !section.image_url.startsWith('data:') ? section.image_url.split('?')[0] : placeholderImage
-  imagePreview.value = baseUrl.startsWith('data:') ? baseUrl : `${baseUrl}?v=${timestamp}`
-  console.log('Editing section:', section.title, 'Image preview:', imagePreview.value.substring(0, 100))
-  
+  imagePreview.value = section.image_url
   showEditModal.value = true
 }
 
 const toggleStatus = async (section) => {
   try {
-    const response = await fetch(`https://sdev.apratifoods.asia/api/admin/information-sections/${section.id}/toggle-status`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+    const payload = { ...section, is_active: !section.is_active }
+    const response = await api.informationSections.update(section.id, payload)
     
-    const data = await response.json()
-    if (data.success) {
-      await loadSections()
+    if (response.success) {
+      loadSections()
     }
   } catch (error) {
     console.error('Error toggling status:', error)
@@ -586,17 +518,9 @@ const toggleStatus = async (section) => {
 const deleteSection = async (section) => {
   if (confirm(`Are you sure you want to delete "${section.title}"?`)) {
     try {
-      const response = await fetch(`https://sdev.apratifoods.asia/api/admin/information-sections/${section.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${getAuthToken()}`,
-          'Accept': 'application/json'
-        }
-      })
-      
-      const data = await response.json()
-      if (data.success) {
-        await loadSections()
+      const response = await api.informationSections.delete(section.id)
+      if (response.success) {
+        loadSections()
       }
     } catch (error) {
       console.error('Error deleting section:', error)
@@ -621,22 +545,17 @@ const closeModal = () => {
   }
 }
 
-const handleImageError = (event) => {
-  event.target.src = placeholderImage
-}
-
 const truncateText = (text, length) => {
+  if (!text) return ''
   return text.length > length ? text.substring(0, length) + '...' : text
 }
 
 const formatDate = (dateString) => {
+  if (!dateString) return 'N/A'
   return new Date(dateString).toLocaleDateString()
 }
 
-// Load sections on mount (client-side only)
 onMounted(() => {
-  if (process.client) {
-    loadSections()
-  }
+  loadSections()
 })
 </script>

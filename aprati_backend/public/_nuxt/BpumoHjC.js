@@ -1,1 +1,0 @@
-import{R as a}from"./C2K1_IMN.js";const r=a("/images/Orange Charactor.png"),t=a("/images/Guava Charactor.png"),o=a("/images/Plum CHARACTER.png"),p=a("/images/Pineapple Character copy.png"),i=a("/images/Tamarin Character.png");export{r as _,t as a,o as b,p as c,i as d};

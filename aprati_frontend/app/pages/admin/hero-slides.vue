@@ -1,4 +1,4 @@
-<template>
+   <template>
   <div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-gray-50 py-6">
     <!-- Header -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -320,20 +320,13 @@ onMounted(() => {
 const fetchSlides = async () => {
     loading.value = true
     try {
-        const token = useCookie('auth-token').value
-        const response = await fetch(`${config.public.apiBase}/admin/hero-slides`, {
-             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json'
-            }
-        })
-        const data = await response.json()
-        if (data.success) {
-            slides.value = data.data
+        const response = await useApi().heroSlides.adminGetAll()
+        if (response.success) {
+            slides.value = response.data
         }
     } catch (e) {
         console.error('Failed to fetch slides', e)
-        alert('Failed to load slides. Please refer to console for details.')
+        // Removed alert to prevent loops being annoying, useApi logs errors
     } finally {
         loading.value = false
     }
@@ -391,7 +384,6 @@ const resetForm = () => {
 const saveSlide = async () => {
     processing.value = true
     try {
-        const token = useCookie('auth-token').value
         const formData = new FormData()
         
         // Append simple fields
@@ -409,38 +401,25 @@ const saveSlide = async () => {
             formData.append('image', form.value.image)
         }
 
-        let url = `${config.public.apiBase}/admin/hero-slides`
-        let method = 'POST'
-
+        let response;
         if (isEditing.value && form.value.id) {
-            url = `${config.public.apiBase}/admin/hero-slides/${form.value.id}`
-            // Laravel requires _method=PUT for processing FormData with files in PUT requests
-            formData.append('_method', 'PUT') 
+             formData.append('_method', 'PUT') 
+             response = await useApi().heroSlides.update(form.value.id, formData)
+        } else {
+             response = await useApi().heroSlides.create(formData)
         }
-
-        const response = await fetch(url, {
-            method: 'POST', // Always POST when sending FormData with potential files, even for updates (due to Laravel quirks)
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                // 'Content-Type': 'multipart/form-data' // Browser sets this automatically with boundary
-            },
-            body: formData
-        })
         
-        const data = await response.json()
-        
-        if (data.success) {
+        if (response.success) {
             closeModal()
             fetchSlides() // Refresh list
             alert(isEditing.value ? 'Slide updated successfully' : 'Slide created successfully')
         } else {
-            console.error('Server Error:', data)
-            let errorMsg = data.message || 'Unknown error occurred';
-            if (data.errors) {
-                // Collect validation errors
-                const details = Object.values(data.errors).flat().join('\n');
+             console.error('Server Error:', response)
+             let errorMsg = response.error || 'Unknown error occurred';
+             if (response.errors) {
+                const details = Object.values(response.errors).flat().join('\n');
                 errorMsg += '\n\nDETAILS:\n' + details;
-            }
+             }
              alert('Error: ' + errorMsg)
         }
 
@@ -456,19 +435,11 @@ const deleteSlide = async (slide) => {
     if(!confirm('Are you sure you want to delete this slide?')) return
 
     try {
-        const token = useCookie('auth-token').value
-        const response = await fetch(`${config.public.apiBase}/admin/hero-slides/${slide.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json'
-            }
-        })
-        const data = await response.json()
-        if (data.success) {
+        const response = await useApi().heroSlides.delete(slide.id)
+        if (response.success) {
             fetchSlides()
         } else {
-            alert('Failed to delete: ' + data.message)
+            alert('Failed to delete: ' + response.error)
         }
     } catch (e) {
         console.error('Delete failed', e)
@@ -477,16 +448,8 @@ const deleteSlide = async (slide) => {
 
 const toggleActive = async (slide) => {
     try {
-        const token = useCookie('auth-token').value
-        const response = await fetch(`${config.public.apiBase}/admin/hero-slides/${slide.id}/toggle-active`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json'
-            }
-        })
-        const data = await response.json()
-        if(data.success) {
+        const response = await useApi().heroSlides.toggleActive(slide.id)
+        if(response.success) {
              // Optimistic update or refetch
              slide.is_active = !slide.is_active
         }
@@ -516,11 +479,11 @@ const removeImage = () => {
 }
 
 const handleImageError = (e) => {
-    e.target.src = '/images/placeholder-slide.jpg' // Or a suitable default
+    e.target.src = '/images/placeholder-slide.svg' // Or a suitable default
 }
 
 const getFormattedImageUrl = (slide) => {
-    if (!slide || !slide.image_url) return '/images/placeholder-slide.jpg'
+    if (!slide || !slide.image_url) return '/images/placeholder-slide.svg'
     if (slide.image_url.startsWith('http')) return slide.image_url
     // Assuming backend returns relative path, prepend base url if needed, 
     // but the Model we viewed has 'formatted_image_url' attribute which handles this!

@@ -271,7 +271,7 @@
 <script setup>
 const runtimeConfig = useRuntimeConfig()
 
-const brands = ref([])
+const brands = useState('brands-list', () => [])
 const loading = ref(true)
 const error = ref(null)
 
@@ -314,6 +314,12 @@ const handleCoverError = (event, brand) => {
 
 // Load brands from API using public endpoint
 const loadBrands = async () => {
+  // If we already have brands, don't fetch again
+  if (brands.value && brands.value.length > 0) {
+    loading.value = false
+    return
+  }
+
   try {
     loading.value = true
     error.value = null
@@ -382,13 +388,22 @@ const getImageUrl = (imagePath) => {
   // If it's already a full URL, return as is
   if (imagePath.startsWith('http')) return imagePath
   
+  const baseUrl = (runtimeConfig.public.apiBaseUrl || 'https://sdev.apratifoods.asia').replace(/\/$/, '')
+
+  // Local frontend assets
+  if (imagePath.startsWith('/images/')) {
+    return imagePath
+  }
+  
   // If it starts with /storage/, it's already an absolute path, just add backend URL
   if (imagePath.startsWith('/storage/')) {
-    return `${runtimeConfig.public.apiBaseUrl}${imagePath}`
+    return `${baseUrl}${imagePath}`
+  } else if (imagePath.startsWith('storage/')) {
+    return `${baseUrl}/${imagePath}`
   }
   
   // If it's a relative path, prepend the Laravel backend URL with storage prefix
-  return `${runtimeConfig.public.apiBaseUrl}/storage/${imagePath}`
+  return `${baseUrl}/storage/${imagePath}`
 }
 
 // Load brands on component mount

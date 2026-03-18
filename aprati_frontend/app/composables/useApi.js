@@ -1,7 +1,7 @@
 export const useApi = () => {
   // Use runtime config for API base - respects proxy in development
   const runtimeConfig = useRuntimeConfig()
-  const apiBase = 'https://sdev.apratifoods.asia/api'
+  const apiBase = runtimeConfig.public.apiBase || 'https://sdev.apratifoods.asia/api'
 
   // Get auth token (check both localStorage and cookies)
   const getAuthToken = (silent = false) => {
@@ -77,7 +77,8 @@ export const useApi = () => {
       const fetchOptions = {
         ...options,
         headers,
-        method: options.method || 'GET'
+        method: options.method || 'GET',
+        timeout: options.timeout || 15000 // Default 15 second timeout for single-threaded artisan serve
       }
 
       // Only add body if it exists
@@ -90,9 +91,9 @@ export const useApi = () => {
 
       // Handle Laravel API response format
       if (response.success === true) {
-        return { success: true, data: response.data, message: response.message }
+        return { ...response }
       } else if (response.success === false) {
-        return { success: false, error: response.message, errors: response.errors }
+        return { ...response, error: response.message || response.error }
       }
 
       // Legacy Laravel format check
@@ -517,6 +518,28 @@ export const useApi = () => {
     }
   }
 
+  // About Content API
+  const aboutContent = {
+    getAll: () => request('/about-contents'),
+    adminGetAll: () => request('/admin/about-contents'),
+    get: (id) => request(`/admin/about-contents/${id}`),
+    create: (data) => request('/admin/about-contents', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+    update: (id, data) => request(`/admin/about-contents/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+    delete: (id) => request(`/admin/about-contents/${id}`, {
+      method: 'DELETE'
+    }),
+    uploadImage: (formData) => request('/admin/about-contents/upload-image', {
+      method: 'POST',
+      body: formData
+    })
+  }
+
   // Management Posts API
   const managementPosts = {
     // Get all posts (public endpoint)
@@ -557,38 +580,34 @@ export const useApi = () => {
     })
   }
 
-  // About Content API
-  const aboutContent = {
-    // Public endpoints
-    getAll: () => request('/about-content'),
-    getByKey: (key) => request(`/about-content/${key}`),
+  // Visitors/Analytics API methods
+  const visitors = {
+    getStats: () => request('/admin/visitors/stats'),
+    getAnalytics: () => request('/admin/visitors/analytics')
+  }
 
-    // Admin endpoints
-    adminGetAll: () => request('/admin/about-contents'),
-    create: (data) => request('/admin/about-contents', {
+  // Information Sections API
+  const informationSections = {
+    getAll: () => request('/information-sections'),
+    adminGetAll: () => request('/admin/information-sections'),
+    get: (id) => request(`/admin/information-sections/${id}`),
+    create: (data) => request('/admin/information-sections', {
       method: 'POST',
       body: JSON.stringify(data)
     }),
-    get: (id) => request(`/admin/about-contents/${id}`),
-    update: (id, data) => request(`/admin/about-contents/${id}`, {
+    update: (id, data) => request(`/admin/information-sections/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data)
     }),
-    delete: (id) => request(`/admin/about-contents/${id}`, {
+    delete: (id) => request(`/admin/information-sections/${id}`, {
       method: 'DELETE'
     }),
-    initializeDefaults: () => request('/admin/about-contents/initialize-defaults', {
-      method: 'POST'
-    }),
-
-    // Upload image for about content
-    uploadImage: (contentId, formData, options = {}) => request(`/admin/about-contents/${contentId}/upload-image`, {
+    uploadImage: (formData) => request('/admin/information-sections/upload-image', {
       method: 'POST',
-      body: formData,
-      // Don't set headers - let the request function handle auth headers and Content-Type
-      ...options
+      body: formData
     })
   }
+
 
   // Privacy Content API
   const privacyContent = {
@@ -708,6 +727,37 @@ export const useApi = () => {
     getConfig: () => request('/favicon-settings')
   }
 
+  // Hero Slides API methods
+  const heroSlides = {
+    // Get all slides (public)
+    getAll: () => request('/hero-slides'),
+
+    // Get all slides (admin)
+    adminGetAll: () => request('/admin/hero-slides'),
+
+    // Create slide
+    create: (formData) => request('/admin/hero-slides', {
+      method: 'POST',
+      body: formData
+    }),
+
+    // Update slide
+    update: (id, formData) => request(`/admin/hero-slides/${id}`, {
+      method: 'POST', // Use POST for FormData updates in Laravel
+      body: formData
+    }),
+
+    // Delete slide
+    delete: (id) => request(`/admin/hero-slides/${id}`, {
+      method: 'DELETE'
+    }),
+
+    // Toggle active status
+    toggleActive: (id) => request(`/admin/hero-slides/${id}/toggle-active`, {
+      method: 'POST'
+    })
+  }
+
   return {
     // Auth methods
     getAuthToken,
@@ -723,9 +773,12 @@ export const useApi = () => {
     careers,
     jobApplications,
     managementPosts,
-    aboutContent,
     privacyContent,
+    aboutContent,
+    informationSections,
     favicon,
+    heroSlides,
+    visitors,
     utils
   }
 }

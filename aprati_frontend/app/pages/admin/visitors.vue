@@ -272,16 +272,6 @@ const popularPages = ref([])
 const recentVisitors = ref([])
 
 // Methods
-const getAuthToken = () => {
-  const token = useCookie('auth-token')
-  return token.value || ''
-}
-
-const getHeaders = () => ({
-  'Accept': 'application/json',
-  'Authorization': `Bearer ${getAuthToken()}`
-})
-
 const refreshData = async () => {
   try {
     loading.value = true
@@ -295,41 +285,35 @@ const refreshData = async () => {
 
 const loadAnalyticsData = async () => {
   if (process.server) return
-  const token = useCookie('auth-token').value
-  if (!token) {
-    console.warn('No auth token found')
-    return
-  }
+  
+  const api = useApi()
   try {
-    const headers = getHeaders()
-    
-    // Load analytics data in parallel
-    const [statsResponse, analyticsResponse] = await Promise.allSettled([
-      fetch('https://sdev.apratifoods.asia/api/admin/visitors/stats', { headers }),
-      fetch('https://sdev.apratifoods.asia/api/admin/visitors/analytics', { headers })
+    // Load analytics data in parallel using useApi
+    const [statsResult, analyticsResult] = await Promise.allSettled([
+      api.visitors.getStats(),
+      api.visitors.getAnalytics()
     ])
 
     // Process stats
-    if (statsResponse.status === 'fulfilled' && statsResponse.value.ok) {
-      const data = await statsResponse.value.json()
-      if (data.status === 'success') {
-        stats.value = data.data
-      }
+    if (statsResult.status === 'fulfilled' && statsResult.value.success) {
+      stats.value = statsResult.value.data
+    } else if (statsResult.status === 'rejected') {
+      console.error('Stats fetch rejected:', statsResult.reason)
     }
 
     // Process analytics
-    if (analyticsResponse.status === 'fulfilled' && analyticsResponse.value.ok) {
-      const data = await analyticsResponse.value.json()
-      if (data.status === 'success') {
-        deviceStats.value = data.data.device_stats || []
-        browserStats.value = data.data.browser_stats || []
-        popularPages.value = data.data.popular_pages || []
-        recentVisitors.value = data.data.recent_visitors || []
-      }
+    if (analyticsResult.status === 'fulfilled' && analyticsResult.value.success) {
+      const data = analyticsResult.value.data
+      deviceStats.value = data.device_stats || []
+      browserStats.value = data.browser_stats || []
+      popularPages.value = data.popular_pages || []
+      recentVisitors.value = data.recent_visitors || []
+    } else if (analyticsResult.status === 'rejected') {
+      console.error('Analytics fetch rejected:', analyticsResult.reason)
     }
 
   } catch (error) {
-    console.error('Error loading analytics data:', error)
+    console.error('Error in loadAnalyticsData:', error)
   }
 }
 

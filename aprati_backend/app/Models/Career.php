@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Career extends Model
 {
@@ -21,44 +21,4 @@ class Career extends Model
         'department',
         'status'
     ];
-
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    public function scopeByDepartment($query, $department)
-    {
-        return $query->where('department', $department);
-    }
-
-    /**
-     * Get the job applications for this career.
-     */
-    public function applications()
-    {
-        return $this->hasMany(JobApplication::class, 'career_id');
-    }
-
-    /**
-     * Get pending applications for this career.
-     */
-    public function pendingApplications()
-    {
-        return $this->hasMany(JobApplication::class, 'career_id')->where('status', 'pending');
-    }
-
-    /**
-     * Get recent applications (last 7 days) for this career.
-     */
-    public function recentApplications()
-    {
-        return $this->hasMany(JobApplication::class, 'career_id')
-                    ->where('created_at', '>=', now()->subDays(7));
-    }
 }

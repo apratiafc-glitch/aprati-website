@@ -47,8 +47,8 @@
             <div class="relative">
               <div class="relative transition-all duration-300 group-hover:scale-105">
                 <img 
-                  v-if="adminProfileImage || headerSettings.branding?.header_logo"
-                  :src="adminProfileImage ? getProfileImageUrl(adminProfileImage) : getImageUrl(headerSettings.branding.header_logo)" 
+                  v-if="headerSettings.branding?.header_logo || adminProfileImage"
+                  :src="headerSettings.branding?.header_logo ? getImageUrl(headerSettings.branding.header_logo) : getProfileImageUrl(adminProfileImage)" 
                   alt="Aprati Foods" 
                   class="h-10 sm:h-14 md:h-16 lg:h-20 w-auto transition-all duration-300"
                   loading="eager"
@@ -57,7 +57,7 @@
                 >
                 <img 
                   v-else
-                  src="/images/logo-white.png" 
+                  src="/images/Company%20Logo-01.png" 
                   alt="Aprati Foods" 
                   class="h-10 sm:h-14 md:h-16 lg:h-20 w-auto transition-all duration-300"
                   loading="eager"
@@ -301,10 +301,10 @@ const mobileMenuOpen = ref(false)
 const mobileBrandsOpen = ref(false)
 const desktopBrandsOpen = ref(false)
 const searchQuery = ref('')
-const brands = ref([])
-const brandsLoading = ref(true)
-const headerSettings = ref({})
-const adminProfileImage = ref(null)
+const brands = useState('brands-list', () => [])
+const brandsLoading = ref(false)
+const headerSettings = useState('header-settings', () => ({}))
+const adminProfileImage = useState('admin-profile-image', () => null)
 const isScrolled = ref(false)
 const isSearchOpen = ref(false)
 const searchInputRef = ref(null)
@@ -326,10 +326,12 @@ const toggleSearch = () => {
 
 // Load header settings from API
 const loadHeaderSettings = async () => {
+  if (Object.keys(headerSettings.value).length > 0) return
+
   try {
     const api = useApi()
     const response = await api.request('/header-settings', {
-      timeout: 3000 // 3 second timeout
+      timeout: 10000 // Increased timeout for single-threaded artisan serve
     })
     
     if ((response.success && response.data) || (response.status === 'success' && response.data)) {
@@ -345,16 +347,20 @@ const loadHeaderSettings = async () => {
 
 // Load brands from API
 const loadBrands = async () => {
+  // If we already have brands, don't fetch again
+  if (brands.value && brands.value.length > 0) {
+    brandsLoading.value = false
+    return
+  }
+
   try {
     brandsLoading.value = true
     const api = useApi()
     const response = await api.request('/brands', {
-      timeout: 3000 // 3 second timeout
+      timeout: 10000 // Increased timeout for single-threaded artisan serve
     })
     
-    if (response.success && response.data && response.data.brands) {
-      brands.value = response.data.brands.filter(brand => brand.is_active)
-    } else if (response.status === 'success' && response.data && response.data.brands) {
+    if ((response.success && response.data?.brands) || (response.status === 'success' && response.data?.brands)) {
       brands.value = response.data.brands.filter(brand => brand.is_active)
     } else {
       brands.value = []
@@ -380,12 +386,20 @@ const getBrandColorClass = (slug) => {
 
 // Helper function to get image URL
 const getImageUrl = (imagePath) => {
-  if (!imagePath) return '/images/logo-white.png' // Default fallback
+  if (!imagePath) return '/images/Company Logo-01.png' // Default fallback
+  if (imagePath.startsWith('data:')) return imagePath
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath
-  const runtimeConfig = useRuntimeConfig()
-  const baseUrl = runtimeConfig.public.apiBaseUrl || 'https://sdev.apratifoods.asia'
   
-  if (imagePath.startsWith('/images/') || imagePath.startsWith('/storage/')) {
+  const runtimeConfig = useRuntimeConfig()
+  const baseUrl = runtimeConfig.public.apiBaseUrl || 'https://sdev.apratifoods.asia'.replace(/\/$/, '')
+  
+  // Local frontend assets
+  if (imagePath.startsWith('/images/')) {
+    return imagePath
+  }
+  
+  // Backend storage assets
+  if (imagePath.startsWith('/storage/')) {
     return `${baseUrl}${imagePath}`
   } else if (imagePath.startsWith('storage/')) {
     return `${baseUrl}/${imagePath}`
@@ -396,11 +410,8 @@ const getImageUrl = (imagePath) => {
 
 // Helper function for profile images
 const getProfileImageUrl = (imagePath) => {
-  if (!imagePath) return '/images/logo-white.png' // Default fallback
-  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath
-  const runtimeConfig = useRuntimeConfig()
-  const baseUrl = runtimeConfig.public.apiBaseUrl || 'https://sdev.apratifoods.asia'
-  return imagePath.startsWith('/storage/') ? `${baseUrl}${imagePath}` : `${baseUrl}/storage/${imagePath}`
+  if (!imagePath) return 'https://ui-avatars.com/api/?name=Admin' 
+  return getImageUrl(imagePath)
 }
 
 // Load admin profile image for logo

@@ -237,7 +237,24 @@
             </div>
           </NuxtLink>
 
+          <!-- Hero Slides -->
           <NuxtLink 
+            to="/admin/hero-slides" 
+            class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <div class="p-2 bg-blue-100 rounded-lg mr-4">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900">Hero Slides</h3>
+              <p class="text-sm text-gray-600">Manage homepage slider images</p>
+            </div>
+          </NuxtLink>
+
+          <!-- Hero Content - Removed as requested -->
+          <!-- <NuxtLink 
             to="/admin/hero-content" 
             class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
@@ -250,22 +267,8 @@
               <h3 class="font-semibold text-gray-900">Hero Content</h3>
               <p class="text-sm text-gray-600">Manage homepage hero text and buttons</p>
             </div>
-          </NuxtLink>
+          </NuxtLink> -->
 
-          <NuxtLink 
-            to="/admin/hero-images" 
-            class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <div class="p-2 bg-orange-100 rounded-lg mr-4">
-              <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-gray-900">Hero Images</h3>
-              <p class="text-sm text-gray-600">Manage homepage hero image</p>
-            </div>
-          </NuxtLink>
 
           <NuxtLink 
             to="/admin/promotion-banners" 
@@ -375,20 +378,6 @@
             </div>
           </NuxtLink>
 
-          <NuxtLink 
-            to="/admin/about-content" 
-            class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <div class="p-2 bg-purple-100 rounded-lg mr-4">
-              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-gray-900">Manage About</h3>
-              <p class="text-sm text-gray-600">Manage about page content and sections</p>
-            </div>
-          </NuxtLink>
 
           <NuxtLink 
             to="/admin/privacy" 
@@ -466,55 +455,29 @@ const recentActivity = ref([])
 
 // Add function to load recent activity
 const loadRecentActivity = async () => {
+  const { request } = useApi()
+  
   try {
-    const getAuthToken = () => {
-      const token = useCookie('auth-token')
-      return token.value || ''
-    }
-
-    const headers = {
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${getAuthToken()}`
-    }
-
-    // Try to load recent activity from your API
-    // For now, we'll use sample data but you can replace this with actual API calls
-    const response = await fetch('https://sdev.apratifoods.asia/api/admin/recent-activity', { headers })
+    // Try to load recent activity from API
+    // request() automatically handles base URL and auth tokens
+    const response = await request('/admin/recent-activity')
     
-    if (response.ok) {
-      const data = await response.json()
-      recentActivity.value = data.data || []
+    // Check if response was successful
+    if (response.success && response.data) {
+      if (response.data.length > 0) {
+        recentActivity.value = response.data
+      } else {
+         // Fallback to sample data for display if empty
+         recentActivity.value = [
+            { id: 1, action: 'System initialized', time: new Date().toLocaleString(), type: 'system' }
+         ]
+      }
     } else {
-      // Fallback to sample data if API doesn't exist yet
-      recentActivity.value = [
-        { 
-          id: 1, 
-          action: 'New management post created', 
-          time: new Date(Date.now() - 2 * 60 * 60 * 1000).toLocaleString(),
-          type: 'management'
-        },
-        { 
-          id: 2, 
-          action: 'Information section updated', 
-          time: new Date(Date.now() - 4 * 60 * 60 * 1000).toLocaleString(),
-          type: 'information'
-        },
-        { 
-          id: 3, 
-          action: 'New job application received', 
-          time: new Date(Date.now() - 6 * 60 * 60 * 1000).toLocaleString(),
-          type: 'application'
-        },
-        { 
-          id: 4, 
-          action: 'Brand logo updated', 
-          time: new Date(Date.now() - 24 * 60 * 60 * 1000).toLocaleString(),
-          type: 'brand'
-        },
-      ]
+      // Fallback to sample data if API fails or returns error
+      throw new Error('API request failed')
     }
   } catch (error) {
-    console.error('Error loading recent activity:', error)
+    console.warn('Error loading recent activity (using fallback):', error.message)
     // Use sample data on error
     recentActivity.value = [
       { 
@@ -580,22 +543,9 @@ const loadDashboardData = async () => {
   
   console.log('Loading dashboard data...')
   
-  const getAuthToken = () => {
-    const token = useCookie('auth-token')
-    return token.value || ''
-  }
-  
-  const token = getAuthToken()
-  if (!token) {
-    console.warn('No auth token found')
-    return
-  }
+  // Use useApi composable
+  const { request } = useApi()
 
-  const headers = {
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${token}`
-  }
-  
   try {
     // Load all data in parallel
     const [
@@ -609,92 +559,87 @@ const loadDashboardData = async () => {
       visitorsResponse
     ] = await Promise.allSettled([
       // Information sections count
-      fetch('https://sdev.apratifoods.asia/api/admin/information-sections', { headers }),
+      request('/admin/information-sections'),
       // Promotion banners count
-      fetch('https://sdev.apratifoods.asia/api/admin/promotion-banners', { headers }),
+      request('/admin/promotion-banners'),
       // Management posts count
-      fetch('https://sdev.apratifoods.asia/api/admin/management-posts', { headers }),
+      request('/admin/management-posts'),
       // Brands count
-      fetch('https://sdev.apratifoods.asia/api/brands', { headers }),
-      // Products count
-      fetch('https://sdev.apratifoods.asia/api/products', { headers }),
+      request('/brands'),
+      // Products count (public endpoint)
+      request('/products'),
       // Users count
-      fetch('https://sdev.apratifoods.asia/api/users', { headers }),
+      request('/users'),
       // Job applications count
-      fetch('https://sdev.apratifoods.asia/api/admin/job-applications', { headers }),
+      request('/admin/job-applications'),
       // Visitors count
-      fetch('https://sdev.apratifoods.asia/api/admin/visitors/stats', { headers })
+      request('/admin/visitors/stats')
     ])
 
     // Process Information Sections
-    if (informationResponse.status === 'fulfilled' && informationResponse.value.ok) {
-      const data = await informationResponse.value.json()
-      stats.value.informationSections = data.data?.length || 0
+    if (informationResponse.status === 'fulfilled' && informationResponse.value.success) {
+      const data = informationResponse.value.data
+      stats.value.informationSections = Array.isArray(data) ? data.length : 0
     }
 
     // Process Promotion Banners
-    if (promotionResponse.status === 'fulfilled' && promotionResponse.value.ok) {
-      const data = await promotionResponse.value.json()
-      stats.value.promotionBanners = data.data?.length || 0
+    if (promotionResponse.status === 'fulfilled' && promotionResponse.value.success) {
+      const data = promotionResponse.value.data
+      stats.value.promotionBanners = Array.isArray(data) ? data.length : 0
     }
 
     // Process Management Posts
-    if (managementResponse.status === 'fulfilled' && managementResponse.value.ok) {
-      const data = await managementResponse.value.json()
-      stats.value.managementPosts = data.data?.length || 0
+    if (managementResponse.status === 'fulfilled' && managementResponse.value.success) {
+      const data = managementResponse.value.data
+      stats.value.managementPosts = Array.isArray(data) ? data.length : 0
     }
 
     // Process Brands
-    if (brandsResponse.status === 'fulfilled' && brandsResponse.value.ok) {
-      const data = await brandsResponse.value.json()
-      if (data.status === 'success' && data.data?.brands) {
-        stats.value.totalBrands = data.data.brands.length
+    if (brandsResponse.status === 'fulfilled' && brandsResponse.value.success) {
+      const data = brandsResponse.value.data
+      if (data && data.brands) {
+        stats.value.totalBrands = data.brands.length
+      } else if (Array.isArray(data)) {
+         stats.value.totalBrands = data.length
       }
     }
 
     // Process Products
-    if (productsResponse.status === 'fulfilled' && productsResponse.value.ok) {
-      const data = await productsResponse.value.json()
-      if (data.status === 'success' && data.data?.products) {
-        // Handle both paginated and direct array responses
-        if (data.data.products.data) {
-          stats.value.totalProducts = data.data.products.total || data.data.products.data.length
-        } else if (Array.isArray(data.data.products)) {
-          stats.value.totalProducts = data.data.products.length
-        }
+    if (productsResponse.status === 'fulfilled' && productsResponse.value.success) {
+      const data = productsResponse.value.data
+      // Pagination response has .data property for items
+      if (data && data.data && Array.isArray(data.data)) {
+        stats.value.totalProducts = data.total || data.data.length
+      } else if (Array.isArray(data)) {
+        stats.value.totalProducts = data.length
       }
     }
 
     // Process Users
-    if (usersResponse.status === 'fulfilled' && usersResponse.value.ok) {
-      const data = await usersResponse.value.json()
-      if (data.status === 'success' && data.data) {
-        // Handle paginated response
-        if (data.data.users && data.data.users.data) {
-          stats.value.totalUsers = data.data.users.total || data.data.users.data.length
-        } else if (data.data.users) {
-          stats.value.totalUsers = Array.isArray(data.data.users) ? data.data.users.length : data.data.users.total || 0
-        } else {
-          stats.value.totalUsers = Array.isArray(data.data) ? data.data.length : (data.data.total || 0)
-        }
+    if (usersResponse.status === 'fulfilled' && usersResponse.value.success) {
+      const data = usersResponse.value.data
+      if (Array.isArray(data)) {
+         stats.value.totalUsers = data.length
+      } else if (data && data.data && Array.isArray(data.data)) {
+         stats.value.totalUsers = data.total || data.data.length
       }
     }
 
     // Process Job Applications
-    if (applicationsResponse.status === 'fulfilled' && applicationsResponse.value.ok) {
-      const data = await applicationsResponse.value.json()
-      if (data.status === 'success' && data.data) {
-        stats.value.jobApplications = Array.isArray(data.data) ? data.data.length : (data.data.total || 0)
+    if (applicationsResponse.status === 'fulfilled' && applicationsResponse.value.success) {
+      const data = applicationsResponse.value.data
+      if (Array.isArray(data)) {
+        stats.value.jobApplications = data.length
+      } else if (data && data.data) {
+        stats.value.jobApplications = data.total || data.data.length
       }
     }
 
     // Process Visitors
-    if (visitorsResponse.status === 'fulfilled' && visitorsResponse.value.ok) {
-      const data = await visitorsResponse.value.json()
-      if (data.status === 'success' && data.data) {
-        stats.value.totalVisitors = data.data.total_visitors || 0
-        stats.value.todayVisitors = data.data.today_visitors || 0
-      }
+    if (visitorsResponse.status === 'fulfilled' && visitorsResponse.value.success) {
+      const data = visitorsResponse.value.data
+      stats.value.totalVisitors = data.total_visitors || 0
+      stats.value.todayVisitors = data.today_visitors || 0
     }
 
     console.log('Dashboard stats updated:', stats.value)

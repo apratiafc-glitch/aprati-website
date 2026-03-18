@@ -341,6 +341,45 @@
               ></textarea>
             </div>
 
+            <!-- Image Upload -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-3">Profile Image</label>
+              <div class="space-y-4">
+                <div v-if="imagePreview || form.image" class="relative inline-block">
+                  <img 
+                    :src="imagePreview || (form.image.startsWith('http') ? form.image : `${useRuntimeConfig().public.apiBaseUrl}${form.image}`)" 
+                    class="w-32 h-32 object-cover rounded-2xl border-4 border-white shadow-lg"
+                  />
+                  <button 
+                    @click="removeImage"
+                    type="button"
+                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600 transition-colors"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+                <div 
+                  v-else
+                  @click="$refs.fileInput.click()"
+                  class="w-full h-32 border-2 border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
+                >
+                  <svg class="w-8 h-8 text-slate-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <span class="text-sm text-slate-500">Click to upload profile image</span>
+                </div>
+                <input 
+                  ref="fileInput"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  @change="handleImageUpload"
+                />
+              </div>
+            </div>
+
             <div class="flex items-center space-x-3 p-4 bg-slate-50 rounded-xl">
               <input 
                 v-model="form.is_active"
@@ -519,6 +558,7 @@ const editingPost = ref(null)
 const form = ref({
   name: '', // This will be the title
   description: '',
+  image: '',
   is_active: true
 })
 
@@ -580,6 +620,7 @@ const resetForm = () => {
   form.value = {
     name: '', // title
     description: '',
+    image: '',
     is_active: true
   }
   editingPost.value = null
@@ -606,6 +647,7 @@ const editPost = (post) => {
   form.value = {
     name: post.name,
     description: post.description,
+    image: post.image || '',
     is_active: post.is_active === 1
   }
   showViewModal.value = false
@@ -671,7 +713,7 @@ const uploadImage = async () => {
     
     const response = await postsApi.uploadImage(formData)
     if (response.success) {
-      return response.data.image_url
+      return response.url
     } else {
       throw new Error(response.error || 'Upload failed')
     }
@@ -704,7 +746,7 @@ const submitForm = async () => {
     if (selectedFile.value) {
       try {
         const imageUrl = await uploadImage()
-        form.value.image_url = imageUrl
+        form.value.image = imageUrl
       } catch (err) {
         alert('Failed to upload image: ' + err.message)
         return

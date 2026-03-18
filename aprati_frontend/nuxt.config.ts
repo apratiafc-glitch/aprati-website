@@ -44,8 +44,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Use direct API URL (CORS must be configured on backend)
-      apiBase: process.env.API_BASE_URL || 'https://sdev.apratifoods.asia/api',
-      apiBaseUrl: process.env.STORAGE_BASE_URL || 'https://sdev.apratifoods.asia',
+      apiBase: 'http://127.0.0.1:8000/api',
+      apiBaseUrl: 'http://127.0.0.1:8000',
       appName: 'Aprati Foods (Cambodia) Ltd'
     }
   },
@@ -73,7 +73,7 @@ export default defineNuxtConfig({
     // Maps /api/* -> https://sdev.apratifoods.asia/api/*
     devProxy: {
       '/api': {
-        target: 'https://sdev.apratifoods.asia',
+        target: 'http://127.0.0.1:8000',
         changeOrigin: true,
         secure: false
       }

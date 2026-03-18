@@ -1,4 +1,0 @@
-# Serve SVG as fallback for missing PNG images
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(default-product|default-brand)\.png$ $1.svg [L]

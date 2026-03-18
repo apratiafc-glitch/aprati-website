@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'storage/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
@@ -24,25 +24,15 @@ return [
         'http://localhost:3001',
         'http://127.0.0.1:3000',
         'http://127.0.0.1:3001',
-        'https://sdev.apratifoods.asia',
-        'https://apratifoods.asia',
-        'https://www.apratifoods.asia',
     ],
 
-    'allowed_origins_patterns' => [
-        // Allow subdomains in production
-        '/^https:\/\/([a-z0-9]+\.)?apratifoods\.asia$/',
-    ],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 
-    'exposed_headers' => [
-        'Authorization',
-        'X-CSRF-TOKEN',
-        'X-Requested-With',
-    ],
+    'exposed_headers' => [],
 
-    'max_age' => 86400, // 24 hours
+    'max_age' => 0,
 
     'supports_credentials' => true,
 

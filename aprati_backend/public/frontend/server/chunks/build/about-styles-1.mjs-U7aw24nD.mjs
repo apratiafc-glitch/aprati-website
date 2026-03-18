@@ -1,4 +1,0 @@
-const about_vue_vue_type_style_index_0_scoped_36074d81_lang = "@keyframes fadeIn-36074d81{0%{opacity:0}to{opacity:1}}@keyframes slideUp-36074d81{0%{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}.animate-fadeIn[data-v-36074d81]{animation:fadeIn-36074d81 .2s ease-out}.animate-slideUp[data-v-36074d81]{animation:slideUp-36074d81 .3s ease-out}.prose[data-v-36074d81]::-webkit-scrollbar{width:6px}.prose[data-v-36074d81]::-webkit-scrollbar-track{background:#f1f5f9;border-radius:3px}.prose[data-v-36074d81]::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}.prose[data-v-36074d81]::-webkit-scrollbar-thumb:hover{background:#94a3b8}";
-
-export { about_vue_vue_type_style_index_0_scoped_36074d81_lang as a };
-//# sourceMappingURL=about-styles-1.mjs-U7aw24nD.mjs.map

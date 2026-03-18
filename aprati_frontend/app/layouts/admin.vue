@@ -81,22 +81,6 @@
             <span>Products</span>
           </NuxtLink>
 
-          <!-- Hero Images -->
-          <NuxtLink 
-            to="/admin/hero-images" 
-            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200"
-            :class="$route.path.startsWith('/admin/hero-images') 
-              ? 'bg-gradient-to-r from-orange-600 to-orange-700 text-white shadow-lg shadow-orange-500/30 scale-105' 
-              : 'text-gray-700 hover:bg-orange-50 hover:text-orange-700 hover:scale-105'"
-          >
-            <div class="w-9 h-9 flex items-center justify-center rounded-lg mr-3 transition-all"
-              :class="$route.path.startsWith('/admin/hero-images') 
-                ? 'bg-white/20' 
-                : 'bg-gray-100 group-hover:bg-orange-100'">
-              <PhotoIcon class="w-5 h-5" />
-            </div>
-            <span>Hero Images</span>
-          </NuxtLink>
 
           <!-- Information Sections -->
           <NuxtLink 
@@ -115,22 +99,6 @@
             <span>Info Sections</span>
           </NuxtLink>
 
-          <!-- About Content -->
-          <NuxtLink 
-            to="/admin/about-content" 
-            class="group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200"
-            :class="$route.path.startsWith('/admin/about-content') 
-              ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-lg shadow-indigo-500/30 scale-105' 
-              : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 hover:scale-105'"
-          >
-            <div class="w-9 h-9 flex items-center justify-center rounded-lg mr-3 transition-all"
-              :class="$route.path.startsWith('/admin/about-content') 
-                ? 'bg-white/20' 
-                : 'bg-gray-100 group-hover:bg-indigo-100'">
-              <DocumentTextIcon class="w-5 h-5" />
-            </div>
-            <span>About Content</span>
-          </NuxtLink>
 
           <!-- Careers Section -->
           <div class="px-3 mt-6 mb-2">
@@ -232,8 +200,8 @@
               <span>Management Team</span>
             </NuxtLink>
 
-            <!-- Hero Content -->
-            <NuxtLink 
+            <!-- Hero Content - Removed as requested -->
+            <!-- <NuxtLink 
               to="/admin/hero-content" 
               class="group flex items-center px-3 py-2 text-xs font-medium rounded-lg hover:bg-yellow-50 transition-all duration-200 text-gray-700 hover:text-yellow-700"
             >
@@ -243,7 +211,7 @@
                 </svg>
               </div>
               <span>Hero Content</span>
-            </NuxtLink>
+            </NuxtLink> -->
             <!-- Hero Slides -->
             <NuxtLink 
               to="/admin/hero-slides" 
@@ -507,10 +475,8 @@ const getPageTitle = () => {
   const path = route.path
   if (path.includes('/brands')) return 'Brand Management'
   if (path.includes('/products')) return 'Product Management'
-  if (path.includes('/hero-images')) return 'Hero Image Management'
   if (path.includes('/hero-content')) return 'Hero Content'
   if (path.includes('/information-sections')) return 'Information Sections'
-  if (path.includes('/about-content')) return 'About Content'
   if (path.includes('/about')) return 'About Page'
   if (path.includes('/careers')) return 'Career Positions'
   if (path.includes('/job-applications')) return 'Job Applications'

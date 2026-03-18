@@ -838,12 +838,16 @@
 
                       <div v-if="selectedProduct.category" class="flex flex-col">
                         <span class="text-sm font-medium text-gray-500 mb-1">Category</span>
+                        <span class="text-sm text-gray-900 bg-white px-3 py-2 rounded-lg">
+                        {{ selectedProduct.category.name }}
+                        </span>
+                      </div>
+
+                      <div v-if="selectedProduct.variants && selectedProduct.variants.length > 0" class="flex flex-col sm:col-span-2">
+                        <span class="text-sm font-medium text-gray-500 mb-1">Available Flavors</span>
                         <div class="flex flex-wrap gap-2">
-                          <span 
-                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200"
-                            :style="{ backgroundColor: selectedProduct.category.color + '20', borderColor: selectedProduct.category.color, color: selectedProduct.category.color }"
-                          >
-                            {{ selectedProduct.category.name || 'Uncategorized' }}
+                          <span v-for="variant in selectedProduct.variants" :key="variant.id" class="text-sm text-gray-900 bg-white border border-gray-100 px-3 py-2 rounded-lg">
+                            {{ variant.name }}
                           </span>
                         </div>
                       </div>
@@ -935,7 +939,13 @@ const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
 
 // Get brand slug from route params safely - with SSR guard
-const slug = route?.params?.slug || ''
+// Get brand slug from route params safely - with SSR guard
+const slug = computed(() => {
+  const rawSlug = route?.params?.slug || ''
+  // Sanitize slug (remove () if present)
+  return typeof rawSlug === 'string' ? rawSlug.replace(/\(\)$/, '') : ''
+})
+
 
 // Check if user is admin - with SSR safety
 const isAdmin = computed(() => {
@@ -959,6 +969,24 @@ const selectedCategoryFilter = ref('')
 
 // Error page particles - generated client-side
 const errorParticles = ref([])
+
+// Error page fruits
+const errorFruits = ref([
+  { name: 'Grape', src: '/images/Grape Character.png' },
+  { name: 'Orange', src: '/images/Orange Charactor.png' },
+  { name: 'Pineapple', src: '/images/Pineapple Character copy.png' },
+  { name: 'Guava', src: '/images/Guava Charactor.png' },
+  { name: 'Tamarin', src: '/images/Tamarin Character.png' },
+  { name: 'Plum', src: '/images/Plum CHARACTER.png' }
+])
+
+// Featured products for error page
+const featuredProducts = ref([
+  { name: 'Grape Candy', brand: 'Aprati', image: '/images/Grape Character.png', link: '#' },
+  { name: 'Orange Candy', brand: 'Frutati', image: '/images/Orange Charactor.png', link: '#' },
+  { name: 'Milk Candy', brand: 'Mocati', image: '/images/Pineapple Character copy.png', link: '#' }
+])
+
 
 // Product modal data
 const showProductModal = ref(false)
@@ -1035,31 +1063,37 @@ const sortedCategories = computed(() => {
 
 // Load brand details using public API
 const loadBrand = async () => {
+  if (!slug.value) return
+
   try {
     loading.value = true
     error.value = null
     
-    if (!slug) {
-      error.value = 'Brand not found'
-      loading.value = false
-      return
-    }
-    
-    console.log(`Loading brand with slug: ${slug}`)
-    // Use the public brand endpoint directly
+    console.log(`Loading brand data for: ${slug.value}`)
     const api = useApi()
-    const response = await api.request(`/brands/${slug}`)
     
-    if ((response.success || response.status === 'success') && response.data) {
-      brand.value = response.data.brand || response.data
-      console.log('Loaded brand:', brand.value)
-      await loadProducts()
+    // Load brand details and products in parallel
+    const [brandRes, productsRes] = await Promise.all([
+      api.request(`/brands/${slug.value}`).catch(err => ({ error: err })),
+      api.request(`/brands/${slug.value}/products?active=1`).catch(err => ({ error: err }))
+    ])
+
+    // Process Brand Data
+    if (!brandRes.error && (brandRes.success || brandRes.status === 'success') && brandRes.data) {
+      brand.value = brandRes.data.brand || brandRes.data
     } else {
       error.value = 'Brand not found or inactive'
-      console.warn('Brand not found or inactive:', slug)
+      return
     }
+
+    // Process Products Data
+    if (!productsRes.error && (productsRes.success || productsRes.status === 'success') && productsRes.data) {
+      const productsData = productsRes.data.products || productsRes.data
+      products.value = productsData.data || (Array.isArray(productsData) ? productsData : [])
+    }
+
   } catch (err) {
-    error.value = 'Failed to load brand'
+    error.value = 'Failed to load brand details'
     console.error('Error loading brand:', err)
   } finally {
     loading.value = false
@@ -1270,21 +1304,55 @@ const getImageUrl = (imagePath) => {
   // If it's already a full URL, return as is
   if (imagePath.startsWith('http')) return imagePath
   
+  const baseUrl = (runtimeConfig.public.apiBaseUrl || 'https://sdev.apratifoods.asia').replace(/\/$/, '')
+
+  // Local frontend assets
+  if (imagePath.startsWith('/images/')) {
+    return imagePath
+  }
+  
   // If it starts with /storage/, it's already an absolute path, just add backend URL
   if (imagePath.startsWith('/storage/')) {
-    return `${runtimeConfig.public.apiBaseUrl}${imagePath}`
+    return `${baseUrl}${imagePath}`
+  } else if (imagePath.startsWith('storage/')) {
+    return `${baseUrl}/${imagePath}`
   }
   
   // If it's a relative path, prepend the Laravel backend URL with storage prefix
-  return `${runtimeConfig.public.apiBaseUrl}/storage/${imagePath}`
+  return `${baseUrl}/storage/${imagePath}`
 }
 
 // Product modal functions
 const openProductModal = (product) => {
-  selectedProduct.value = product
+  // Parse category if it's a JSON string, and extract name safely
+  let parsedCategory = product.category
+  
+  // If category is a string, parse it
+  if (typeof product.category === 'string') {
+    try {
+      parsedCategory = JSON.parse(product.category)
+    } catch (e) {
+      console.error('Failed to parse category JSON:', e)
+      parsedCategory = null
+    }
+  }
+  
+  // Create a clean category object with just the needed properties
+  const categoryData = parsedCategory ? {
+    name: parsedCategory.name || 'Uncategorized',
+    color: parsedCategory.color || '#6B7280',
+    id: parsedCategory.id
+  } : null
+  
+  const parsedProduct = {
+    ...product,
+    category: categoryData
+  }
+  
+  selectedProduct.value = parsedProduct
   currentProductImageIndex.value = 0
   showProductModal.value = true
-  console.log('Opening product modal for:', product.name)
+  console.log('Opening product modal for:', parsedProduct.name, 'Category:', parsedProduct.category)
 }
 
 const closeProductModal = () => {
@@ -1386,23 +1454,34 @@ const getColorForCategory = (categoryName) => {
 
 // Get product price - prioritize "Original" variant price, then main price, then any variant
 const getProductPrice = (product) => {
+  let price = null
+
   // First, try to find "Original" variant price
   if (product.variants && product.variants.length > 0) {
     const originalVariant = product.variants.find(variant => 
       variant.name && variant.name.toLowerCase().includes('original')
     )
-    if (originalVariant && originalVariant.price) {
-      return originalVariant.price
+    if (originalVariant && originalVariant.price != null) {
+      price = originalVariant.price
     }
   }
   
   // If no "Original" variant, use main product price
-  if (product.price) return product.price
+  if (price === null && product.price != null) {
+    price = product.price
+  }
   
   // If no main price, try to get from any variant
-  if (product.variants && product.variants.length > 0) {
-    const variantWithPrice = product.variants.find(variant => variant.price)
-    return variantWithPrice ? variantWithPrice.price : null
+  if (price === null && product.variants && product.variants.length > 0) {
+    const variantWithPrice = product.variants.find(variant => variant.price != null)
+    if (variantWithPrice) {
+      price = variantWithPrice.price
+    }
+  }
+  
+  if (price !== null) {
+    const numPrice = parseFloat(price)
+    return isNaN(numPrice) ? null : numPrice.toFixed(2)
   }
   
   return null

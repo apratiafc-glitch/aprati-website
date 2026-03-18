@@ -22,17 +22,17 @@
               class="w-full h-full object-cover animate-slow-zoom origin-center"
               @error="(e) => handleSlideImageError(e, index)"
             />
-            <!-- Dark Overlay for text readability -->
-            <div class="absolute inset-0 bg-black/40"></div>
+            <!-- Dark Overlay - Removed -->
+            <!-- <div class="absolute inset-0 bg-black/40"></div> -->
             
-            <!-- Dynamic Color Tint -->
-            <div 
+            <!-- Dynamic Color Tint - Removed -->
+            <!-- <div 
               class="absolute inset-0 mix-blend-overlay opacity-60" 
               :class="slide.overlayClass"
-            ></div>
+            ></div> -->
             
-            <!-- Gradient Base -->
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30"></div>
+            <!-- Gradient Base - Removed -->
+            <!-- <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30"></div> -->
           </div>
           
           <!-- Slide Content -->
@@ -54,14 +54,14 @@
                 
                 <!-- Modern Hero Title -->
                 <h1 
-                  class="text-5xl sm:text-7xl lg:text-8xl font-bold mb-8 leading-tight tracking-tight text-white drop-shadow-2xl"
+                  class="text-5xl sm:text-7xl lg:text-8xl font-bold mb-8 leading-tight tracking-tight text-black"
                   :class="currentSlide === index ? 'animate-slide-up' : ''"
                   v-html="slide.title"
                 ></h1>
                 
                 <!-- Elegant Subtitle -->
                 <p 
-                  class="text-2xl sm:text-3xl lg:text-4xl text-gray-100 mb-10 max-w-4xl mx-auto font-light leading-relaxed drop-shadow-md"
+                  class="text-2xl sm:text-3xl lg:text-4xl text-gray-900 mb-10 max-w-4xl mx-auto font-light leading-relaxed"
                   :class="currentSlide === index ? 'animate-fade-in animation-delay-500' : ''"
                 >
                   {{ slide.subtitle }}
@@ -192,9 +192,9 @@
                    @load="banner.imageLoaded = true"
                 />
                 
-                <!-- Modern Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+                <!-- Modern Gradient Overlay - Removed as requested -->
+                <!-- <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div> -->
+                <!-- <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div> -->
               </div>
 
               <!-- Content Overlay -->
@@ -1223,7 +1223,7 @@ const useDefaultHeroSlides = () => {
       overlayClass: 'bg-blue-600/20',
       badge: 'Welcome to Aprati Foods',
       badgeColor: 'bg-blue-600/80',
-      title: 'Welcome to <span class="text-blue-400">Aprati</span> Food Company',
+      title: 'Welcome to <span class="text-blue-600">Aprati</span> Food Company',
       subtitle: 'Leading Cambodia\'s food industry with premium quality products and innovation.',
       primaryButtonText: 'Explore Brands',
       primaryButtonLink: '/brands',
@@ -1239,7 +1239,7 @@ const useDefaultHeroSlides = () => {
       overlayClass: 'bg-green-600/20',
       badge: 'Discover Frutati',
       badgeColor: 'bg-green-600/80',
-      title: 'Delicious <span class="text-green-400">Frutati</span> Candies',
+      title: 'Delicious <span class="text-green-600">Frutati</span> Candies',
       subtitle: 'Natural fruit flavors in every bite - Perfect sweetness for everyone.',
       primaryButtonText: 'Shop Now',
       primaryButtonLink: '/brands/frutati',
@@ -1255,7 +1255,7 @@ const useDefaultHeroSlides = () => {
       overlayClass: 'bg-orange-600/20',
       badge: 'Indulge in Mocati',
       badgeColor: 'bg-orange-600/80',
-      title: 'Premium <span class="text-orange-400">Mocati</span> Chocolate',
+      title: 'Premium <span class="text-orange-600">Mocati</span> Chocolate',
       subtitle: 'Rich chocolate experience with every piece - Pure indulgence awaits.',
       primaryButtonText: 'View Collection',
       primaryButtonLink: '/brands/mocati',

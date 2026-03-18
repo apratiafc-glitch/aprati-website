@@ -6,15 +6,16 @@
         <!-- Brand / About -->
         <div class="md:col-span-1 text-center md:text-left">
            <img 
-             v-if="appFooterSettings.footer_logo || adminProfileImage"
-             :src="appFooterSettings.footer_logo ? getImageUrl(appFooterSettings.footer_logo) : (adminProfileImage ? getProfileImageUrl(adminProfileImage) : '/images/logo-footer.png')" 
+             v-show="!imageError"
+             :src="appFooterSettings.footer_logo ? getImageUrl(appFooterSettings.footer_logo) : '/images/Company Logo-01.png'" 
              alt="Aprati Foods" 
-             class="h-12 w-auto mb-6 opacity-90 hover:opacity-100 transition-opacity mx-auto md:mx-0"
+             class="h-12 w-auto mb-6 opacity-90 hover:opacity-100 transition-opacity mx-auto md:mx-0 object-contain"
+             @error="handleImageError"
            />
-           <h3 v-else class="text-2xl font-display font-bold uppercase mb-6">Aprati Foods</h3>
+           <h3 v-if="imageError" class="text-2xl font-display font-bold uppercase mb-6">Aprati Foods</h3>
            
            <p class="text-gray-400 text-sm leading-relaxed mb-6">
-             {{ appFooterSettings.footer_description || 'Enhanced introduction website with advanced product search, career management, and comprehensive inventory system.' }}
+             {{ appFooterSettings.footer_description || 'Premium Quality Food Products - Bringing authentic taste to your table.' }}
            </p>
            
            <div class="flex space-x-4 justify-center md:justify-start">
@@ -53,7 +54,7 @@
           <ul class="space-y-3">
              <li><NuxtLink to="/privacy" class="text-gray-300 hover:text-white transition-colors text-sm">Privacy Policy</NuxtLink></li>
              <li><NuxtLink to="/terms" class="text-gray-300 hover:text-white transition-colors text-sm">Terms of Service</NuxtLink></li>
-             <li><span class="text-gray-500 text-sm">© {{ new Date().getFullYear() }} Aprati Foods. All rights reserved</span></li>
+             <li><span class="text-gray-500 text-sm">© {{ new Date().getFullYear() }} Aprati Foods (Cambodia) Ltd. All rights reserved</span></li>
           </ul>
         </div>
       </div>
@@ -63,37 +64,75 @@
 
 <script setup>
 const appFooterSettings = useState('footer-settings', () => ({}))
-const dynamicBrands = useState('footer-brands', () => [])
-const adminProfileImage = useState('footer-profile-image', () => null)
+const dynamicBrands = useState('brands-list', () => [])
+const adminProfileImage = useState('admin-profile-image', () => null)
+const imageError = ref(false)
+
+const handleImageError = () => {
+  imageError.value = true
+}
 
 onMounted(async () => {
-  // Only fetch if we don't have data
-  if (Object.keys(appFooterSettings.value).length > 0 && dynamicBrands.value.length > 0) {
+  // Check what data we already have
+  const needsSettings = Object.keys(appFooterSettings.value).length === 0
+  const needsBrands = dynamicBrands.value.length === 0
+  const needsAdmin = adminProfileImage.value === null
+
+  if (!needsSettings && !needsBrands && !needsAdmin) {
     return
   }
 
   // Load settings and brands
   try {
      const api = useApi()
-     const [settingsRes, brandsRes, adminRes] = await Promise.all([
-       api.request('/footer-settings').catch(() => ({})),
-       api.request('/brands').catch(() => ({})),
-       api.request('/admin-profile-image').catch(() => ({}))
-     ])
+     const requests = []
      
-     if (settingsRes.success) appFooterSettings.value = settingsRes.data || {}
-     if (brandsRes.success && brandsRes.data?.brands) dynamicBrands.value = brandsRes.data.brands.filter(brand => brand.is_active)
-     else if (brandsRes.status === 'success' && brandsRes.data?.brands) dynamicBrands.value = brandsRes.data.brands.filter(brand => brand.is_active)
-     if (adminRes.success && adminRes.data?.profile_image) adminProfileImage.value = adminRes.data.profile_image
+     if (needsSettings) requests.push(api.request('/footer-settings').catch(() => ({})))
+     else requests.push(Promise.resolve({}))
+
+     if (needsBrands) requests.push(api.request('/brands').catch(() => ({})))
+     else requests.push(Promise.resolve({}))
+
+     if (needsAdmin) requests.push(api.request('/admin-profile-image').catch(() => ({})))
+     else requests.push(Promise.resolve({}))
+
+     const [settingsRes, brandsRes, adminRes] = await Promise.all(requests)
+     
+     if (needsSettings && settingsRes.success) appFooterSettings.value = settingsRes.data || {}
+     
+     if (needsBrands) {
+       if (brandsRes.success && brandsRes.data?.brands) dynamicBrands.value = brandsRes.data.brands.filter(brand => brand.is_active)
+       else if (brandsRes.status === 'success' && brandsRes.data?.brands) dynamicBrands.value = brandsRes.data.brands.filter(brand => brand.is_active)
+     }
+     
+     if (needsAdmin && adminRes.success && adminRes.data?.profile_image) adminProfileImage.value = adminRes.data.profile_image
 
   } catch (e) { console.error(e) }
 })
 
 // Helpers
-const getImageUrl = (path) => {
-  if (!path) return ''
-  if (path.startsWith('http')) return path
-  return `https://sdev.apratifoods.asia${path}` 
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return ''
+  if (imagePath.startsWith('data:')) return imagePath
+  if (imagePath.startsWith('http')) return imagePath
+  
+  const runtimeConfig = useRuntimeConfig()
+  const baseUrl = (runtimeConfig.public?.apiBaseUrl || 'https://sdev.apratifoods.asia').replace(/\/$/, '')
+  
+  // Local frontend assets
+  if (imagePath.startsWith('/images/')) {
+    return imagePath
+  }
+  
+  // Backend storage assets
+  if (imagePath.startsWith('/storage/')) {
+    return `${baseUrl}${imagePath}`
+  } else if (imagePath.startsWith('storage/')) {
+    return `${baseUrl}/${imagePath}`
+  } else {
+    // If it's a relative path from DB without storage prefix
+    return `${baseUrl}/storage/${imagePath}`
+  }
 }
 
 const getProfileImageUrl = (path) => getImageUrl(path)

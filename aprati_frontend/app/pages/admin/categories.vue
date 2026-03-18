@@ -506,7 +506,7 @@
 </template>
 
 <script setup>
-import { debounce } from 'lodash-es'
+import { debounce, kebabCase } from 'lodash-es'
 
 // Define layout
 definePageMeta({
@@ -550,6 +550,13 @@ const categoryForm = ref({
   sort_order: 0,
   is_active: true,
   is_featured: false
+})
+
+// Watch name to auto-generate slug
+watch(() => categoryForm.value.name, (newName) => {
+  if (!isEditing.value && newName) {
+    categoryForm.value.slug = kebabCase(newName)
+  }
 })
 
 // Computed properties
@@ -637,8 +644,8 @@ const saveCategory = async () => {
   try {
     const api = useApi()
     const url = isEditing.value 
-      ? `/api/admin/categories/${categoryForm.value.id}`
-      : '/api/admin/categories'
+      ? `/admin/categories/${categoryForm.value.id}`
+      : '/admin/categories'
     
     const data = { ...categoryForm.value }
     
@@ -691,7 +698,7 @@ const deleteCategory = async () => {
   
   try {
     const api = useApi()
-    const response = await api.request(`/api/admin/categories/${categoryToDelete.value.id}`, {
+    const response = await api.request(`/admin/categories/${categoryToDelete.value.id}`, {
       method: 'DELETE'
     })
     
@@ -755,7 +762,7 @@ const loadCategories = async () => {
       }
     })
     
-    const response = await api.request(`/api/admin/categories?${params.toString()}`)
+    const response = await api.request(`/admin/categories?${params.toString()}`)
     
     if (response.success && response.data) {
       categories.value = response.data.categories || []

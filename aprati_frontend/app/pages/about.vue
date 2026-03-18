@@ -421,7 +421,8 @@ const handleImageError = (event) => {
     
     // Use the post's sort_order for consistent theming
     const themeIndex = (post?.sort_order - 1) || index
-    container.classList.add(gradients[themeIndex % 4])
+    const gradientClasses = gradients[themeIndex % 4].split(' ')
+    container.classList.add(...gradientClasses)
   }
 }
 

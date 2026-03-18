@@ -303,18 +303,15 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useAuth } from '~/composables/useAuth'
-import { useApi } from '../../composables/useApi'
-import { useNotifications } from '~/composables/useNotifications'
 
 definePageMeta({
   middleware: 'admin-auth',
   layout: 'admin'
 })
 
-const { user } = useAuth()
-const api = useApi() // Call useApi directly
-const { success: showSuccess, error: showError } = useNotifications()
+// Use API Composable
+const api = useApi()
+const runtimeConfig = useRuntimeConfig()
 
 // Reactive data
 const posts = ref([])
@@ -331,11 +328,11 @@ const itemToDelete = ref(null)
 
 // Form data
 const form = ref({
+  id: null,
   title: '',
   description: '',
   image_url: '',
   image_file: null,
-  key: '',
   sort_order: 1
 })
 
@@ -344,8 +341,8 @@ const imagePreview = ref('')
 const uploadProgress = ref(0)
 const fileInput = ref(null)
 
-// Computed properties
-const isAdmin = computed(() => user.value?.role === 'admin')
+// Placeholder image
+const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect width="100" height="100" fill="%23e5e7eb"/%3E%3Ctext x="50" y="50" font-family="Arial" font-size="20" fill="%239ca3af" text-anchor="middle" dy=".3em"%3EAbout Image%3C/text%3E%3C/svg%3E'
 
 // ESC key handler
 const handleEscape = (event) => {
@@ -360,29 +357,25 @@ const handleEscape = (event) => {
 
 // Methods
 const loadPosts = async () => {
-  if (process.server) return
-  const token = useCookie('auth-token').value
-  if (!token) {
-    console.warn('No auth token found')
-    return
-  }
+  loading.value = true
+  error.value = null
   try {
-    loading.value = true
-    error.value = null
-    
     const response = await api.aboutContent.adminGetAll()
     
-    if (response && response.success && response.data) {
-      posts.value = response.data
-    } else if (response && response.data) {
-      posts.value = Array.isArray(response.data) ? response.data : Object.values(response.data)
+    if (response.success) {
+      const data = response.data || []
+      
+      const apiBaseUrl = runtimeConfig.public.apiBaseUrl
+      posts.value = data.map(post => ({
+        ...post,
+        image_url: post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `${apiBaseUrl}${post.image_url}`) : ''
+      }))
     } else {
-      posts.value = []
+      error.value = response.error || 'Failed to load posts'
     }
   } catch (err) {
     error.value = 'Failed to load posts. Please try again later.'
     console.error('Failed to load about posts:', err)
-    posts.value = []
   } finally {
     loading.value = false
   }
@@ -391,37 +384,31 @@ const loadPosts = async () => {
 const editPost = (item) => {
   form.value = {
     id: item.id,
-    key: item.key,
-    title: item.title || item.name, // Handle both title and name fields
-    description: item.content || item.description,
+    title: item.title,
+    description: item.content,
     image_url: item.image_url || '',
     image_file: null,
     sort_order: item.sort_order || 1
   }
-  imagePreview.value = ''
+  imagePreview.value = item.image_url || ''
   showEditModal.value = true
 }
 
-// Image handling methods
 const handleImageUpload = (event) => {
   const file = event.target.files[0]
   if (!file) return
 
-  // Validate file type
   if (!file.type.startsWith('image/')) {
-    showError('Please select a valid image file')
+    alert('Please select a valid image file')
     return
   }
 
-  // Validate file size (2MB limit)
   if (file.size > 2 * 1024 * 1024) {
-    showError('Image size must be less than 2MB')
+    alert('Image size must be less than 2MB')
     return
   }
 
   form.value.image_file = file
-
-  // Create preview
   const reader = new FileReader()
   reader.onload = (e) => {
     imagePreview.value = e.target.result
@@ -431,7 +418,7 @@ const handleImageUpload = (event) => {
 
 const removeImage = () => {
   form.value.image_file = null
-  imagePreview.value = ''
+  imagePreview.value = form.value.image_url || ''
   if (fileInput.value) {
     fileInput.value.value = ''
   }
@@ -439,6 +426,9 @@ const removeImage = () => {
 
 const removeCurrentImage = () => {
   form.value.image_url = ''
+  if (!form.value.image_file) {
+    imagePreview.value = ''
+  }
 }
 
 const deletePost = (item) => {
@@ -447,132 +437,80 @@ const deletePost = (item) => {
 }
 
 const savePost = async () => {
+  saving.value = true
   try {
-    saving.value = true
-    uploadProgress.value = 0
-
-    const payload = {
-      key: showEditModal.value ? form.value.key || `post_${Date.now()}` : `post_${Date.now()}`,
-      title: form.value.title,
-      content: form.value.description,
-      image_url: form.value.image_url || '',
-      is_active: true,
-      sort_order: form.value.sort_order || 1
+    // 1. Validate Token first
+    const tokenValidation = await api.request('/admin/validate-token')
+    if (!tokenValidation.success) {
+      throw new Error('Session expired. Please login again.')
     }
 
-    let postResponse
-
-    // Create or update the post first
-    if (showEditModal.value) {
-      postResponse = await api.aboutContent.update(form.value.id, payload)
-      if (postResponse.success) {
-        showSuccess('Post updated successfully!')
-      } else {
-        throw new Error('Failed to update post: ' + (postResponse.error || 'Unknown error'))
-      }
-    } else {
-      postResponse = await api.aboutContent.create(payload)
-      if (postResponse.success) {
-        showSuccess('Post created successfully!')
-      } else {
-        throw new Error('Failed to create post: ' + (postResponse.error || 'Unknown error'))
-      }
-    }
-
-    uploadProgress.value = 30
-
-    // If there's an image file, upload it after the post is created/updated
+    // 2. Handle Image Upload if needed
+    let uploadedImageUrl = form.value.image_url
     if (form.value.image_file) {
-      uploadProgress.value = 40
-      
       const formData = new FormData()
       formData.append('image', form.value.image_file)
-      
-      // Get the post ID (either from edit mode or from create response)
-      const postId = showEditModal.value ? form.value.id : postResponse.data.id
-      
-      console.log('About to upload image:', {
-        postId,
-        fileSize: form.value.image_file.size,
-        fileName: form.value.image_file.name,
-        hasAuthToken: !!api.getAuthToken(),
-        currentUser: user.value,
-        isAuthenticated: !!user.value
-      })
-      
-      try {
-        // First validate the auth token
-        console.log('Validating auth token...')
-        console.log('Current token:', api.getAuthToken())
-        const tokenValidation = await api.request('/validate-token', {
-          method: 'POST'
-        })
-        console.log('Raw token validation response:', tokenValidation)
-        
-        // Check if the response indicates the token is valid
-        if (tokenValidation.success !== true) {
-          console.error('Token validation failed:', tokenValidation)
-          throw new Error('Authentication token is invalid: ' + (tokenValidation.message || tokenValidation.error || 'Unknown error'))
-        }
-        
-        console.log('Token is valid, user:', tokenValidation.data?.name || tokenValidation.user?.name)
-
-        // Upload image
-        uploadProgress.value = 60
-        const uploadResponse = await api.aboutContent.uploadImage(postId, formData, {
-          onUploadProgress: (progressEvent) => {
-            uploadProgress.value = Math.round((progressEvent.loaded * 30) / progressEvent.total) + 60
-          }
-        })
-        
-        if (!uploadResponse.success) {
-          throw new Error('Failed to upload image: ' + (uploadResponse.error || 'Unknown error'))
-        }
-
-        console.log('Image uploaded successfully:', uploadResponse)
-        showSuccess('Image uploaded successfully!')
-        uploadProgress.value = 95
-      } catch (uploadError) {
-        console.error('Image upload failed:', uploadError)
-        showError('Failed to upload image: ' + uploadError.message)
-        // Continue with post creation/update even if image upload fails
-        uploadProgress.value = 95
+      const uploadResponse = await api.aboutContent.uploadImage(formData)
+      if (uploadResponse.success) {
+        uploadedImageUrl = uploadResponse.url
+      } else {
+        throw new Error(uploadResponse.error || 'Image upload failed')
       }
-    } else {
-      console.log('No image file to upload')
-      uploadProgress.value = 95
     }
 
-    uploadProgress.value = 100
-    
-    // Final success message
-    if (form.value.image_file) {
-      showSuccess(`Post ${showEditModal.value ? 'updated' : 'created'} and image uploaded successfully!`)
-    } else {
-      showSuccess(`Post ${showEditModal.value ? 'updated' : 'created'} successfully!`)
+    // 3. Save Post
+    // Ensure we only save the relative path to the database
+    let finalImageUrl = uploadedImageUrl
+    if (finalImageUrl && finalImageUrl.startsWith('http')) {
+      const apiBaseUrl = runtimeConfig.public.apiBaseUrl
+      if (finalImageUrl.startsWith(apiBaseUrl)) {
+        finalImageUrl = finalImageUrl.replace(apiBaseUrl, '')
+      }
     }
-    
-    await loadPosts()
-    closeModal()
+
+    const payload = {
+      title: form.value.title,
+      content: form.value.description,
+      image_url: finalImageUrl,
+      is_active: true,
+      sort_order: form.value.sort_order
+    }
+
+    let response
+    if (showEditModal.value) {
+      response = await api.aboutContent.update(form.value.id, payload)
+    } else {
+      response = await api.aboutContent.create(payload)
+    }
+
+    if (response.success) {
+      alert(`Post ${showEditModal.value ? 'updated' : 'created'} successfully!`)
+      await loadPosts()
+      closeModal()
+    } else {
+      throw new Error(response.error || 'Failed to save post')
+    }
   } catch (err) {
-    showError(`Failed to ${showEditModal.value ? 'update' : 'create'} post. Please try again.`)
+    alert(err.message)
     console.error('Failed to save post:', err)
   } finally {
     saving.value = false
-    uploadProgress.value = 0
   }
 }
 
 const confirmDelete = async () => {
+  deleting.value = true
   try {
-    deleting.value = true
-    await api.aboutContent.delete(itemToDelete.value.id)
-    showSuccess('Post deleted successfully!')
-    await loadPosts()
-    showDeleteModal.value = false
-    itemToDelete.value = null
+    const response = await api.aboutContent.delete(itemToDelete.value.id)
+    if (response.success) {
+      await loadPosts()
+      showDeleteModal.value = false
+      itemToDelete.value = null
+    } else {
+      alert(response.error || 'Failed to delete post')
+    }
   } catch (err) {
-    showError('Failed to delete post. Please try again.')
+    alert('Failed to delete post. Please try again.')
     console.error('Failed to delete post:', err)
   } finally {
     deleting.value = false
@@ -583,11 +521,11 @@ const closeModal = () => {
   showCreateModal.value = false
   showEditModal.value = false
   form.value = {
+    id: null,
     title: '',
     description: '',
     image_url: '',
     image_file: null,
-    key: '',
     sort_order: 1
   }
   imagePreview.value = ''
@@ -598,18 +536,17 @@ const closeModal = () => {
 }
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleString()
+  if (!dateString) return 'N/A'
+  return new Date(dateString).toLocaleDateString()
 }
 
-// Lifecycle
 onMounted(() => {
-  if (process.server) return
   loadPosts()
-  document.addEventListener('keydown', handleEscape)
+  window.addEventListener('keydown', handleEscape)
 })
 
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleEscape)
+  window.removeEventListener('keydown', handleEscape)
 })
 </script>
 

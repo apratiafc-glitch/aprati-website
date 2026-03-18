@@ -606,7 +606,7 @@
                   No variants yet. Add your first variant (e.g., Original, Mild, Hot, etc.)
                 </div>
                 
-                <div v-for="(variant, index) in productForm.variants" :key="`variant-${index}-${variant.name || ''}`" class="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
+                <div v-for="(variant, index) in productForm.variants" :key="`variant-${index}`" class="bg-gray-50 border border-gray-200 rounded-lg p-4 space-y-3">
                   <div class="flex justify-between items-center">
                     <h6 class="text-gray-900 font-medium">Flavor {{ index + 1 }}</h6>
                     <button
@@ -805,6 +805,17 @@
               placeholder="Enter category name"
             />
           </div>
+
+          <div>
+            <label class="block text-gray-700 text-sm font-medium mb-2">Slug</label>
+            <input
+              v-model="categoryForm.slug"
+              type="text"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+              placeholder="Auto-generated from name"
+            />
+          </div>
+
 
           <div>
             <label class="block text-gray-700 text-sm font-medium mb-2">Parent Category</label>
@@ -1201,7 +1212,7 @@ const editProduct = (product) => {
     : [
         {
           name: 'Original',
-          price: 0,
+          price: product.price ? parseFloat(product.price) : 0,
           is_default: true,
           is_active: true
         }
@@ -1421,9 +1432,15 @@ const saveCategory = async () => {
     
     const method = isEditingCategory.value ? 'PUT' : 'POST'
     
+    // Auto-generate slug if missing
+    const categoryData = { ...categoryForm.value }
+    if (!categoryData.slug && categoryData.name) {
+      categoryData.slug = categoryData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+    }
+    
     const response = await api.request(url, {
       method: method,
-      body: categoryForm.value
+      body: categoryData
     })
     
     console.log(`📝 Category ${isEditingCategory.value ? 'update' : 'creation'} response:`, response)
@@ -1644,7 +1661,7 @@ const saveProduct = async () => {
     
     const api = useApi()
     const url = isEditing.value 
-      ? `/admin/products/${productForm.value.slug}`  // Use slug as per Laravel route model binding
+      ? `/admin/products/${productForm.value.id}`
       : '/admin/products'
     
     // Always use POST method - Laravel has dedicated POST route for FormData updates
@@ -1654,7 +1671,6 @@ const saveProduct = async () => {
     })
     
     if (response.success) {
-      // Save the last updated price to localStorage
       if (productForm.value.variants && productForm.value.variants.length > 0) {
         const firstVariant = productForm.value.variants[0]
         if (firstVariant.price) {
@@ -1722,10 +1738,8 @@ const deleteProduct = async () => {
   try {
     const api = useApi()
     
-    // Use slug, but fallback to ID if slug is empty or invalid
-    const identifier = productToDelete.value.slug && productToDelete.value.slug.trim() !== '' 
-      ? productToDelete.value.slug 
-      : productToDelete.value.id
+    // Use ID for reliable deletion
+    const identifier = productToDelete.value.id
       
     const deleteUrl = `/admin/products/${identifier}`
     console.log('🗑️ Attempting to delete product:', {
@@ -1897,22 +1911,25 @@ const truncateText = (text, length) => {
 const getImageUrl = (imagePath, bustCache = false) => {
   if (!imagePath) return ''
   
+  const runtimeConfig = useRuntimeConfig()
+  const apiBaseUrl = runtimeConfig.public.apiBaseUrl
+  
   let url = ''
   
   // If it's already a full URL, use as is
   if (imagePath.startsWith('http')) {
     url = imagePath
   }
-  // If it starts with /storage/, it's already an absolute path, just add backend URL
+  // If it's a relative path starting with /storage, prepend backend URL
   else if (imagePath.startsWith('/storage/')) {
-    url = `https://sdev.apratifoods.asia${imagePath}`
+    url = `${apiBaseUrl}${imagePath}`
   }
-  // If it's a relative path, prepend the Laravel backend URL with storage prefix
+  // Fallback
   else {
-    url = `https://sdev.apratifoods.asia/storage/${imagePath}`
+    url = `${apiBaseUrl}/storage/${imagePath}`
   }
   
-  // Add cache buster if requested (for thumbnails/previews after update)
+  // Add cache buster if requested
   if (bustCache) {
     const separator = url.includes('?') ? '&' : '?'
     url += `${separator}t=${Date.now()}`

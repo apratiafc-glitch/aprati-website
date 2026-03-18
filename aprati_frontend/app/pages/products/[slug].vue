@@ -294,12 +294,16 @@
 
                 <div v-if="product.category" class="flex flex-col">
                   <span class="text-sm font-medium text-gray-500 mb-1">Category</span>
-                  <span class="text-sm text-gray-900 bg-gray-50 px-2 py-1 rounded">{{ product.category }}</span>
+                  <span class="text-sm text-gray-900 bg-gray-50 px-2 py-1 rounded">{{ product.category.name || product.category }}</span>
                 </div>
 
                 <div v-if="productVariants.length > 0" class="flex flex-col">
-                  <span class="text-sm font-medium text-gray-500 mb-1">Available Variants</span>
-                  <span class="text-sm text-gray-900 bg-gray-50 px-2 py-1 rounded">{{ productVariants.length }} flavor{{ productVariants.length > 1 ? 's' : '' }}</span>
+                  <span class="text-sm font-medium text-gray-500 mb-1">Available Flavors</span>
+                  <div class="flex flex-wrap gap-2">
+                    <span v-for="variant in productVariants" :key="variant.id" class="text-sm text-gray-900 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+                      {{ variant.name }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="flex flex-col">
@@ -562,8 +566,12 @@ const initializeProductVariants = () => {
   if (!product.value) return
   
   // Use real variants from API if available
-  if (product.value.active_variants && product.value.active_variants.length > 0) {
-    productVariants.value = product.value.active_variants
+  // API returns 'variants' relationship, filter for active ones
+  const variants = product.value.variants || []
+  const activeVariants = variants.filter(v => v.is_active !== false && v.is_active !== 0 && v.is_active !== '0')
+  
+  if (activeVariants.length > 0) {
+    productVariants.value = activeVariants
     
     // Set default selected variant (either the one marked as default or the first one)
     const defaultVariant = productVariants.value.find(v => v.is_default) || productVariants.value[0]

@@ -5,58 +5,21 @@
 
     RewriteEngine On
 
-    # Prevent direct access to Laravel application files (except public assets)
-    RewriteRule ^aprati_backend/(?!public/) - [F,L]
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Route API requests to Laravel
-    RewriteCond %{REQUEST_URI} ^/api/
-    RewriteRule ^(.*)$ index.php [L,QSA]
-
-    # Route admin-api requests to Laravel
-    RewriteCond %{REQUEST_URI} ^/admin-api/
-    RewriteRule ^(.*)$ index.php [L,QSA]
-
-    # Serve PHP diagnostic/utility files directly
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteCond %{REQUEST_FILENAME} \.php$
-    RewriteRule ^ - [L]
-
-    # Serve static files directly (storage, _nuxt, images, etc.)
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^ - [L]
-
-    # Serve frontend HTML files
-    RewriteCond %{REQUEST_FILENAME} !-f
+    # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !^/api/
-    RewriteCond %{REQUEST_URI} !^/storage/
-    RewriteCond %{REQUEST_URI} !^/admin-api/
-    RewriteCond %{REQUEST_URI} !\.php$
-    RewriteRule ^(.*)$ index.html [L]
-
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 </IfModule>
-
-# Security Headers
-<IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
-</IfModule>
-
-# Disable directory browsing
-Options -Indexes
-
-# Protect sensitive files
-<FilesMatch "^\.">
-    Order allow,deny
-    Deny from all
-</FilesMatch>

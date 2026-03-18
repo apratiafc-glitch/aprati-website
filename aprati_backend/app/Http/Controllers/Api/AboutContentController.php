@@ -4,60 +4,134 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\AboutContent;
+use Illuminate\Http\Request;
 
 class AboutContentController extends Controller
 {
     /**
-     * Get all active about content sections.
+     * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        try {
-            $contents = AboutContent::active()
-                ->ordered()
-                ->get()
-                ->keyBy('key');
+        $query = AboutContent::query();
 
-            return response()->json([
-                'success' => true,
-                'data' => $contents
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Failed to load about content'
-            ], 500);
+        // If it's a public request, only show active content
+        if (!$request->bearerToken()) {
+            $query->where('is_active', true);
         }
+
+        $contents = $query->orderBy('sort_order')->latest()->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $contents
+        ]);
     }
 
     /**
-     * Get specific about content by key.
+     * Store a newly created resource in storage.
      */
-    public function getByKey($key)
+    public function store(Request $request)
     {
-        try {
-            $content = AboutContent::active()
-                ->byKey($key)
-                ->first();
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image_url' => 'nullable|string',
+            'is_active' => 'boolean',
+            'sort_order' => 'integer'
+        ]);
 
-            if (!$content) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Content not found'
-                ], 404);
+        $aboutContent = AboutContent::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'data' => $aboutContent,
+            'message' => 'About content created successfully'
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(AboutContent $aboutContent)
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $aboutContent
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, AboutContent $aboutContent)
+    {
+        $validated = $request->validate([
+            'title' => 'sometimes|required|string|max:255',
+            'content' => 'sometimes|required|string',
+            'image_url' => 'nullable|string',
+            'is_active' => 'boolean',
+            'sort_order' => 'integer'
+        ]);
+
+        if ($request->has('image_url') && $aboutContent->image_url && $aboutContent->image_url !== $request->image_url) {
+            // Extract relative path from stored URL if it's not the same
+            $oldPath = str_replace('/storage/', '', $aboutContent->image_url);
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($oldPath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
             }
+        }
 
+        $aboutContent->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'data' => $aboutContent,
+            'message' => 'About content updated successfully'
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(AboutContent $aboutContent)
+    {
+        if ($aboutContent->image_url) {
+            $path = str_replace('/storage/', '', $aboutContent->image_url);
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($path);
+            }
+        }
+
+        $aboutContent->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'About content deleted successfully'
+        ]);
+    }
+
+    /**
+     * Upload an image for about content.
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:5120', // 5MB
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('about-content', 'public');
             return response()->json([
                 'success' => true,
-                'data' => $content
+                'url' => '/storage/' . $path,
+                'message' => 'Image uploaded successfully'
             ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Failed to load content'
-            ], 500);
         }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No image uploaded'
+        ], 400);
     }
 }

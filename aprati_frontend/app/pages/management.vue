@@ -85,8 +85,14 @@
                 <!-- Profile Avatar -->
                 <div class="w-32 h-32 mx-auto mb-6 relative">
                   <div class="absolute inset-0 rounded-full bg-white/20 backdrop-blur-sm border border-white/30"></div>
-                  <div class="absolute inset-2 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                    <span class="text-4xl font-bold text-gray-800">{{ getInitials(post.name) }}</span>
+                  <div class="absolute inset-2 rounded-full bg-white/90 flex items-center justify-center shadow-lg overflow-hidden">
+                    <img 
+                      v-if="post.image_url" 
+                      :src="post.image_url" 
+                      class="w-full h-full object-cover" 
+                      @error="(e) => (e.target.style.display = 'none')"
+                    />
+                    <span v-else class="text-4xl font-bold text-gray-800">{{ getInitials(post.name) }}</span>
                   </div>
                 </div>
                 
@@ -185,8 +191,13 @@
           <div class="flex items-center pr-12">
             <!-- Profile Avatar -->
             <div class="w-16 h-16 mr-6">
-              <div class="w-full h-full rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
-                <span class="text-2xl font-bold text-white">{{ getInitials(selectedPost.name) }}</span>
+              <div class="w-full h-full rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center overflow-hidden">
+                <img 
+                  v-if="selectedPost.image_url" 
+                  :src="selectedPost.image_url" 
+                  class="w-full h-full object-cover"
+                />
+                <span v-else class="text-2xl font-bold text-white">{{ getInitials(selectedPost.name) }}</span>
               </div>
             </div>
             
