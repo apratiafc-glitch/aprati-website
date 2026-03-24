@@ -1,4 +1,5 @@
 <IfModule mod_rewrite.c>
+  Options +FollowSymLinks
   RewriteEngine On
   
   # 1. Map /storage requests to the backend api folder
