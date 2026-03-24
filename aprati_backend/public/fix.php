@@ -10,11 +10,11 @@ ini_set('display_errors', 1);
 echo "<h1>Afc Aprati Diagnostic</h1>";
 
 $folders = [
-    'public/live_assets',
-    'storage/app/public',
-    'storage/app/public/hero-slides',
-    'storage/app/public/products',
-    'storage/app/public/banners',
+    'live_assets',
+    '../storage/app/public',
+    '../storage/app/public/hero-slides',
+    '../storage/app/public/products',
+    '../storage/app/public/banners',
 ];
 
 foreach ($folders as $f) {
@@ -31,8 +31,8 @@ foreach ($folders as $f) {
 }
 
 // Check for images and move them if they are in the wrong place
-$source = 'storage/app/public';
-$dest = 'public/live_assets';
+$source = '../storage/app/public';
+$dest = 'live_assets';
 
 function sync($src, $dst) {
     $dir = opendir($src);
