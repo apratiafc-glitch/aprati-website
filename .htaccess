@@ -2,9 +2,9 @@
   Options +FollowSymLinks
   RewriteEngine On
   
-  # 1. Map /storage requests directly to the physical storage folder
-  # (This bypasses the need for 'php artisan storage:link' on the server)
-  RewriteRule ^storage/(.*)$ api/storage/app/public/$1 [L]
+  # 1. Map /storage requests directly to the new public assets folder
+  # (This bypasses cPanel's 'storage' folder blocking)
+  RewriteRule ^storage/(.*)$ api/public/live_assets/$1 [L]
 
   # 2. Standard SPA Routing (Nuxt)
   # If the requested file doesn't exist, send it to index.html
