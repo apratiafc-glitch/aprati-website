@@ -3,6 +3,8 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/apratifoodscom/public_html/sdev.apratifoods.asia/
     - /bin/mkdir -p $DEPLOYPATH
+    # Copy root .htaccess for routing and storage mapping
+    - /bin/cp -f .htaccess $DEPLOYPATH/
     
     # 1. Deploy Frontend (Static files from the dist folder)
     # Note: We use the 'dist' folder which contains the generated static website

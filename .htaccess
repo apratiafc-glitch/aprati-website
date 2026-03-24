@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # 1. Map /storage requests to the backend api folder
+  RewriteRule ^storage/(.*)$ api/public/storage/$1 [L]
+
+  # 2. Standard SPA Routing (Nuxt)
+  # If the requested file doesn't exist, send it to index.html
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
