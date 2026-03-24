@@ -1,3 +1,4 @@
+---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/apratifoodscom/public_html/sdev.apratifoods.asia/
