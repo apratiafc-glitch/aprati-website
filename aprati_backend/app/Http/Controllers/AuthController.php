@@ -18,8 +18,11 @@ class AuthController extends Controller
      */
     public function googleRedirect()
     {
+        $redirectUrl = env('GOOGLE_REDIRECT_URI', 'https://sdev.apratifoods.asia/api/auth/google/callback');
+        
         return Socialite::driver('google')
             ->stateless()
+            ->redirectUrl($redirectUrl)
             ->redirect();
     }
 
@@ -32,7 +35,11 @@ class AuthController extends Controller
         $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
 
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            $redirectUrl = env('GOOGLE_REDIRECT_URI', 'https://sdev.apratifoods.asia/api/auth/google/callback');
+            $googleUser = Socialite::driver('google')
+                ->stateless()
+                ->redirectUrl($redirectUrl)
+                ->user();
         } catch (\Exception $e) {
             Log::error('Google OAuth error: ' . $e->getMessage());
             return redirect($frontendUrl . '/admin/login?error=google_auth_failed');
