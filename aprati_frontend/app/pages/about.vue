@@ -1,49 +1,29 @@
 <template>
   <div class="min-h-screen bg-gray-50 relative overflow-hidden">
-    <!-- Animated Fruit Characters -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-1/4 right-1/6 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 0.5s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-1/3 left-1/4 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/2 right-1/4 w-20 h-20 object-contain opacity-20 animate-float-delayed" style="animation-delay: 1.5s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-1/6 right-1/3 w-16 h-16 object-contain opacity-16 animate-float" style="animation-delay: 2s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-2/3 left-1/6 w-14 h-14 object-contain opacity-14 animate-float-delayed" style="animation-delay: 0.8s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute bottom-1/4 right-1/6 w-16 h-16 object-contain opacity-15 animate-float" style="animation-delay: 1.2s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-3/4 left-1/3 w-14 h-14 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1.8s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/5 right-1/5 w-20 h-20 object-contain opacity-13 animate-float" style="animation-delay: 2.3s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-2/5 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 0.3s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-2/5 left-2/5 w-14 h-14 object-contain opacity-10 animate-float" style="animation-delay: 1.4s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-3/5 right-2/5 w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 0.7s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-4/5 left-1/4 w-16 h-16 object-contain opacity-12 animate-float" style="animation-delay: 1.9s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-4/5 right-1/4 w-14 h-14 object-contain opacity-15 animate-float-delayed" style="animation-delay: 0.4s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/3 left-2/3 w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 2.1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-1/5 right-2/3 w-20 h-20 object-contain opacity-14 animate-float-delayed" style="animation-delay: 1.6s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-3/5 right-1/5 w-14 h-14 object-contain opacity-11 animate-float" style="animation-delay: 0.9s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-2/3 left-3/5 w-16 h-16 object-contain opacity-19 animate-float-delayed" style="animation-delay: 2.2s;" />
-    </div>
     <!-- Hero Section -->
-    <section class="bg-blue-200 relative overflow-hidden py-24">
+    <section class="bg-[#0a0e27] relative overflow-hidden py-32 border-b border-white/5">
       <!-- Animated Background Elements -->
       <div class="absolute inset-0">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-orange-500/30 to-red-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-emerald-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0e27]/80"></div>
       </div>
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center">
           <!-- Hero Content Bar -->
-          <div class="relative mb-8">  
-            <div class="inline-flex items-center px-6 py-3 rounded-full bg-blue-100 border border-blue-200 text-blue-800 mb-6">
-              <div class="w-2 h-2 bg-emerald-500 rounded-full mr-3 animate-pulse"> </div>
-              <span class="text-sm font-semibold tracking-wide uppercase">About Our Company</span>
+          <div class="relative mb-8 transform transition-transform duration-700 hover:scale-105">  
+            <div class="inline-flex items-center px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white mb-6 backdrop-blur-md shadow-2xl">
+              <div class="w-2 h-2 bg-emerald-400 rounded-full mr-3 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"> </div>
+              <span class="text-[11px] font-black tracking-[0.3em] uppercase">Enterprise Overview</span>
             </div>
           </div>
 
-          <h1 class="text-4xl lg:text-6xl font-black text-blue-500 mb-6 leading-tight">
-            About <span class="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Aprati</span>
+          <h1 class="text-6xl lg:text-9xl font-black text-white mb-8 leading-tight tracking-tight drop-shadow-2xl">
+            About <span class="text-blue-400">Aprati</span>
           </h1>
-          <p class="text-xl lg:text-2xl mb-8 text-blue-500 max-w-4xl mx-auto">
-            Discover our story, mission, and unwavering commitment to delivering exceptional food products.
+          <p class="text-2xl lg:text-3xl mb-8 text-white max-w-5xl mx-auto font-medium leading-relaxed drop-shadow-2xl transition-all duration-700">
+            Discover our narrative, our commitment to health innovation, and our unwavering standards in the food industry.
           </p>
         </div>
       </div>
@@ -76,7 +56,7 @@
           @click="openModal(post)"
         >
           <!-- Card -->
-          <div class="bg-white rounded-3xl shadow-lg border border-blue-500 p-1 hover:shadow-xl transition-all duration-500 group-hover:scale-[1.01] overflow-hidden">
+          <div class="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 group-hover:scale-[1.01] overflow-hidden border border-gray-100">
             <!-- Inner Card --> 
             <div class="rounded-2xl overflow-hidden">
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[300px]">
@@ -149,7 +129,7 @@
                   </div>
                   
                   <!-- Title -->
-                  <h3 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                  <h3 class="text-4xl lg:text-5xl font-black text-corporate-dark mb-6 leading-tight tracking-tighter">
                     {{ post.name || post.title }}
                   </h3>
                   
@@ -162,9 +142,9 @@
                   <div class="flex items-center">
                     <button 
                       @click.stop="openModal(post)"
-                      class="group/btn relative inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 transform hover:scale-105 hover:-translate-y-1"
+                      class="group/btn relative inline-flex items-center px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold transition-all duration-300 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/25 transform hover:scale-105 hover:-translate-y-1"
                     >
-                      <span class="relative z-10">View Details</span>
+                      <span class="relative z-10">Corporate Details</span>
                       <svg class="relative z-10 ml-3 w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                       </svg>
@@ -200,17 +180,18 @@
     <!-- Call to Action Section -->
     <div class="bg-gray-100 py-16" v-if="!loading && posts.length > 0">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Experience Our Products?</h2>
-        <p class="text-xl text-gray-600 mb-8">
+        <h2 class="text-4xl lg:text-5xl font-black text-corporate-dark mb-8 leading-none tracking-tighter">Ready to Experience <span class="text-blue-600">Aprati?</span></h2>
+        <div class="w-32 h-1.5 bg-gradient-to-r from-blue-400 to-blue-600 mx-auto mb-10 rounded-full shadow-lg shadow-blue-500/50"></div>
+        <p class="text-xl text-gray-600 mb-12 font-medium">
           Discover our premium food brands and bring quality to your table.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <NuxtLink 
             to="/brands" 
-            class="group relative inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-green-700 to-green-900 text-white font-bold text-lg transition-all duration-300 hover:shadow-xl hover:shadow-green-700/25 transform hover:scale-105"
+            class="group relative inline-flex items-center px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-sm tracking-widest uppercase transition-all duration-300 hover:bg-blue-700 hover:shadow-2xl hover:shadow-blue-500/20 transform hover:-translate-y-1"
           >
             <span class="relative z-10">Explore Our Brands</span>
-            <svg class="relative z-10 ml-3 w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="relative z-10 ml-3 w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
           </NuxtLink>

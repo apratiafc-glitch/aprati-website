@@ -11,9 +11,42 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return \App\Models\Product::where('is_active', true)->paginate(10);
+        $query = \App\Models\Product::with(['brand', 'category', 'variants'])->where('is_active', true);
+
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->has('brand_id') && $request->brand_id) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->has('category_id') && $request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Return structured response as expected by frontend
+        $products = $query->paginate((int) $request->input('per_page', 12));
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'products' => $products->items(),
+                'pagination' => [
+                    'current_page' => $products->currentPage(),
+                    'last_page' => $products->lastPage(),
+                    'total' => $products->total(),
+                    'per_page' => $products->perPage()
+                ]
+            ]
+        ]);
     }
 
     public function indexByBrand($brandSlug)

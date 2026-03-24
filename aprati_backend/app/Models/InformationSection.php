@@ -25,6 +25,6 @@ class InformationSection extends Model
             return $this->image;
         }
 
-        return \Illuminate\Support\Facades\Storage::disk('public')->url(str_replace('/storage/', '', $this->image));
+        return \Illuminate\Support\Facades\Storage::disk('public')->url(str_replace('/storage/', '', $this->image)) . '?v=3';
     }
 }

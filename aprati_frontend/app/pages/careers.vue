@@ -1,51 +1,31 @@
 <template>
   <div class="min-h-screen bg-gray-50 relative overflow-hidden">
-    <!-- Animated Fruit Characters -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-1/4 right-1/6 w-20 h-20 object-contain opacity-18 animate-float-delayed" style="animation-delay: 0.5s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-1/3 left-1/4 w-16 h-16 object-contain opacity-12 animate-float" style="animation-delay: 1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/2 right-1/4 w-16 h-16 object-contain opacity-20 animate-float-delayed" style="animation-delay: 1.5s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-1/6 right-1/3 w-14 h-14 object-contain opacity-16 animate-float" style="animation-delay: 2s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-2/3 left-1/6 w-20 h-20 object-contain opacity-14 animate-float-delayed" style="animation-delay: 0.8s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute bottom-1/4 right-1/6 w-14 h-14 object-contain opacity-15 animate-float" style="animation-delay: 1.2s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-3/4 left-1/3 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1.8s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/5 right-1/5 w-14 h-14 object-contain opacity-13 animate-float" style="animation-delay: 2.3s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-2/5 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 0.3s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-2/5 left-2/5 w-20 h-20 object-contain opacity-10 animate-float" style="animation-delay: 1.4s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-3/5 right-2/5 w-16 h-16 object-contain opacity-16 animate-float-delayed" style="animation-delay: 0.7s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-4/5 left-1/4 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1.9s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-4/5 right-1/4 w-20 h-20 object-contain opacity-15 animate-float-delayed" style="animation-delay: 0.4s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/3 left-2/3 w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 2.1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-1/5 right-2/3 w-14 h-14 object-contain opacity-14 animate-float-delayed" style="animation-delay: 1.6s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-3/5 right-1/5 w-20 h-20 object-contain opacity-11 animate-float" style="animation-delay: 0.9s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-2/3 left-3/5 w-16 h-16 object-contain opacity-19 animate-float-delayed" style="animation-delay: 2.2s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/8 right-3/4 w-14 h-14 object-contain opacity-13 animate-float" style="animation-delay: 1.1s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-1/8 left-3/4 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 0.2s;" />
+    <!-- Subtle Corporate Background Patterns -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="grid-careers" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid-careers)" />
+      </svg>
     </div>
-    <!-- Hero Section -->
-    <section class="bg-blue-200 relative overflow-hidden py-24">
-      <!-- Animated Background Elements -->
+    <!-- Elite Hero Section -->
+    <section class="bg-[#0a0e27] relative overflow-hidden py-40">
+      <!-- Sophisticated Background Elements -->
       <div class="absolute inset-0">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-orange-500/30 to-red-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-corporate-emerald/10 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
       </div>
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center">
-          <!-- Hero Content Bar -->
-          <div class="relative mb-8">  
-            <div class="inline-flex items-center px-6 py-3 rounded-full bg-blue-100 border border-blue-200 text-blue-800 mb-6">
-              <div class="w-2 h-2 bg-emerald-500 rounded-full mr-3 animate-pulse"></div>
-              <span class="text-sm font-semibold tracking-wide uppercase">Career Opportunities</span>
-            </div>
-          </div>
-
-          <h1 class="text-4xl lg:text-6xl font-black text-blue-500 mb-6 leading-tight">
-            Join Our <span class="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Team</span>
+          
+          <h1 class="text-6xl lg:text-9xl font-black text-white mb-8 leading-tight tracking-tight drop-shadow-2xl animate-slide-up">
+            Build Your <span class="text-corporate-gold italic">Legacy</span> With Us
           </h1>
-          <p class="text-xl lg:text-2xl mb-8 text-blue-500 max-w-4xl mx-auto">
-            Build your future with Aprati Food Company and be part of our innovative journey.
+          <p class="text-xl lg:text-3xl text-white/95 max-w-5xl mx-auto font-medium leading-relaxed animate-fade-in animation-delay-300">
+            Join a prestigious team of innovators and leaders shaping the future of global nutrition and wellness.
           </p>
         </div>
       </div>
@@ -93,15 +73,13 @@
         </div>
 
         <!-- Job Cards - Home Page Style -->
-        <!-- Centered Text with Border -->
-        <div class="text-center mb-12">
-          <div class="relative inline-block">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 rounded-2xl blur-sm"></div>
-            <div class="relative bg-white border-2 border-blue-300 rounded-2xl px-8 py-4 shadow-lg">
-              <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                Current Job <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Opportunities</span>
+        <!-- Job Listings Header -->
+        <div class="text-center mb-16">
+          <div class="inline-block relative">
+            <div class="relative px-12 py-8 border-b-4 border-corporate-gold/30">
+              <h2 class="text-4xl lg:text-6xl font-black text-corporate-dark tracking-tight">
+                Current <span class="text-corporate-gold italic">Strategic</span> Positions
               </h2>
-              <p class="text-gray-600 text-lg">Discover your next career move with us</p>
             </div>
           </div>
         </div>
@@ -129,21 +107,13 @@
                       </span>
                     </div>
                     
-                    <!-- Job Title and Position -->
-                    <!-- Centered Text with Border -->
-                    <div class="text-center mb-6">
-                      <div class="relative inline-block">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 rounded-xl blur-sm"></div>
-                        <div class="relative bg-white border-2 border-blue-300 rounded-xl px-6 py-3 shadow-md">
-                          <h3 class="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
-                            <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{{ career.title_job }}</span>
-                          </h3>
-                        </div>
-                      </div>
+                    <!-- Job Title -->
+                    <div class="text-center mb-8">
+                      <h3 class="text-3xl lg:text-4xl font-black text-corporate-dark leading-tight">
+                        {{ career.title_job }}
+                      </h3>
+                      <div class="w-12 h-1 bg-corporate-gold mx-auto mt-4"></div>
                     </div>
-                    <h3 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2 leading-tight" style="display: none;">
-                      {{ career.title_job }}
-                    </h3>
                     <p class="text-xl text-blue-600 font-semibold mb-6">{{ career.position }}</p>
                     
                     <!-- Job Info -->
@@ -166,10 +136,10 @@
                       <button 
                         v-if="career.status === 'active'"
                         @click.stop="viewJobDetails(career)"
-                        class="group/btn relative inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 transform hover:scale-105 hover:-translate-y-1"
+                        class="group/btn relative inline-flex items-center px-10 py-4 rounded-xl bg-corporate-dark text-white font-black text-xs tracking-widest uppercase transition-all duration-300 hover:bg-slate-800 shadow-xl shadow-corporate-dark/10 transform hover:-translate-y-1"
                       >
-                        <span class="relative z-10">Apply Now</span>
-                        <svg class="relative z-10 ml-3 w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="relative z-10">Application Portal</span>
+                        <svg class="relative z-10 ml-3 w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                       </button>
@@ -191,49 +161,37 @@
 
       <!-- Benefits Section -->
       <section class="mt-16">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Why Work With Us?</h2>
-          <p class="text-xl text-gray-600">Benefits and perks of joining our team</p>
+        <div class="text-center mb-16">
+          <h2 class="text-4xl lg:text-5xl font-black text-corporate-dark mb-6">Why Join Aprati Foods?</h2>
+          <p class="text-xl text-slate-500 font-medium max-w-2xl mx-auto">Explore the elite benefits and professional growth opportunities within our global organization.</p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
-          <div class="group text-center bg-white rounded-3xl p-8 shadow-lg border border-blue-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div 
+            v-for="(benefit, index) in benefits" 
+            :key="index"
+            class="group text-center bg-white rounded-3xl p-8 shadow-lg border hover:shadow-xl transition-all duration-300 hover:scale-105"
+            :class="benefit.border"
+          >
+            <div 
+              class="bg-gradient-to-br rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
+              :class="benefit.color"
+            >
               <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="benefit.icon"/>
               </svg>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Competitive Salary</h3>
-            <p class="text-gray-600 leading-relaxed">Industry-leading compensation packages with performance bonuses</p>
-          </div>
-
-          <div class="group text-center bg-white rounded-3xl p-8 shadow-lg border border-emerald-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div class="bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Career Growth</h3>
-            <p class="text-gray-600 leading-relaxed">Professional development opportunities and clear career progression paths</p>
-          </div>
-
-          <div class="group text-center bg-white rounded-3xl p-8 shadow-lg border border-orange-200 hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div class="bg-gradient-to-br from-orange-400 to-orange-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-              <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Great Team</h3>
-            <p class="text-gray-600 leading-relaxed">Work with passionate professionals in a collaborative environment</p>
+            <h3 class="text-2xl font-black text-corporate-dark mb-4">{{ benefit.title }}</h3>
+            <p class="text-slate-600 leading-relaxed font-medium">{{ benefit.description }}</p>
           </div>
         </div>
       </section>
 
       <!-- Call to Action Section -->
-      <div class="bg-gray-100 py-16 mt-16 -mx-4 sm:-mx-6 lg:-mx-8" v-if="!loading && careers.length > 0">
+      <div class="bg-slate-50 py-24 mt-24 border-t border-slate-100 -mx-4 sm:-mx-6 lg:-mx-8" v-if="!loading && careers.length > 0">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Join Our Team?</h2>
-          <p class="text-xl text-gray-600 mb-8">
+          <h2 class="text-4xl lg:text-6xl font-black text-corporate-dark mb-8">Ready to Join Our Team?</h2>
+          <p class="text-xl text-slate-600 mb-12 font-medium leading-relaxed">
             Explore open positions and take the next step in your career journey with us.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -530,7 +488,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                   </svg>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900">Apply for This Position</h3>
+                <h3 class="text-xl font-black text-corporate-dark tracking-tight">Apply for This Position</h3>
               </div>
               
               <!-- Application Success Message -->
@@ -539,7 +497,7 @@
                   <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                   </svg>
-                  <span class="font-semibold text-lg">Application Submitted Successfully!</span>
+                  <span class="font-black text-xl tracking-tight">Application Submitted Successfully!</span>
                 </div>
                 <p class="mt-2 text-sm leading-relaxed">We have received your application and will review it shortly. You will hear from us soon.</p>
               </div>
@@ -709,6 +667,30 @@ const applicationForm = ref({
   cover_letter: '',
   cv_file: null
 })
+
+const benefits = [
+  {
+    title: 'Competitive Salary',
+    description: 'Industry-leading compensation packages with performance bonuses',
+    icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1',
+    color: 'from-blue-400 to-blue-600',
+    border: 'border-blue-200'
+  },
+  {
+    title: 'Career Growth',
+    description: 'Professional development opportunities and clear career progression paths',
+    icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+    color: 'from-emerald-400 to-emerald-600',
+    border: 'border-emerald-200'
+  },
+  {
+    title: 'Great Team',
+    description: 'Work with passionate professionals in a collaborative environment',
+    icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+    color: 'from-orange-400 to-orange-600',
+    border: 'border-orange-200'
+  }
+]
 
 // Check if user is admin - with SSR safety
 const isAdmin = computed(() => {

@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   // Source directory
   srcDir: 'app/',
@@ -35,7 +35,11 @@ export default defineNuxtConfig({
       ],
       link: [
         // Default favicon (will be updated dynamically by plugin)
-        { rel: 'icon', type: 'image/x-icon', href: '/images/web.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/images/web.ico' },
+        // Google Fonts for Luxury Corporate Aesthetic
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap' }
       ]
     }
   },
@@ -44,8 +48,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Use direct API URL (CORS must be configured on backend)
-      apiBase: 'http://127.0.0.1:8000/api',
-      apiBaseUrl: 'http://127.0.0.1:8000',
+      apiBase: process.env.API_BASE_URL ? `${process.env.API_BASE_URL}/api` : 'http://localhost:8000/api',
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8000',
       appName: 'Aprati Foods (Cambodia) Ltd'
     }
   },
@@ -73,7 +77,7 @@ export default defineNuxtConfig({
     // Maps /api/* -> https://sdev.apratifoods.asia/api/*
     devProxy: {
       '/api': {
-        target: 'http://127.0.0.1:8000',
+        target: process.env.API_BASE_URL || 'http://localhost:8000',
         changeOrigin: true,
         secure: false
       }
@@ -82,17 +86,17 @@ export default defineNuxtConfig({
 
   // Development server configuration
   devServer: {
-    port: 3001,
+    port: 3000,
     host: 'localhost'
   },
 
   // Vite configuration
   vite: {
     server: {
-      hmr: {
-        port: 3000,
-        host: 'localhost'
-      }
+      // HMR will use devServer port by default
+    },
+    esbuild: {
+      drop: ['console', 'debugger'],
     }
   },
 

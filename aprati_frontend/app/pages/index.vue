@@ -1,91 +1,94 @@
 <template>
   <div class="min-h-screen bg-white">
     <!-- Multi-Hero Carousel Section - Premium Modern Theme -->
-    <section class="relative h-screen overflow-hidden bg-gray-900">
-      
+    <section class="relative h-screen overflow-hidden bg-black group/hero">
       <!-- Hero Slides Container -->
       <div class="relative h-full">
-        <!-- Individual Hero Slides -->
         <div 
           v-for="(slide, index) in heroSlides" 
           :key="slide.id"
-          class="absolute inset-0 transition-all duration-1000 ease-in-out"
-          :class="currentSlide === index ? 'opacity-100 z-[2]' : 'opacity-0 z-[1]'"
+          class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          :class="currentSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'"
         >
-          <!-- Full Screen Hero Image Background -->
+          <!-- Immersive Background -->
           <div class="absolute inset-0">
             <img 
               :src="slide.image"
               :alt="slide.imageAlt"
-              loading="eager"
-              :fetchpriority="index === 0 ? 'high' : 'low'"
-              class="w-full h-full object-cover animate-slow-zoom origin-center"
+              class="w-full h-full object-cover transition-transform duration-[10s] ease-out scale-100"
+              :class="currentSlide === index ? 'scale-110' : 'scale-100'"
               @error="(e) => handleSlideImageError(e, index)"
             />
-            <!-- Dark Overlay - Removed -->
-            <!-- <div class="absolute inset-0 bg-black/40"></div> -->
-            
-            <!-- Dynamic Color Tint - Removed -->
-            <!-- <div 
-              class="absolute inset-0 mix-blend-overlay opacity-60" 
-              :class="slide.overlayClass"
-            ></div> -->
-            
-            <!-- Gradient Base - Removed -->
-            <!-- <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30"></div> -->
+            <!-- Sophisticated Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent opacity-90"></div>
           </div>
           
-          <!-- Slide Content -->
-          <div class="relative z-10 h-full flex items-center justify-center">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div class="text-center max-w-5xl mx-auto">
-                <!-- Premium Badge -->
-                <div 
-                  class="inline-block mb-6 animate-fade-in-up"
-                  :style="`animation-delay: 200ms;`"
-                >
-                  <span 
-                    class="inline-flex items-center px-5 py-1.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase text-white backdrop-blur-md border border-white/20 shadow-lg"
-                    :class="slide.badgeColor"
+          <!-- Asymmetric Content Layout -->
+          <div class="relative z-20 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center h-full pt-20">
+              <div class="w-full lg:w-3/5 xl:w-1/2">
+                <!-- Staggered Content Animation -->
+                <div class="space-y-8">
+                  <!-- Premium Badge Section -->
+                  <div 
+                    v-if="slide.badge"
+                    class="transition-all duration-700 transform"
+                    :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'"
+                    style="transition-delay: 200ms"
                   >
-                    {{ slide.badge }}
-                  </span>
-                </div>
-                
-                <!-- Modern Hero Title -->
-                <h1 
-                  class="text-5xl sm:text-7xl lg:text-8xl font-bold mb-8 leading-tight tracking-tight text-black"
-                  :class="currentSlide === index ? 'animate-slide-up' : ''"
-                  v-html="slide.title"
-                ></h1>
-                
-                <!-- Elegant Subtitle -->
-                <p 
-                  class="text-2xl sm:text-3xl lg:text-4xl text-gray-900 mb-10 max-w-4xl mx-auto font-light leading-relaxed"
-                  :class="currentSlide === index ? 'animate-fade-in animation-delay-500' : ''"
-                >
-                  {{ slide.subtitle }}
-                </p>
-                
-                <!-- CTA Buttons - Glassmorphism -->
-                <div 
-                  class="flex flex-col sm:flex-row gap-5 justify-center items-center"
-                  :class="currentSlide === index ? 'animate-fade-in animation-delay-700' : ''"
-                >
-                  <NuxtLink 
-                    :to="slide.primaryButtonLink" 
-                    :class="slide.primaryButtonClass"
+                    <div class="inline-flex items-center space-x-3">
+                      <div class="w-12 h-[1px] bg-corporate-gold"></div>
+                      <span class="text-xs font-black tracking-[0.3em] uppercase text-corporate-gold">
+                        {{ slide.badge }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Ultra-Premium Typography Title -->
+                  <h1 
+                    v-if="slide.title"
+                    class="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[1.1] transition-all duration-700 transform"
+                    :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'"
+                    style="transition-delay: 400ms"
+                    v-html="slide.title"
+                  ></h1>
+
+                  <!-- Sophisticated Subtitle -->
+                  <p 
+                    v-if="slide.subtitle"
+                    class="text-lg sm:text-xl text-gray-300 max-w-xl leading-relaxed font-medium transition-all duration-700 transform"
+                    :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'"
+                    style="transition-delay: 600ms"
                   >
-                    <span>{{ slide.primaryButtonText }}</span>
-                    <ArrowRightIcon class="inline-block ml-3 w-5 h-5 transition-transform group-hover:translate-x-1" />
-                  </NuxtLink>
-                  
-                  <NuxtLink 
-                    :to="slide.secondaryButtonLink" 
-                    :class="slide.secondaryButtonClass"
+                    {{ slide.subtitle }}
+                  </p>
+
+                  <!-- Elite CTA Cluster -->
+                  <div 
+                    v-if="slide.primaryButtonText || slide.secondaryButtonText"
+                    class="flex flex-col sm:flex-row gap-6 pt-4 transition-all duration-700 transform"
+                    :class="currentSlide === index ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'"
+                    style="transition-delay: 800ms"
                   >
-                    <span>{{ slide.secondaryButtonText }}</span>
-                  </NuxtLink>
+                    <NuxtLink 
+                      v-if="slide.primaryButtonText"
+                      :to="slide.primaryButtonLink"
+                      class="group relative inline-flex items-center px-10 py-5 bg-white text-corporate-dark font-black text-xs tracking-widest uppercase rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20"
+                    >
+                      <span class="relative z-10">{{ slide.primaryButtonText }}</span>
+                      <div class="absolute inset-0 bg-corporate-gold translate-y-full transition-transform duration-300 group-hover:translate-y-0"></div>
+                      <ArrowRightIcon class="relative z-10 ml-3 w-5 h-5 transition-transform group-hover:translate-x-1 hover:text-white" />
+                    </NuxtLink>
+                    
+                    <NuxtLink 
+                      v-if="slide.secondaryButtonText"
+                      :to="slide.secondaryButtonLink"
+                      class="inline-flex items-center px-10 py-5 bg-white/5 backdrop-blur-xl text-white font-black text-xs tracking-widest uppercase rounded-2xl border border-white/20 transition-all duration-300 hover:bg-white/10 hover:border-corporate-gold group"
+                    >
+                      <span>{{ slide.secondaryButtonText }}</span>
+                      <span class="ml-2 w-1.5 h-1.5 rounded-full bg-corporate-gold opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    </NuxtLink>
+                  </div>
                 </div>
               </div>
             </div>
@@ -93,77 +96,54 @@
         </div>
       </div>
 
-      <!-- Navigation Arrows - Minimalist -->
-      <button 
-        @click="previousSlide"
-        class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-4 border border-white/20 bg-black/20 backdrop-blur-md rounded-full text-white transition-all duration-300 hover:bg-white/20 hover:scale-105 focus:outline-none group hidden md:block"
-        aria-label="Previous slide"
-      >
-        <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-      
-      <button 
-        @click="nextSlide"
-        class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-4 border border-white/20 bg-black/20 backdrop-blur-md rounded-full text-white transition-all duration-300 hover:bg-white/20 hover:scale-105 focus:outline-none group hidden md:block"
-        aria-label="Next slide"
-      >
-        <svg class="w-6 h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      <!-- Navigation Dots - Sleek Lines -->
-      <div class="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-20 flex gap-4">
-        <button
-          v-for="(slide, index) in heroSlides"
-          :key="`dot-${slide.id}`"
-          @click="goToSlide(index)"
-          class="group relative h-1 transition-all duration-300 ease-out"
-          :class="currentSlide === index ? 'w-12 bg-white' : 'w-6 bg-white/40 hover:bg-white/60 hover:w-8'"
-          :aria-label="`Go to slide ${index + 1}`"
-        >
-          <span class="sr-only">Slide {{ index + 1 }}</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Scroll Indicator - Candy Style -->
-    <section class="relative py-8 bg-gradient-to-b from-blue-50 via-white to-blue-50 overflow-hidden">
-      <!-- Floating Fruit Characters - Optimized -->
-      <div class="absolute inset-0 pointer-events-none hidden md:block">
-        <img src="/images/Guava Charactor.png" alt="" loading="lazy" class="absolute top-1/4 left-1/6 w-16 h-16 object-contain opacity-20 animate-float" />
-        <img src="/images/Pineapple Character copy.png" alt="" loading="lazy" class="absolute bottom-1/4 right-1/6 w-16 h-16 object-contain opacity-20 animate-float-delayed" />
-      </div>
-      
-      <div class="flex justify-center animate-bounce">
-        <div class="group relative cursor-pointer">
-          <!-- Gummy Button with Jelly Effect -->
-          <div class="flex flex-col items-center bg-blue-600 px-8 py-4 rounded-full ring-4 ring-white shadow-2xl shadow-blue-500/50 transform transition-all duration-500 hover:scale-110 hover:shadow-[0_0_50px_rgba(59,130,246,0.6)] overflow-hidden">
-            <span class="relative z-10 text-white text-xs tracking-widest uppercase mb-2 font-black">🍬 Scroll Down 🍬</span>
-            <svg class="relative z-10 w-6 h-6 text-white transition-transform group-hover:translate-y-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-            
-            <!-- Glossy Shine -->
-            <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-            
-            <!-- Sparkle on Hover -->
-            <div class="absolute -top-2 -right-2 w-4 h-4 bg-white rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping"></div>
-            <div class="absolute -bottom-2 -left-2 w-4 h-4 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping animation-delay-300"></div>
+      <!-- Vertical Progress Indicator (The Elite Sidebar) -->
+      <div class="absolute right-8 sm:right-12 top-1/2 -translate-y-1/2 z-30 hidden md:block">
+        <div class="flex flex-col gap-12 items-center">
+          <div class="text-white/20 font-black text-xs tracking-widest uppercase vertical-text">
+            Scroll for Excellence
+          </div>
+          <div class="flex flex-col gap-6">
+            <button
+              v-for="(slide, index) in heroSlides"
+              :key="`nav-${slide.id}`"
+              @click="goToSlide(index)"
+              class="group relative flex items-center justify-end"
+            >
+              <span 
+                class="absolute right-10 text-[10px] font-black text-white/40 tracking-widest transition-all duration-300 opacity-0 group-hover:opacity-100 group-hover:right-8"
+                :class="{ 'opacity-100 right-8 text-corporate-gold': currentSlide === index }"
+              >
+                0{{ index + 1 }}
+              </span>
+              <div 
+                class="h-[1px] transition-all duration-500 origin-right"
+                :class="currentSlide === index ? 'w-16 bg-corporate-gold' : 'w-8 bg-white/20 group-hover:w-12 group-hover:bg-white/40'"
+              ></div>
+            </button>
           </div>
         </div>
       </div>
+
+      <!-- Sophisticated Scroll Down Badge -->
+      <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-4 animate-bounce opacity-40">
+        <div class="w-[1px] h-12 bg-gradient-to-b from-transparent to-white/40"></div>
+        <span class="text-[9px] font-black text-white tracking-[0.4em] uppercase">Discovery</span>
+      </div>
     </section>
+
+    <!-- Professional Promotion Banner - Synced with Autoplay -->
+    <PromotionBanner 
+      v-if="promotionBanners.length > 0"
+      :text="promotionBanners[currentPromoSlide].title"
+      :button-text="promotionBanners[currentPromoSlide].button_text"
+      :link="promotionBanners[currentPromoSlide].button_link"
+      class="transition-all duration-1000"
+    />
 
     <!-- Section Removed: New Product Promotion Banner Slider -->
 
-    <!-- Dynamic Promotion Banners Section -->
-    <!-- Dynamic Promotion Banners Section - Full Width Hero Style -->
-    <!-- Dynamic Promotion Banners Section - Candy Glass Theme -->
-    <!-- Dynamic Promotion Banners Section - Premium Editorial Card -->
-    <!-- Dynamic Promotion Banners Section - Cinematic Glass Overlay -->
+
+    <!-- Featured Promotions Section -->
     <section v-if="promotionBanners.length > 0" class="py-12 sm:py-16 lg:py-20 bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Cinematic Card -->
@@ -290,80 +270,47 @@
       </div>
     </section>
 
-    <!-- Information Section (Admin Manageable) -->
-    <section class="relative py-12 sm:py-16 lg:py-24 xl:py-32 bg-gradient-to-b from-white via-blue-500 to-white overflow-hidden">
-      <!-- Floating Fruit Characters - Optimized -->
-      <div class="absolute inset-0 pointer-events-none hidden lg:block">
-        <img src="/images/Plum CHARACTER.png" alt="" loading="lazy" class="absolute top-16 left-12 w-16 h-16 object-contain opacity-15 animate-float" />
-        <img src="/images/Tamarin Character.png" alt="" loading="lazy" class="absolute bottom-16 right-16 w-16 h-16 object-contain opacity-15 animate-float-delayed" />
-        <img src="/images/Orange Charactor.png" alt="" loading="lazy" class="absolute top-1/3 right-1/3 w-14 h-14 object-contain opacity-12 will-change-transform" style="animation-delay: 1.5s;" />
+
+    <!-- Information Section (Corporate Insights) -->
+    <section class="relative py-24 sm:py-32 bg-slate-50 overflow-hidden">
+      <!-- Subtle Professional Background Pattern -->
+      <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
       </div>
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Section Header - Candy Theme -->
-        <div class="mb-20 text-center relative">
-          <div class="inline-block relative mb-6">
-            <span class="inline-block px-8 py-3 text-xs font-black tracking-[0.3em] uppercase bg-blue-600 text-white rounded-full shadow-2xl shadow-blue-500/50 ring-4 ring-white/50">🎉 OUR Information 🎉</span>
+        <!-- Section Header - Professional Theme -->
+        <div class="mb-20 text-center relative animate-fade-in">
+          <div class="inline-block mb-6">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-xs font-black tracking-widest uppercase">
+              Insights & Innovations
+            </span>
           </div>
-          <h2 class="text-5xl lg:text-7xl xl:text-8xl font-black mb-6 tracking-tighter leading-none drop-shadow-xl">
-            <span class="text-blue-600">LATEST</span> <span class="text-blue-700">NEWS</span>
+          <h2 class="text-4xl sm:text-6xl font-display mb-6 tracking-tight text-corporate-dark">
+            Latest <span class="text-corporate-gold italic">Corporate</span> News
           </h2>
-          <div class="w-32 h-2 bg-blue-600 mx-auto mb-8 rounded-full shadow-lg shadow-blue-500/50"></div>
-          <p class="text-3xl lg:text-5xl text-gray-600 max-w-5xl mx-auto font-light leading-snug">
-            Discover the latest updates, news, and innovations from our dynamic ecosystem
+          <div class="w-16 h-1 bg-corporate-gold mx-auto mb-8 rounded-full"></div>
+          <p class="text-xl text-corporate-slate max-w-3xl mx-auto font-medium leading-relaxed">
+            Stay updated with the latest advancements in food science, luxury snack trends, and Aprati's global milestones.
           </p>
         </div>
 
-        <!-- Loading State -->
-        <div v-if="informationLoading" class="text-center py-20">
-          <!-- Circular Orbit Animation -->
-          <div class="relative mx-auto w-72 h-72 mb-12">
-            <!-- Orbit path circle -->
-            <div class="absolute inset-0 rounded-full border-2 border-dashed border-blue-300 opacity-30"></div>
-            
-            <!-- Center logo -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-              <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl animate-pulse">
-                <span class="text-white text-3xl font-bold">A</span>
-              </div>
-            </div>
-            
-            <!-- Spinning characters container -->
-            <div class="absolute inset-0 animate-spin" style="animation-duration: 8s;">
-              <!-- Character 1 - Top -->
-              <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <img src="/images/Grape Character.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-              </div>
-              
-              <!-- Character 2 - Top Right -->
-              <div class="absolute top-[14.6%] right-[14.6%] -translate-x-1/2 -translate-y-1/2">
-                <img src="/images/Orange Charactor.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-              </div>
-              
-              <!-- Character 3 - Right -->
-              <div class="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
-                <img src="/images/Pineapple Character copy.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-              </div>
-              
-              <!-- Character 4 - Bottom Right -->
-              <div class="absolute bottom-[14.6%] right-[14.6%] translate-x-1/2 translate-y-1/2">
-                <img src="/images/Guava Charactor.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-              </div>
-              
-              <!-- Character 5 - Bottom -->
-              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-                <img src="/images/Tamarin Character.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-              </div>
-              
-              <!-- Character 6 - Bottom Left -->
-              <div class="absolute bottom-[14.6%] left-[14.6%] -translate-x-1/2 translate-y-1/2">
-                <img src="/images/Plum CHARACTER.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-              </div>
+        <!-- Loading State - Professional -->
+        <div v-if="informationLoading" class="text-center py-24">
+          <div class="flex justify-center mb-8">
+            <div class="relative w-16 h-16">
+              <div class="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+              <div class="absolute inset-0 rounded-full border-4 border-t-blue-600 animate-spin"></div>
             </div>
           </div>
-          
-          <p class="text-gray-700 text-xl font-semibold animate-pulse">Loading sweet content...</p>
-          <p class="mt-2 text-gray-500 text-sm">Preparing something delicious for you</p>
+          <p class="text-slate-600 text-lg font-bold tracking-wide">Syncing Corporate Insights...</p>
         </div>
 
         <!-- Information Content - Side by Side Layout -->
@@ -529,177 +476,90 @@
       </div>
     </section>
 
-    <!-- Featured Brands Section -->
-    <section class="relative py-8 sm:py-12 lg:py-24 xl:py-32 bg-gradient-to-b from-blue-100 via-white to-blue-50 overflow-hidden scroll-smooth">
-      <!-- Floating Fruit Characters - Hidden on mobile -->
-      <div class="absolute inset-0 pointer-events-none hidden lg:block">
-        <img src="/images/Grape Character.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-        <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-1/6 right-1/6 w-20 h-20 object-contain opacity-15 animate-float-delayed" />
-        <img src="/images/Orange Charactor.png" alt="" class="absolute top-16 left-1/3 w-16 h-16 object-contain opacity-20 animate-float" style="animation-delay: 1s;" />
-        <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-16 right-1/3 w-16 h-16 object-contain opacity-20 animate-float-delayed" style="animation-delay: 1.5s;" />
-        <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/4 right-1/5 w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 0.5s;" />
-        <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-1/4 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 2s;" />
-        <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/3 left-1/2 w-14 h-14 object-contain opacity-14 animate-float" style="animation-delay: 0.8s;" />
-        <img src="/images/Grape Character.png" alt="" class="absolute bottom-1/3 right-1/2 w-14 h-14 object-contain opacity-16 animate-float-delayed" style="animation-delay: 1.3s;" />
-        <img src="/images/Orange Charactor.png" alt="" class="absolute top-1/2 left-1/4 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1.8s;" />
-        <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-1/2 right-1/4 w-14 h-14 object-contain opacity-13 animate-float-delayed" style="animation-delay: 2.3s;" />
-      </div>
-      
-      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
-        <!-- Section Header - Candy Theme -->
-        <div class="text-center mb-8 sm:mb-16 lg:mb-20 relative z-10">
-          <div class="inline-block relative mb-4 sm:mb-6">
-            <span class="inline-block px-4 py-2 sm:px-8 sm:py-3 text-[10px] sm:text-xs font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase bg-gradient-to-r from-blue-600 via-green-700 to-green-800 text-white rounded-full shadow-xl sm:shadow-2xl shadow-green-700/50 ring-2 sm:ring-4 ring-white/50">🏆 OUR BRANDS 🏆</span>
-            <!-- Glossy shine -->
-            <div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-full pointer-events-none"></div>
+    <!-- Our Portfolio Section - Professional Corporate Style -->
+    <section id="brands" class="relative py-24 sm:py-32 bg-white overflow-hidden scroll-smooth">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Section Header -->
+        <div class="text-center mb-20 animate-fade-in text-corporate-dark">
+          <div class="inline-block mb-6">
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-corporate-gold/10 text-corporate-gold text-xs font-black tracking-widest uppercase border border-corporate-gold/20">
+              Brand Integrity
+            </span>
           </div>
-          <h2 class="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-4 sm:mb-6 tracking-tighter leading-none drop-shadow-xl px-4">
-            <span class="bg-gradient-to-r from-blue-600 via-green-700 to-green-800 bg-clip-text text-transparent">OUR <span class="bg-gradient-to-r from-orange-500 via-red-500 to-red-600 bg-clip-text text-transparent">PREMIUM</span> BRANDS</span>
+          <h2 class="text-4xl sm:text-6xl font-display mb-6 tracking-tight leading-none text-corporate-dark">
+            Our <span class="text-corporate-gold italic">Strategic</span> Portfolio
           </h2>
-          <div class="w-20 sm:w-32 h-1.5 sm:h-2 bg-gradient-to-r from-blue-600 via-green-700 to-green-800 mx-auto mb-4 sm:mb-8 rounded-full shadow-lg shadow-green-700/50"></div>
-          <p class="text-3xl lg:text-5xl text-gray-600 max-w-5xl mx-auto font-light leading-snug px-4">
-            Discover our collection of premium quality food brand products
+          <div class="w-16 h-1 bg-corporate-gold mx-auto mb-8 rounded-full"></div>
+          <p class="text-xl text-corporate-slate max-w-3xl mx-auto font-medium leading-relaxed">
+            Discover our diverse range of snacks and health products, developed with a commitment to scientific quality and global consumer wellbeing.
           </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
-          <!-- Loading State -->
-          <div v-if="loading" class="col-span-full text-center py-12">
-            <!-- Circular Orbit Animation -->
-            <div class="relative mx-auto w-72 h-72 mb-12">
-              <!-- Orbit path circle -->
-              <div class="absolute inset-0 rounded-full border-2 border-dashed border-blue-300 opacity-30"></div>
-              
-              <!-- Center logo -->
-              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl animate-pulse">
-                  <span class="text-white text-3xl font-bold">A</span>
-                </div>
-              </div>
-              
-              <!-- Spinning characters container -->
-              <div class="absolute inset-0 animate-spin" style="animation-duration: 8s;">
-                <!-- Character 1 - Top -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <img src="/images/Grape Character.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-                </div>
-                
-                <!-- Character 2 - Top Right -->
-                <div class="absolute top-[14.6%] right-[14.6%] -translate-x-1/2 -translate-y-1/2">
-                  <img src="/images/Orange Charactor.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-                </div>
-                
-                <!-- Character 3 - Right -->
-                <div class="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
-                  <img src="/images/Pineapple Character copy.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-                </div>
-                
-                <!-- Character 4 - Bottom Right -->
-                <div class="absolute bottom-[14.6%] right-[14.6%] translate-x-1/2 translate-y-1/2">
-                  <img src="/images/Guava Charactor.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-                </div>
-                
-                <!-- Character 5 - Bottom -->
-                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-                  <img src="/images/Tamarin Character.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-                </div>
-                
-                <!-- Character 6 - Bottom Left -->
-                <div class="absolute bottom-[14.6%] left-[14.6%] -translate-x-1/2 translate-y-1/2">
-                  <img src="/images/Plum CHARACTER.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-                </div>
+        <!-- Brands Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Loading State Component -->
+          <div v-if="loading" class="col-span-full text-center py-20">
+            <div class="flex justify-center mb-6">
+              <div class="relative w-12 h-12">
+                <div class="absolute inset-0 rounded-full border-4 border-emerald-100"></div>
+                <div class="absolute inset-0 rounded-full border-4 border-t-emerald-600 animate-spin"></div>
               </div>
             </div>
-            
-            <p class="text-gray-700 text-xl font-semibold animate-pulse">Loading awesome brands...</p>
-            <p class="mt-2 text-gray-500 text-sm">Preparing something delicious for you</p>
+            <p class="text-slate-600 font-bold tracking-widest uppercase text-xs">Accessing Portfolio...</p>
           </div>
-
-          <!-- Dynamic Brand Cards - Modern Magazine Style -->
+          <!-- Dynamic Brand Cards -->
           <div v-else-if="dynamicBrands.length > 0" v-for="(brand, index) in dynamicBrands" :key="brand.id" class="group relative">
             <NuxtLink :to="`/brands/${brand.slug}`" class="block">
               <div class="relative bg-white rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden shadow-sm sm:shadow-md lg:shadow-lg hover:shadow-[0_0_30px_rgba(37,99,235,0.3)] transition-all duration-300 active:scale-95 sm:group-hover:scale-[1.02] lg:group-hover:scale-[1.05] border border-blue-200 sm:border-2 hover:border-blue-500">
-                <!-- Brand Cover Image with Parallax Effect -->
-                <div class="relative h-32 sm:h-48 md:h-56 lg:h-64 overflow-hidden">
+                <!-- Brand Cover Image -->
+                <div class="relative h-64 overflow-hidden">
                   <div 
                     v-if="brand.cover_image_url"
-                    class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-125"
-                    :style="`background-image: url('${brand.cover_image_url}');`"
+                    class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
+                    :style="`background-image: url('${brand.cover_image_url}?v=1');`"
                   ></div>
-                  <div v-else class="absolute inset-0" :class="getBrandGradient(brand.slug)"></div>
+                  <div v-else class="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200"></div>
                   
-                  <!-- Candy Gradient Overlays -->
-                  <div class="absolute inset-0 bg-gradient-to-t from-blue-700/90 via-green-600/50 to-transparent"></div>
-                  <div class="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-green-600/30 to-blue-600/30 mix-blend-overlay opacity-70 group-hover:opacity-90 transition-opacity duration-700"></div>
+                  <!-- Professional Overlay -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-corporate-dark/80 via-corporate-dark/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
                   
-                  <!-- Floating Logo Badge - Candy Wrapper -->
-                  <div v-if="brand.logo_url" class="absolute top-2 left-2 sm:top-3 sm:left-3 md:top-4 md:left-4 z-20">
-                    <div class="relative bg-white rounded-lg sm:rounded-xl p-1.5 sm:p-2 md:p-3 shadow-md sm:shadow-lg transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 border border-white sm:border-2">
+                  <!-- Logo Badge -->
+                  <div v-if="brand.logo_url" class="absolute top-6 left-6 z-20">
+                    <div class="bg-white rounded-2xl p-3 shadow-xl border border-white/50 transform transition-transform duration-500 group-hover:scale-105">
                       <img 
-                        :src="brand.logo_url" 
+                        :src="`${brand.logo_url}?v=1`" 
                         :alt="brand.name"
-                        class="h-7 w-7 sm:h-10 sm:w-10 md:h-12 md:w-12 object-contain"
-                        @error="handleBrandLogoError"
-                        @load="handleBrandLogoLoad"
+                        class="h-10 w-10 sm:h-12 sm:w-12 object-contain"
                       >
-                      <!-- Glossy shine -->
-                      <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-transparent rounded-lg sm:rounded-xl pointer-events-none"></div>
                     </div>
                   </div>
-                  
-                  <!-- Candy Badge -->
-                  <div class="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 z-20">
-                    <div class="relative bg-gradient-to-r from-orange-500 via-red-500 to-red-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-full font-black text-[8px] sm:text-[10px] md:text-xs uppercase tracking-wide shadow-md sm:shadow-lg transform transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                      <span class="relative z-10">🎯 {{ brandProducts[brand.id]?.length || 0 }}</span>
-                      <!-- Glossy shine -->
-                      <div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-full pointer-events-none"></div>
+
+                  <!-- Brand Info Overlay -->
+                  <div class="absolute bottom-6 left-6 right-6 z-10 text-white">
+                    <div class="inline-block px-3 py-1 bg-emerald-500/90 backdrop-blur-sm rounded-lg text-[10px] font-black tracking-widest uppercase mb-3">
+                      Partner Company
                     </div>
-                  </div>
-                  
-                  <!-- Brand Title Overlay -->
-                  <div class="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 lg:p-6 z-10">
-                    <div class="transform transition-all duration-300 group-hover:translate-y-[-4px]">
-                      <h3 class="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-black mb-1 sm:mb-2 tracking-tighter leading-none">
-                        <span class="bg-gradient-to-r from-white via-blue-200 to-green-200 bg-clip-text text-transparent drop-shadow-xl">
-                          {{ brand.name }}
-                        </span>
-                      </h3>
-                      
-                      <!-- Animated Underline -->
-                      <div class="h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 via-green-600 to-green-700 rounded-full w-0 group-hover:w-12 sm:group-hover:w-20 transition-all duration-500 shadow-lg shadow-green-600/50"></div>
-                    </div>
+                    <h3 class="text-3xl font-black tracking-tight leading-none mb-2">
+                      {{ brand.name }}
+                    </h3>
+                    <div class="h-1 w-12 bg-emerald-500 rounded-full transform origin-left transition-all duration-500 group-hover:w-20"></div>
                   </div>
                 </div>
                 
-                <!-- Brand Info Card - Candy Wrapper -->
-                <div class="relative bg-blue-50 p-2.5 sm:p-4 md:p-5 lg:p-6">
-                  <!-- Description - Hidden on mobile, shown on tablet+ -->
-                  <p class="hidden sm:block text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-4 md:mb-5 line-clamp-2 font-medium">
-                    {{ brand.description || 'Premium quality products with innovative solutions crafted with excellence.' }}
+                <!-- Brand Info Section -->
+                <div class="p-8 bg-white">
+                  <p class="text-slate-600 text-sm leading-relaxed mb-8 line-clamp-2 font-medium">
+                    {{ brand.description || 'Premium quality products developed with nutritional excellence and consumer wellbeing at the core.' }}
                   </p>
                   
-                  <!-- Action Bar -->
-                  <div class="flex flex-col items-center gap-2 sm:gap-3 pt-2 sm:pt-3 md:pt-4 border-t border-green-200 sm:border-t-2">
-                    <!-- Stats - Stacked on mobile -->
-                    <div class="flex items-center gap-1.5 sm:gap-2 w-full justify-center">
-                      <div class="flex items-center gap-1 sm:gap-1.5 bg-white/70 px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-full">
-                        <div class="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-600 rounded-full animate-pulse shadow-md shadow-green-600/50"></div>
-                        <span class="text-[8px] sm:text-[10px] font-black text-green-700 uppercase tracking-wide">Active</span>
-                      </div>
-                      <div class="h-3 w-px bg-green-300"></div>
-                      <span class="text-[8px] sm:text-[10px] font-black text-gray-600 uppercase tracking-wide bg-white/70 px-1.5 sm:px-2 py-1 sm:py-1.5 rounded-full">
-                        🏭 Est. {{ brand.established_year || '2024' }}
-                      </span>
+                  <div class="flex items-center justify-between pt-6 border-t border-slate-50">
+                    <div class="flex items-center gap-2">
+                      <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                      <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Active Partner</span>
                     </div>
-                    
-                    <!-- CTA Button - Gummy Style -->
-                    <div class="relative w-full">
-                      <div class="flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-blue-600 via-green-700 to-green-800 rounded-full font-black text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wide text-white shadow-md sm:shadow-lg transform transition-all duration-200 active:scale-95 sm:group-hover:scale-105 overflow-hidden">
-                        <span class="relative z-10">🚀 Explore</span>
-                        <ArrowRightIcon class="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform group-hover:translate-x-2 relative z-10" />
-                        <!-- Glossy shine -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-                      </div>
+                    <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm group/btn">
+                      <span>Learn More</span>
+                      <ArrowRightIcon class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
                     </div>
                   </div>
                 </div>
@@ -737,38 +597,32 @@
       <div class="absolute inset-0 pointer-events-none hidden lg:block">
         <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-12 animate-float" />
         <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-1/6 right-1/6 w-20 h-20 object-contain opacity-12 animate-float-delayed" />
-        <img src="/images/Grape Character.png" alt="" class="absolute top-16 left-12 w-16 h-16 object-contain opacity-15 animate-float" style="animation-delay: 0.5s;" />
-        <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-16 right-12 w-16 h-16 object-contain opacity-15 animate-float-delayed" style="animation-delay: 1s;" />
-        <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/4 right-1/5 w-16 h-16 object-contain opacity-13 animate-float" style="animation-delay: 1.5s;" />
-        <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-1/4 left-1/5 w-16 h-16 object-contain opacity-14 animate-float-delayed" style="animation-delay: 2s;" />
-        <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/3 left-1/3 w-14 h-14 object-contain opacity-11 animate-float" style="animation-delay: 0.7s;" />
-        <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-1/3 right-1/3 w-14 h-14 object-contain opacity-12 animate-float-delayed" style="animation-delay: 1.2s;" />
-        <img src="/images/Grape Character.png" alt="" class="absolute top-1/2 right-1/4 w-14 h-14 object-contain opacity-10 animate-float" style="animation-delay: 1.7s;" />
-        <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-1/2 left-1/4 w-14 h-14 object-contain opacity-11 animate-float-delayed" style="animation-delay: 2.2s;" />
+        
       </div>
 
       <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         <!-- Section Header -->
-        <div class="text-center mb-8 sm:mb-16 lg:mb-20 relative z-10">
+        <div class="text-center mb-12 sm:mb-16 lg:mb-20 relative z-10">
           <div class="inline-block relative mb-4 sm:mb-6">
-            <span class="inline-block px-4 py-2 sm:px-8 sm:py-3 text-[10px] sm:text-xs font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-full shadow-xl sm:shadow-2xl shadow-black/50 ring-2 sm:ring-4 ring-white/50">🌟 FEATURED PRODUCTS 🌟</span>
-            <div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-full pointer-events-none"></div>
+            <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-corporate-gold text-corporate-dark text-[10px] sm:text-xs font-black tracking-[0.2em] uppercase shadow-lg border border-white/20">
+              Featured Innovations
+            </span>
           </div>
-          <h2 class="text-3xl sm:text-5xl lg:text-7xl xl:text-8xl font-black mb-4 sm:mb-6 tracking-tighter leading-none px-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 3px 3px 6px rgba(0,0,0,0.2);">
-            <span class="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">DISCOVER OUR</span> <span class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent">PRODUCTS</span>
+          <h2 class="text-4xl sm:text-6xl lg:text-7xl font-display mb-6 tracking-tight leading-none text-corporate-dark">
+            Discover Our <span class="text-corporate-gold italic">Premium</span> Selection
           </h2>
-          <div class="w-20 sm:w-32 h-1.5 sm:h-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 mx-auto mb-4 sm:mb-8 rounded-full shadow-lg shadow-black/50"></div>
-          <p class="text-3xl lg:text-5xl text-gray-600 max-w-5xl mx-auto font-light leading-snug px-4">
-            Explore our carefully curated selection of premium products
+          <div class="w-20 sm:w-32 h-1 bg-corporate-gold mx-auto mb-8 rounded-full"></div>
+          <p class="text-xl sm:text-2xl text-corporate-slate max-w-3xl mx-auto font-medium leading-relaxed">
+            Explore our carefully curated selection of elite nutritional solutions and artisanal snacks.
           </p>
         </div>
 
-        <!-- Products Grid -->
-        <div v-if="featuredProducts.length > 0" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
-          <NuxtLink v-for="product in featuredProducts" :key="product.id" :to="`/products/${product.slug}`" class="group relative">
-            <div class="relative bg-white rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden shadow-sm sm:shadow-md lg:shadow-lg hover:shadow-[0_0_30px_rgba(59,130,246,0.25)] transition-all duration-300 active:scale-95 sm:group-hover:scale-[1.02] lg:group-hover:scale-[1.05] border border-blue-100 hover:border-blue-300 cursor-pointer">
+        <!-- Products Grid - Clean Corporate Style -->
+        <div v-if="featuredProducts.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <NuxtLink v-for="product in featuredProducts" :key="product.id" :to="`/products/${product.slug}`" class="group block">
+            <div class="relative bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1">
               <!-- Product Image -->
-              <div class="relative h-36 sm:h-48 md:h-52 lg:h-56 overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+              <div class="relative h-64 overflow-hidden bg-slate-50">
                 <img 
                   v-if="product.images && product.images.length > 0"
                   :src="getImageUrl(product.images[0])" 
@@ -778,63 +632,36 @@
                   @error="handleProductImageError"
                 />
                 <div v-else class="absolute inset-0 flex items-center justify-center">
-                  <div class="text-6xl opacity-20">📦</div>
+                  <BriefcaseIcon class="w-12 h-12 text-slate-200" />
                 </div>
                 
-                <!-- Gradient Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent"></div>
-                
-                <!-- Badge -->
-                <div class="absolute top-2 right-2 sm:top-3 sm:right-3 z-10">
-                  <div class="relative bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full font-black text-[8px] sm:text-[10px] uppercase tracking-wide shadow-md">
-                    <span class="relative z-10">New</span>
-                    <div class="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-full pointer-events-none"></div>
+                <!-- Status Badge -->
+                <div class="absolute top-4 right-4 z-10">
+                  <div class="px-3 py-1 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-lg">
+                    Premium
                   </div>
                 </div>
               </div>
               
               <!-- Product Info -->
-              <div class="p-2.5 sm:p-4 lg:p-5">
-                <!-- Brand Name -->
-                <div class="text-[8px] sm:text-[10px] md:text-xs font-black text-blue-600 uppercase tracking-wide mb-1">
-                  {{ product.brand_name || 'Premium' }}
+              <div class="p-6">
+                <div class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2">
+                  {{ product.brand_name || 'Nutrition' }}
                 </div>
                 
-                <!-- Product Name -->
-                <h3 class="text-xs sm:text-sm md:text-base lg:text-lg font-black text-gray-900 mb-1 sm:mb-1.5 line-clamp-2 leading-tight">
+                <h3 class="text-xl font-black text-slate-900 mb-3 line-clamp-1 group-hover:text-blue-600 transition-colors">
                   {{ product.name }}
                 </h3>
                 
-                <!-- Description - Hidden on mobile, shown on larger screens -->
-                <p class="hidden sm:block text-xs md:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2 leading-relaxed">
-                  {{ product.description || 'High quality product crafted with excellence.' }}
+                <p class="text-slate-500 text-sm mb-6 line-clamp-2 font-medium leading-relaxed">
+                  {{ product.description || 'Scientifically developed for optimal nutrition and superior taste quality.' }}
                 </p>
                 
-                <!-- Action Buttons -->
-                <div class="flex flex-col gap-1.5 sm:gap-2 md:gap-2.5">
-                  <!-- Order Now Button (Primary) - Telegram Bot -->
-                  <a 
-                    href="https://t.me/aprati_order_bot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    @click.stop
-                    class="group/btn relative inline-flex items-center justify-center w-full px-2 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-black text-[9px] sm:text-xs md:text-sm uppercase tracking-wide rounded-full transition-all duration-200 active:scale-95 sm:hover:shadow-lg sm:hover:shadow-orange-500/50 overflow-hidden"
-                  >
-                    <svg class="mr-1 sm:mr-1.5 w-3 h-3 sm:w-3.5 sm:h-3.5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                    <span class="relative z-10">Order Now</span>
-                    <div class="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-full pointer-events-none"></div>
-                  </a>
-                  
-                  <!-- View Details Button (Secondary) -->
-                  <NuxtLink 
-                    :to="`/products/${product.slug}`"
-                    class="group/btn relative inline-flex items-center justify-center w-full px-2 py-1.5 sm:px-4 sm:py-2 md:px-5 md:py-2.5 bg-white border border-blue-500 sm:border-2 text-blue-600 font-bold text-[9px] sm:text-xs md:text-sm uppercase tracking-wide rounded-full transition-all duration-200 active:scale-95 sm:hover:bg-blue-50 sm:hover:shadow-md"
-                  >
-                    <span class="relative z-10">Details</span>
-                    <ArrowRightIcon class="ml-1 sm:ml-1.5 w-2.5 h-2.5 sm:w-3 sm:h-3 transition-transform group-hover/btn:translate-x-1 relative z-10" />
-                  </NuxtLink>
+                <div class="flex items-center justify-between pt-6 border-t border-slate-50">
+                  <span class="text-blue-600 font-black text-sm uppercase tracking-widest">Enquire</span>
+                  <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <ArrowRightIcon class="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -855,221 +682,159 @@
       </div>
     </section>
 
-    <!-- Call to Action - Candy Theme -->
-    <section class="relative py-32 lg:py-40 bg-gradient-to-b from-blue-50 via-white to-blue-100 overflow-hidden">
-      <!-- Candy Stripes -->
-      <div class="absolute inset-0">
-        <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-orange-500 via-red-500 to-green-700 animate-pulse"></div>
-        <div class="absolute bottom-0 left-0 w-full h-3 bg-gradient-to-r from-green-700 via-blue-600 to-orange-500"></div>
-      </div>
-      
-      <!-- Floating Fruit Characters -->
+    <!-- Professional Call to Action Section -->
+    <section class="relative py-32 lg:py-40 bg-white overflow-hidden scroll-smooth">
+      <!-- Sophisticated Background Elements -->
       <div class="absolute inset-0 pointer-events-none">
-        <img src="/images/Grape Character.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-        <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-1/6 right-1/6 w-20 h-20 object-contain opacity-15 animate-float-delayed" />
-        <img src="/images/Orange Charactor.png" alt="" class="absolute top-1/4 right-1/5 w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 0.5s;" />
-        <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-1/4 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 1s;" />
-        <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/3 left-1/3 w-14 h-14 object-contain opacity-14 animate-float" style="animation-delay: 1.5s;" />
-        <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-1/3 right-1/3 w-14 h-14 object-contain opacity-16 animate-float-delayed" style="animation-delay: 2s;" />
-        <img src="/images/Grape Character.png" alt="" class="absolute top-1/2 right-1/4 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 0.8s;" />
-        <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-1/2 left-1/4 w-14 h-14 object-contain opacity-13 animate-float-delayed" style="animation-delay: 1.3s;" />
+        <div class="absolute top-0 left-0 w-full h-px bg-slate-100"></div>
+        <div class="absolute bottom-0 left-0 w-full h-px bg-slate-100"></div>
+        <div class="absolute -right-64 -top-64 w-128 h-128 bg-blue-50/50 rounded-full blur-3xl"></div>
+        <div class="absolute -left-64 -bottom-64 w-128 h-128 bg-emerald-50/50 rounded-full blur-3xl"></div>
       </div>
       
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <!-- Candy Badge -->
-        <div class="inline-block relative mb-8">
-          <span class="inline-block px-8 py-3 text-xs font-black tracking-[0.3em] uppercase bg-gradient-to-r from-orange-500 via-red-500 to-blue-600 text-white rounded-full shadow-2xl shadow-red-500/50 ring-4 ring-white/50">🚀 READY TO GET STARTED 🚀</span>
-          <!-- Glossy shine -->
-          <div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-full pointer-events-none"></div>
+        <!-- Corporate Badge -->
+        <div class="inline-block mb-8">
+          <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-black tracking-widest uppercase border border-slate-200">
+            Strategic Growth
+          </span>
         </div>
         
-        <!-- Title with Candy Gradients -->
-        <h2 class="text-5xl lg:text-7xl xl:text-8xl font-black mb-8 leading-none tracking-tighter drop-shadow-xl">
-          <span class="bg-gradient-to-r from-blue-600 via-green-700 to-green-800 bg-clip-text text-transparent">Ready to Discover <span class="bg-gradient-to-r from-orange-500 via-red-500 to-red-600 bg-clip-text text-transparent">Our Advanced Platform?</span></span>
+        <!-- Professional Title -->
+        <h2 class="text-5xl lg:text-8xl font-display mb-10 leading-none tracking-tight text-corporate-dark">
+          Experience <span class="text-corporate-gold italic">Excellence</span> In Every Detail
         </h2>
         
-        <div class="w-32 h-2 bg-gradient-to-r from-orange-500 via-red-500 to-blue-600 mx-auto mb-12 rounded-full shadow-lg shadow-red-500/50"></div>
+        <div class="w-24 h-1.5 bg-corporate-gold mx-auto mb-12 rounded-full"></div>
         
         <!-- Subtitle -->
-        <p class="text-3xl lg:text-5xl text-gray-600 mb-16 max-w-5xl mx-auto font-light leading-snug">
-          Explore premium features and high-quality food products for the modern world
+        <p class="text-2xl lg:text-3xl text-corporate-slate mb-20 max-w-5xl mx-auto font-medium leading-relaxed">
+          Partner with a global leader in the food and health segments. Explore our unwavering commitment to quality, nutritional integrity, and premium innovation.
         </p>
         
-        <!-- CTA Buttons - Gummy Style -->
-        <div class="flex flex-col sm:flex-row gap-6 justify-center mb-20">
+        <!-- CTA Buttons - Professional Style -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center mb-24">
           <NuxtLink 
             to="/brands" 
-            class="group relative px-12 py-6 bg-gradient-to-r from-orange-500 via-red-500 to-blue-600 text-white font-black text-sm tracking-wider uppercase transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-red-500/60 rounded-full ring-4 ring-white/50 overflow-hidden"
+            class="group px-12 py-5 bg-blue-600 text-white font-black text-sm tracking-widest uppercase rounded-2xl transition-all duration-300 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/20 flex items-center justify-center"
           >
-            <span class="relative z-10">🍭 Explore Our Brands</span>
-            <ArrowRightIcon class="inline-block ml-3 w-5 h-5 transition-transform group-hover:translate-x-2 relative z-10" />
-            <!-- Glossy shine -->
-            <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-            <!-- Jelly wobble -->
-            <div class="absolute inset-0 bg-gradient-to-br from-orange-300/30 to-red-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full animate-pulse"></div>
+            <span>Explore Portfolio</span>
+            <ArrowRightIcon class="ml-3 w-5 h-5 transition-transform group-hover:translate-x-1" />
           </NuxtLink>
           
           <NuxtLink 
             to="/contact" 
-            class="group relative px-12 py-6 bg-gradient-to-r from-green-700 to-green-900 text-white font-black text-sm tracking-wider uppercase transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-green-700/60 rounded-full ring-4 ring-white/50 overflow-hidden"
+            class="group px-12 py-5 bg-white text-corporate-dark font-black text-sm tracking-widest uppercase rounded-2xl border-2 border-slate-200 transition-all duration-300 hover:bg-slate-50 hover:border-slate-300 flex items-center justify-center"
           >
-            <span class="relative z-10">📧 Contact Us</span>
-            <!-- Glossy shine -->
-            <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-            <!-- Jelly wobble -->
-            <div class="absolute inset-0 bg-gradient-to-br from-green-600/30 to-green-800/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full animate-pulse"></div>
+            <span>Strategic Inquiry</span>
           </NuxtLink>
         </div>
         
-        <!-- Stats Row - Red Bull Style -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-12 max-w-4xl mx-auto">
+        <!-- Corporate Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-12 max-w-4xl mx-auto pt-20 border-t border-slate-100">
           <div class="text-center">
-            <div class="text-5xl lg:text-6xl font-black mb-3 bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">{{ dynamicBrands.length }}</div>
-            <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">Premium Brands</div>
+            <div class="text-4xl lg:text-5xl font-black mb-3 text-corporate-dark">{{ dynamicBrands.length }}</div>
+            <div class="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">Premium Brands</div>
           </div>
           <div class="text-center">
-            <div class="text-5xl lg:text-6xl font-black mb-3 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">24/7</div>
-            <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">Support</div>
+            <div class="text-4xl lg:text-5xl font-black mb-3 text-blue-600">Global</div>
+            <div class="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">Standards</div>
           </div>
           <div class="text-center">
-            <div class="text-5xl lg:text-6xl font-black mb-3 bg-gradient-to-r from-green-700 to-green-800 bg-clip-text text-transparent">100%</div>
-            <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">Quality</div>
+            <div class="text-4xl lg:text-5xl font-black mb-3 text-emerald-600">100%</div>
+            <div class="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">Integrity</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Information Detail Modal - Clean Modern Style -->
-    <div v-if="showInfoModal" class="fixed inset-0 z-50 overflow-y-auto">
+    <!-- Information Detail Modal - Professional Corporate Style -->
+    <div v-if="showInfoModal" class="fixed inset-0 z-[100] overflow-y-auto">
       <!-- Background Overlay -->
-      <div class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" @click="closeInfoModal"></div>
+      <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity" @click="closeInfoModal"></div>
       
       <!-- Modal Container -->
       <div class="flex min-h-screen items-center justify-center p-4 sm:p-6">
-        <div class="relative w-full max-w-5xl mx-auto">
+        <div class="relative w-full max-w-5xl mx-auto animate-modal-enter">
           <!-- Modal Card -->
-          
-            
-            <!-- Modal Header Section - Candy Theme -->
-            <div class="relative bg-gradient-to-r from-orange-500 via-red-500 to-blue-600">
-              <!-- Header Content -->
-              <div class="relative z-10 p-8 lg:p-12">
-                <!-- Close Button - Gummy Style -->
-                <button 
-                  @click="closeInfoModal"
-                  class="absolute top-8 right-8 w-14 h-14 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/50 transition-all duration-500 group border-4 border-white/40 hover:scale-110 hover:rotate-90 ring-4 ring-white/30"
-                >
-                  <svg class="w-7 h-7 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
-
-                <!-- Status Badge - Candy Wrapper -->
-                <div class="inline-flex items-center px-6 py-3 rounded-full bg-white/30 backdrop-blur-sm border-2 border-white/50 text-white text-sm font-black mb-6 ring-4 ring-white/20">
-                  <div class="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse shadow-lg shadow-green-400/50"></div>
-                  <span class="uppercase tracking-wide">📰 Information Details</span>
+          <div class="bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-white/20">
+            <!-- Modal Header Section -->
+            <div class="relative bg-corporate-dark py-12 px-8 lg:px-16 overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-emerald-600/20"></div>
+              
+              <!-- Content -->
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-8">
+                  <div class="inline-flex items-center px-3 py-1 bg-white/10 backdrop-blur-sm rounded-lg text-white/80 text-[10px] font-black uppercase tracking-widest border border-white/10">
+                    Corporate Briefing
+                  </div>
+                  <button 
+                    @click="closeInfoModal"
+                    class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
+                  >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
                 </div>
 
-                <!-- Title -->
-                <h2 class="text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+                <h2 class="text-4xl lg:text-6xl font-black text-white mb-4 tracking-tight leading-none">
                   {{ selectedInfo?.title }}
                 </h2>
-
-                <!-- Decorative Line -->
-                <div class="w-20 h-1 bg-white/30 rounded-full mb-4"></div>
-
-                <!-- Subtitle -->
-                <p class="text-lg text-white/90 font-medium max-w-2xl leading-relaxed">
-                  Detailed information and insights
+                <div class="w-16 h-1 bg-emerald-500 rounded-full mb-6"></div>
+                <p class="text-xl text-blue-100/80 font-medium max-w-2xl leading-relaxed">
+                  Strategic insights and development updates regarding our health and food sector initiatives.
                 </p>
               </div>
             </div>
 
-            <!-- Modal Content Section -->
-            <div class="relative bg-white">
-              <!-- Content Area -->
-              <div class="p-8 lg:p-12">
-                <!-- Image Section -->
-                <div v-if="selectedInfo?.image_url" class="mb-10">
-                  <div class="relative rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                    <img 
-                      :src="getImageUrl(selectedInfo.image_url)" 
-                      :alt="selectedInfo.title"
-                      class="w-full h-100 object-cover"
-                      @error="handleImageError"
-                    />
-                    
-                    <!-- Floating Badge -->
-                    <div class="absolute top-4 left-4">
-                      <div class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span class="text-sm font-medium text-gray-700">Featured Image</span>
-                      </div>
-                    </div>
-                  </div>
+            <!-- Modal Body -->
+            <div class="p-8 lg:p-16">
+              <div v-if="selectedInfo?.image_url" class="mb-12 relative rounded-3xl overflow-hidden shadow-lg aspect-video bg-slate-50">
+                <img 
+                  :src="getImageUrl(selectedInfo.image_url)" 
+                  :alt="selectedInfo.title"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <div class="prose prose-slate prose-lg max-w-none">
+                <div class="text-slate-600 leading-relaxed font-medium" v-html="selectedInfo?.description"></div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="mt-16 pt-12 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-8">
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                  <NuxtLink 
+                    v-if="selectedInfo?.button_text && selectedInfo?.button_link"
+                    :to="selectedInfo.button_link"
+                    @click="closeInfoModal"
+                    class="px-8 py-3 bg-blue-600 text-white font-black text-xs tracking-widest uppercase rounded-xl hover:bg-blue-700 transition-all flex items-center justify-center"
+                  >
+                    {{ selectedInfo.button_text }}
+                    <ArrowRightIcon class="ml-2 w-4 h-4" />
+                  </NuxtLink>
+                  <button 
+                    @click="closeInfoModal"
+                    class="px-8 py-3 bg-slate-100 text-slate-600 font-black text-xs tracking-widest uppercase rounded-xl hover:bg-slate-200 transition-all"
+                  >
+                    Return to Home
+                  </button>
                 </div>
 
-                <!-- Content Typography -->
-                <div class="prose prose-gray prose-lg max-w-none">
-                  <div class="space-y-4">
-                    <div class="text-gray-700 leading-relaxed text-lg" v-html="selectedInfo?.description"></div>
+                <div class="flex items-center gap-6">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Verified Content</span>
                   </div>
-                </div>
-
-                <!-- Action Section -->
-                <div class="mt-10 pt-8 border-t border-gray-100">
-                  <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                    <!-- Action Buttons - Gummy Candy Style -->
-                    <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                      <!-- Primary Action -->
-                      <NuxtLink 
-                        v-if="selectedInfo?.button_text && selectedInfo?.button_link"
-                        :to="selectedInfo.button_link"
-                        @click="closeInfoModal"
-                        class="group relative inline-flex items-center px-10 py-5 rounded-full bg-gradient-to-r from-orange-500 via-red-500 to-blue-600 text-white font-black text-lg transition-all duration-500 hover:shadow-2xl hover:shadow-red-500/50 transform hover:scale-110 ring-4 ring-white/50 overflow-hidden"
-                      >
-                        <span class="relative z-10">{{ selectedInfo.button_text }}</span>
-                        <ArrowRightIcon class="ml-3 w-5 h-5 transition-transform group-hover:translate-x-2 relative z-10" />
-                        <!-- Glossy shine -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-                      </NuxtLink>
-                      
-                      <!-- Close Button - Gummy Style -->
-                      <button 
-                        @click="closeInfoModal"
-                        class="group relative inline-flex items-center px-10 py-5 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 font-black text-lg transition-all duration-500 hover:shadow-xl transform hover:scale-110 border-4 border-gray-300 ring-4 ring-gray-200/50 overflow-hidden"
-                      >
-                        <svg class="mr-3 w-5 h-5 transition-transform group-hover:rotate-180 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                        <span class="relative z-10">Close</span>
-                        <!-- Glossy shine -->
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-                      </button>
-                    </div>
-
-                    <!-- Info Stats -->
-                    <div class="flex items-center space-x-6 text-gray-500">
-                      <div class="flex items-center space-x-2">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span class="text-sm font-medium">OUR Information</span>
-                      </div>
-                      <div class="flex items-center space-x-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                        </svg>
-                        <span class="text-sm font-medium">Detail View</span>
-                      </div>
-                    </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Aprati Foods</span>
                   </div>
                 </div>
               </div>
-
-              <!-- Bottom Candy Stripe -->
-              <div class="h-3 bg-gradient-to-r from-orange-500 via-red-500 to-green-700 animate-pulse"></div>
             </div>
-         
+          </div>
         </div>
       </div>
     </div>
@@ -1085,6 +850,8 @@ import {
   ChartBarIcon,
   UserGroupIcon
 } from '@heroicons/vue/24/outline'
+import PromotionBanner from '@/components/home/PromotionBanner.vue'
+import NutritionWellness from '@/components/home/NutritionWellness.vue'
 // Access runtime config for API URL
 const runtimeConfig = useRuntimeConfig()
 
@@ -1139,16 +906,14 @@ const isPaused = ref(false)
 const heroSlidesLoading = ref(true)
 
 // Hero slides configuration (loaded from backend API)
+// Hero slides configuration (loaded from backend API with professional defaults)
 const heroSlides = useState('hero-slides', () => [])
 const newProducts = useState('home-new-products', () => [])
 const newProductsLoading = ref(true)
 
 // Load hero slides from backend API
 const loadHeroSlides = async () => {
-  if (heroSlides.value.length > 0) {
-    heroSlidesLoading.value = false
-    return
-  }
+  // Always attempt to fetch fresh admin data, but keep elite fallbacks if API fails
   heroSlidesLoading.value = true
   try {
     // Use configured API base URL
@@ -1176,96 +941,58 @@ const loadHeroSlides = async () => {
             imageUrl = `${runtimeConfig.public.apiBaseUrl}${imageUrl}`
           }
           
+          const cleanText = (text, type = 'title') => {
+            if (!text) return ''
+            const placeholders = [
+              'Welcome to Aprati', 
+              'កាន់តែពិសេសជាមួយរូបរាងថ្មី', 
+              'Premium quality products', 
+              'Taste the difference',
+              'Explore',
+              'Join Us',
+              'The Art of Snacking',
+              'Corporate Excellence'
+            ]
+            if (placeholders.some(p => text.includes(p))) return ''
+            return text
+          }
+
           return {
             id: slide.id,
             image: imageUrl || 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=1920&h=1080&fit=crop',
             imageAlt: slide.image_alt || slide.title || 'Aprati Foods',
-            overlayClass: slide.overlay_class || 'bg-blue-600/20',
-            badge: slide.badge_text || 'Welcome to Aprati Foods',
-            badgeColor: slide.badge_color || 'bg-blue-600/80',
-            title: slide.title || 'Welcome to Aprati',
-            subtitle: slide.subtitle || 'Premium quality products',
-            primaryButtonText: slide.primary_button_text || 'Explore',
+            overlayClass: slide.overlay_class || 'bg-corporate-dark/40',
+            badge: cleanText(slide.badge_text),
+            badgeColor: slide.badge_color || 'bg-corporate-gold text-corporate-dark',
+            title: cleanText(slide.title),
+            subtitle: cleanText(slide.subtitle),
+            primaryButtonText: cleanText(slide.primary_button_text),
             primaryButtonLink: slide.primary_button_link || '/brands',
-            primaryButtonClass: slide.primary_button_class || 'group relative px-8 py-4 bg-white text-gray-900 font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-blue-500 hover:text-white rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1',
-            secondaryButtonText: slide.secondary_button_text || 'Join Us',
-            secondaryButtonLink: slide.secondary_button_link || '/careers',
-            secondaryButtonClass: slide.secondary_button_class || 'group relative px-8 py-4 border border-white text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 rounded-lg backdrop-blur-sm'
+            primaryButtonClass: slide.primary_button_class || 'group relative px-10 py-5 bg-white text-corporate-dark font-black text-xs tracking-widest uppercase rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden',
+            secondaryButtonText: cleanText(slide.secondary_button_text),
+            secondaryButtonLink: slide.secondary_button_link || '/about',
+            secondaryButtonClass: slide.secondary_button_class || 'inline-flex items-center px-10 py-5 bg-white/5 backdrop-blur-xl text-white font-black text-xs tracking-widest uppercase rounded-2xl border border-white/20 transition-all duration-300 hover:bg-white/10'
           }
         })
         
         console.log(`✅ Loaded ${heroSlides.value.length} active hero slides`)
       } else {
-        console.warn('⚠️ No active hero slides found, using defaults')
-        useDefaultHeroSlides()
+        console.warn('⚠️ No active hero slides found')
+        heroSlides.value = []
       }
     } else {
-      console.warn('⚠️ Invalid hero slides response format, using defaults')
-      useDefaultHeroSlides()
+      console.warn('⚠️ Invalid hero slides response format')
+      heroSlides.value = []
     }
   } catch (error) {
     console.error('❌ Failed to load hero slides:', error)
-    console.log('📦 Using default hero slides as fallback')
-    // Use default slides on error
-    useDefaultHeroSlides()
+    heroSlides.value = []
   } finally {
     heroSlidesLoading.value = false
   }
 }
 
-// Default/fallback slides if API fails
-const useDefaultHeroSlides = () => {
-  heroSlides.value = [
-    {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=1920&h=1080&fit=crop',
-      imageAlt: 'Aprati Food Company',
-      overlayClass: 'bg-blue-600/20',
-      badge: 'Welcome to Aprati Foods',
-      badgeColor: 'bg-blue-600/80',
-      title: 'Welcome to <span class="text-blue-600">Aprati</span> Food Company',
-      subtitle: 'Leading Cambodia\'s food industry with premium quality products and innovation.',
-      primaryButtonText: 'Explore Brands',
-      primaryButtonLink: '/brands',
-      primaryButtonClass: 'group relative px-8 py-4 bg-white text-gray-900 font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-blue-500 hover:text-white rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1',
-      secondaryButtonText: 'Join Our Team',
-      secondaryButtonLink: '/careers',
-      secondaryButtonClass: 'group relative px-8 py-4 border border-white text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 rounded-lg backdrop-blur-sm'
-    },
-    {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=1920&h=1080&fit=crop',
-      imageAlt: 'Frutati Fruit Candies',
-      overlayClass: 'bg-green-600/20',
-      badge: 'Discover Frutati',
-      badgeColor: 'bg-green-600/80',
-      title: 'Delicious <span class="text-green-600">Frutati</span> Candies',
-      subtitle: 'Natural fruit flavors in every bite - Perfect sweetness for everyone.',
-      primaryButtonText: 'Shop Now',
-      primaryButtonLink: '/brands/frutati',
-      primaryButtonClass: 'group relative px-8 py-4 bg-white text-gray-900 font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-green-500 hover:text-white rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1',
-      secondaryButtonText: 'Learn More',
-      secondaryButtonLink: '/brands',
-      secondaryButtonClass: 'group relative px-8 py-4 border border-white text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 rounded-lg backdrop-blur-sm'
-    },
-    {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=1920&h=1080&fit=crop',
-      imageAlt: 'Mocati Premium Chocolate',
-      overlayClass: 'bg-orange-600/20',
-      badge: 'Indulge in Mocati',
-      badgeColor: 'bg-orange-600/80',
-      title: 'Premium <span class="text-orange-600">Mocati</span> Chocolate',
-      subtitle: 'Rich chocolate experience with every piece - Pure indulgence awaits.',
-      primaryButtonText: 'View Collection',
-      primaryButtonLink: '/brands/mocati',
-      primaryButtonClass: 'group relative px-8 py-4 bg-white text-gray-900 font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-orange-500 hover:text-white rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1',
-      secondaryButtonText: 'Contact Us',
-      secondaryButtonLink: '/contact',
-      secondaryButtonClass: 'group relative px-8 py-4 border border-white text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:bg-white/10 hover:-translate-y-1 rounded-lg backdrop-blur-sm'
-    }
-  ]
-}
+// Carousel navigation
 
 // Carousel functions
 const nextSlide = () => {
@@ -1322,15 +1049,7 @@ const handleSlideImageError = (event, index) => {
   // Keep the gradient background
 }
 
-// Hero content data (admin manageable) - DEPRECATED, kept for backward compatibility
-const heroContent = useState('home-hero-content', () => ({
-  title: 'Welcome to <span class="text-orange-400">Aprati</span> Food Company',
-  subtitle: 'Enhanced introduction website with advanced product search, career management, and comprehensive inventory system.',
-  primary_button_text: 'Explore Our Brands',
-  primary_button_link: '/brands',
-  secondary_button_text: 'Join Our Team',
-  secondary_button_link: '/careers'
-}))
+// Hero state
 
 // Duplicate functions removed - using loadBrands() and loadBrandProducts() instead
 
@@ -1402,10 +1121,6 @@ const loadInitialData = () => {
 
 // Load information sections from API (admin manageable) with cache-busting
 const loadInformationSections = async () => {
-  if (informationSections.value.length > 0) {
-    informationLoading.value = false
-    return
-  }
   informationLoading.value = true
   try {
     const apiUrl = `${runtimeConfig.public.apiBase}/information-sections`
@@ -1440,27 +1155,26 @@ const loadInformationSections = async () => {
 // Helper function to construct image URLs
 const getImageUrl = (imagePath) => {
   if (!imagePath) return '/images/default-info.jpg'
-  if (imagePath.startsWith('data:')) return imagePath // Data URIs (base64 encoded images)
   
-  // Handle full URLs
-  if (imagePath.startsWith('http')) {
-    let fixedUrl = imagePath
-    // Fix localhost URLs to use production URL
-    if (fixedUrl.includes('127.0.0.1:8000') || fixedUrl.includes('localhost')) {
-      fixedUrl = fixedUrl.replace(/http:\/\/127\.0\.0\.1:8000/g, runtimeConfig.public.apiBaseUrl)
-      fixedUrl = fixedUrl.replace(/http:\/\/localhost:8000/g, runtimeConfig.public.apiBaseUrl)
-      fixedUrl = fixedUrl.replace(/http:\/\/localhost/g, runtimeConfig.public.apiBaseUrl)
-    }
-    return fixedUrl
+  // Data URIs (base64 encoded images)
+  if (imagePath.startsWith('data:')) return imagePath 
+  
+  // Add cache buster to break lingering 404 cross-origin cache
+  const appendCacheBuster = (url) => {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}bust=2`;
   }
+
+  // If it's already a full URL, return as is with buster
+  if (imagePath.startsWith('http')) return appendCacheBuster(imagePath)
   
   // Handle relative storage paths
   if (imagePath.startsWith('/storage/')) {
-    return `${runtimeConfig.public.apiBaseUrl}${imagePath}`
+    return appendCacheBuster(`${runtimeConfig.public.apiBaseUrl}${imagePath}`)
   }
   
   // If it's just a filename, assume it's in storage/information-sections/
-  return `${runtimeConfig.public.apiBaseUrl}/storage/information-sections/${imagePath}`
+  return appendCacheBuster(`${runtimeConfig.public.apiBaseUrl}/storage/information-sections/${imagePath}`)
 }
 
 // Load brands data from API
@@ -1614,10 +1328,6 @@ const maxNewProductsDisplay = ref(12)
 
 // Load NEW products for "New Arrivals" section
 const loadNewProducts = async () => {
-  if (newProducts.value.length > 0) {
-    newProductsLoading.value = false
-    return
-  }
   newProductsLoading.value = true
   try {
     const response = await $fetch(`${runtimeConfig.public.apiBase}/products?sort_by=created_at&sort_direction=desc&per_page=${maxNewProductsDisplay.value}`, {
@@ -1646,13 +1356,7 @@ let promoAutoplayInterval = null
 // Load promotion banners
 // Load promotion banners
 const loadPromotionBanners = async () => {
-    if (promotionBanners.value.length > 0) {
-        bannerLoading.value = false
-        if (promotionBanners.value.length > 1) {
-            startPromoAutoplay()
-        }
-        return
-    }
+    // Always attempt to fetch fresh admin data, but keep elite fallbacks if API fails
     bannerLoading.value = true
     try {
         const response = await $fetch(`${runtimeConfig.public.apiBase}/promotion-banners`)
@@ -1775,9 +1479,9 @@ const loadHeroImage = async () => {
     console.error('Failed to load hero image:', error)
     // Use defaults on error
     heroImage.value = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgdmlld0JveD0iMCAwIDgwMCA2MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjNjM2NmYxIi8+Cjx0ZXh0IHg9IjQwMCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPkFwcmF0aSBGb29kIENvbXBhbnk8L3RleHQ+Cjwvc3ZnPgo='
-    heroImageAlt.value = 'Aprati Food Company'
+    heroImageAlt.value = 'Aprati Foods (Cambodia) Ltd'
     heroImageTitle.value = 'Premium Quality'
-    heroImageDescription.value = 'Fresh Food Products'
+    heroImageDescription.value = 'Fresh Food Products'  
   }
 }
 
@@ -2142,6 +1846,12 @@ const closeInfoModal = () => {
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
 }
 
 .line-clamp-3 {

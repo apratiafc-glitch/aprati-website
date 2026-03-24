@@ -2,30 +2,13 @@
   <header 
     class="fixed w-full top-0 z-50 transition-all duration-300"
     :class="{ 
-      'bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 backdrop-blur-md shadow-2xl shadow-blue-500/50': isScrolled, 
-      'bg-gradient-to-br from-blue-500/98 via-blue-600/98 to-indigo-700/98 backdrop-blur-sm shadow-lg shadow-blue-400/30': !isScrolled 
+      'bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 shadow-2xl shadow-blue-900/40': isScrolled, 
+      'bg-gradient-to-r from-blue-800 via-blue-700 to-blue-900 border-b border-white/10': !isScrolled 
     }"
   >
-    <!-- Top accent stripe -->
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 shadow-sm shadow-blue-400/50"></div>
-    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-700 via-indigo-800 to-blue-900 opacity-60"></div>
+    <!-- Professional Top Accent -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-blue-600 shadow-sm shadow-blue-500/20"></div>
     
-    <!-- Subtle glow overlay -->
-    <div class="absolute inset-0 bg-gradient-to-b from-white/5 via-transparent to-transparent pointer-events-none"></div>
-    
-    <!-- Floating Fruit Characters -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <img src="/images/Grape Character.png" alt="" class="absolute w-8 h-8 object-contain opacity-15 animate-float" style="left: 5%; top: 20%;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute w-8 h-8 object-contain opacity-15 animate-float-delayed" style="left: 15%; top: 60%; animation-delay: 1s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute w-6 h-6 object-contain opacity-12 animate-float" style="left: 25%; top: 30%; animation-delay: 0.5s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute w-7 h-7 object-contain opacity-14 animate-float-delayed" style="left: 35%; top: 70%; animation-delay: 1.5s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute w-6 h-6 object-contain opacity-10 animate-float" style="left: 45%; top: 25%; animation-delay: 2s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute w-7 h-7 object-contain opacity-13 animate-float-delayed" style="left: 55%; top: 65%; animation-delay: 0.8s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute w-6 h-6 object-contain opacity-11 animate-float" style="left: 65%; top: 35%; animation-delay: 1.2s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute w-8 h-8 object-contain opacity-15 animate-float-delayed" style="left: 75%; top: 50%; animation-delay: 1.8s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute w-7 h-7 object-contain opacity-12 animate-float" style="left: 85%; top: 40%; animation-delay: 0.3s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute w-6 h-6 object-contain opacity-10 animate-float-delayed" style="left: 95%; top: 55%; animation-delay: 2.2s;" />
-    </div>
     
     <nav class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16 sm:h-20 md:h-24">
@@ -533,28 +516,6 @@ watch(mobileMenuOpen, (newValue) => {
 </script>
 
 <style scoped>
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px);
-  }
-  25% {
-    transform: translateY(-15px) translateX(8px);
-  }
-  50% {
-    transform: translateY(-10px) translateX(-8px);
-  }
-  75% {
-    transform: translateY(-20px) translateX(5px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float 8s ease-in-out infinite;
-}
 
 .slide-down-enter-active,
 .slide-down-leave-active {

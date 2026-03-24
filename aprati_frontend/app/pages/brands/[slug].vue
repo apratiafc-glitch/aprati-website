@@ -1,129 +1,20 @@
 <template>
   <div class="min-h-screen bg-gray-50 relative overflow-hidden">
-    <!-- Animated Fruit Characters - Hidden on mobile -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none z-5 hidden lg:block">
-      <img src="/images/Grape Character.png" alt="" class="absolute top-[5%] left-[8%] w-20 h-20 object-contain opacity-18 animate-float" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-[8%] right-[10%] w-20 h-20 object-contain opacity-20 animate-float-delayed" style="animation-delay: 0.5s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-[12%] left-[18%] w-16 h-16 object-contain opacity-15 animate-float" style="animation-delay: 0.8s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-[15%] right-[15%] w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1.2s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-[20%] left-[12%] w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 0.3s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-[25%] right-[12%] w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 1.5s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-[30%] left-[22%] w-16 h-16 object-contain opacity-14 animate-float" style="animation-delay: 0.7s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-[35%] right-[18%] w-16 h-16 object-contain opacity-19 animate-float-delayed" style="animation-delay: 1.8s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-[40%] left-[15%] w-20 h-20 object-contain opacity-13 animate-float" style="animation-delay: 1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-[45%] right-[20%] w-20 h-20 object-contain opacity-17 animate-float-delayed" style="animation-delay: 1.4s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-[50%] left-[10%] w-14 h-14 object-contain opacity-14 animate-float" style="animation-delay: 0.4s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-[55%] right-[10%] w-20 h-20 object-contain opacity-20 animate-float-delayed" style="animation-delay: 2s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-[60%] left-[25%] w-16 h-16 object-contain opacity-16 animate-float" style="animation-delay: 1.6s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-[65%] right-[25%] w-14 h-14 object-contain opacity-18 animate-float-delayed" style="animation-delay: 2.2s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-[70%] left-[35%] w-16 h-16 object-contain opacity-15 animate-float" style="animation-delay: 0.9s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-[75%] right-[35%] w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 1.1s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-[80%] left-[28%] w-14 h-14 object-contain opacity-13 animate-float" style="animation-delay: 1.9s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-[85%] right-[28%] w-20 h-20 object-contain opacity-19 animate-float-delayed" style="animation-delay: 1.3s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-[90%] left-[32%] w-20 h-20 object-contain opacity-17 animate-float" style="animation-delay: 0.6s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-[10%] right-[32%] w-16 h-16 object-contain opacity-16 animate-float-delayed" style="animation-delay: 2.1s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-[8%] left-[22%] w-20 h-20 object-contain opacity-18 animate-float" style="animation-delay: 1.7s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-[12%] right-[22%] w-16 h-16 object-contain opacity-14 animate-float-delayed" style="animation-delay: 0.8s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-[18%] left-[42%] w-16 h-16 object-contain opacity-16 animate-float" style="animation-delay: 0.9s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-[22%] right-[42%] w-20 h-20 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1.6s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-[28%] left-[48%] w-14 h-14 object-contain opacity-15 animate-float" style="animation-delay: 0.5s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-[32%] right-[48%] w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 1.9s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-[38%] left-[52%] w-20 h-20 object-contain opacity-14 animate-float" style="animation-delay: 1.2s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-[42%] right-[52%] w-14 h-14 object-contain opacity-19 animate-float-delayed" style="animation-delay: 0.7s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-[48%] left-[38%] w-16 h-16 object-contain opacity-13 animate-float" style="animation-delay: 2.1s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-[52%] right-[38%] w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 1.4s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-[58%] left-[45%] w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 0.6s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-[62%] right-[45%] w-14 h-14 object-contain opacity-15 animate-float-delayed" style="animation-delay: 1.8s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-[68%] left-[55%] w-20 h-20 object-contain opacity-17 animate-float" style="animation-delay: 1.1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-[72%] right-[55%] w-16 h-16 object-contain opacity-14 animate-float-delayed" style="animation-delay: 0.9s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-[78%] left-[62%] w-14 h-14 object-contain opacity-19 animate-float" style="animation-delay: 2.3s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-[82%] right-[62%] w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 1.5s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute bottom-[15%] left-[58%] w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 0.8s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-[20%] right-[58%] w-20 h-20 object-contain opacity-15 animate-float-delayed" style="animation-delay: 2.2s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-[25%] left-[68%] w-14 h-14 object-contain opacity-17 animate-float" style="animation-delay: 1.3s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-[30%] right-[68%] w-16 h-16 object-contain opacity-13 animate-float-delayed" style="animation-delay: 0.4s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-[35%] left-[72%] w-20 h-20 object-contain opacity-16 animate-float" style="animation-delay: 2s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-[40%] right-[72%] w-14 h-14 object-contain opacity-19 animate-float-delayed" style="animation-delay: 1.7s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute bottom-[45%] left-[78%] w-16 h-16 object-contain opacity-14 animate-float" style="animation-delay: 1s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-[50%] right-[78%] w-20 h-20 object-contain opacity-18 animate-float-delayed" style="animation-delay: 2.4s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-[15%] left-[65%] w-16 h-16 object-contain opacity-16 animate-float" style="animation-delay: 0.7s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-[25%] right-[65%] w-14 h-14 object-contain opacity-15 animate-float-delayed" style="animation-delay: 1.6s;" />
+    <!-- Subtle Corporate Floating Orbs -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 left-10 w-96 h-96 bg-corporate-gold/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
     </div>
-    
-    <!-- Full Page Animated Background - Candy & Jelly - Hidden on mobile -->
-    <div class="fixed inset-0 pointer-events-none z-0 hidden lg:block">
-      <!-- Large Floating Candy Orbs -->
-      <div class="absolute inset-0 opacity-20">
-        <div class="absolute top-10 left-10 w-96 h-96 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute top-1/4 right-1/6 w-80 h-80 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full blur-3xl animate-float-delayed"></div>
-        <div class="absolute bottom-1/4 left-1/4 w-72 h-72 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full blur-3xl animate-float-slow"></div>
-        <div class="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-r from-yellow-300 to-yellow-400 rounded-full blur-3xl animate-float animation-delay-500"></div>
-        <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-r from-green-300 to-green-400 rounded-full blur-3xl animate-float-delayed animation-delay-700"></div>
-        <div class="absolute top-1/3 right-1/3 w-88 h-88 bg-gradient-to-r from-red-300 to-red-400 rounded-full blur-3xl animate-float-slow animation-delay-300"></div>
-      </div>
-      
-      <!-- Bouncing Candy Circles Full Page -->
-      <div class="absolute inset-0 opacity-25">
-        <div class="absolute top-20 left-1/5 w-10 h-10 bg-pink-400 rounded-full animate-bounce shadow-xl"></div>
-        <div class="absolute top-1/4 right-1/5 w-12 h-12 bg-purple-400 rounded-full animate-bounce animation-delay-400 shadow-xl"></div>
-        <div class="absolute top-1/3 left-1/3 w-8 h-8 bg-blue-400 rounded-full animate-bounce animation-delay-700 shadow-xl"></div>
-        <div class="absolute top-1/2 right-1/4 w-14 h-14 bg-yellow-400 rounded-full animate-bounce animation-delay-300 shadow-xl"></div>
-        <div class="absolute top-2/3 left-1/6 w-10 h-10 bg-green-400 rounded-full animate-bounce animation-delay-900 shadow-xl"></div>
-        <div class="absolute top-3/4 right-1/6 w-12 h-12 bg-red-400 rounded-full animate-bounce animation-delay-500 shadow-xl"></div>
-        <div class="absolute bottom-20 left-1/4 w-9 h-9 bg-orange-400 rounded-full animate-bounce animation-delay-1000 shadow-xl"></div>
-        <div class="absolute bottom-40 right-1/3 w-11 h-11 bg-pink-300 rounded-full animate-bounce animation-delay-400 shadow-xl"></div>
-      </div>
-      
-      <!-- Wiggling Jelly Shapes Full Page -->
-      <div class="absolute inset-0 opacity-30">
-        <div class="absolute top-24 left-1/4 w-16 h-20 bg-gradient-to-br from-pink-300 to-pink-400 rounded-2xl rotate-12 animate-wiggle animation-delay-300 shadow-lg"></div>
-        <div class="absolute top-1/3 right-1/5 w-14 h-18 bg-gradient-to-br from-purple-300 to-purple-400 rounded-2xl -rotate-12 animate-wiggle animation-delay-700 shadow-lg"></div>
-        <div class="absolute top-1/2 left-1/6 w-18 h-22 bg-gradient-to-br from-blue-300 to-blue-400 rounded-2xl rotate-45 animate-wiggle animation-delay-500 shadow-lg"></div>
-        <div class="absolute top-2/3 right-1/4 w-16 h-20 bg-gradient-to-br from-yellow-300 to-yellow-400 rounded-2xl -rotate-45 animate-wiggle animation-delay-1000 shadow-lg"></div>
-        <div class="absolute bottom-32 left-1/3 w-14 h-18 bg-gradient-to-br from-green-300 to-green-400 rounded-2xl rotate-12 animate-wiggle animation-delay-400 shadow-lg"></div>
-        <div class="absolute bottom-48 right-1/6 w-16 h-20 bg-gradient-to-br from-red-300 to-red-400 rounded-2xl -rotate-12 animate-wiggle animation-delay-900 shadow-lg"></div>
-      </div>
-      
-      <!-- Candy Emoji Animations Full Page -->
-      <div class="absolute inset-0 opacity-25">
-        <!-- Scattered throughout full page -->
-        <div class="absolute top-16 left-1/6 text-5xl animate-float animation-delay-300">🍬</div>
-        <div class="absolute top-24 right-1/8 text-4xl animate-spin animation-delay-700">🍭</div>
-        <div class="absolute top-32 left-1/4 text-6xl animate-pulse animation-delay-500">🍮</div>
-        <div class="absolute top-40 right-1/5 text-5xl animate-bounce animation-delay-900">🍡</div>
-        <div class="absolute top-48 left-1/3 text-4xl animate-wiggle animation-delay-400">🍰</div>
-        <div class="absolute top-56 right-1/4 text-5xl animate-float animation-delay-1000">🍬</div>
-        
-        <div class="absolute top-1/4 left-1/8 text-4xl animate-bounce animation-delay-300">🍭</div>
-        <div class="absolute top-1/3 right-1/6 text-6xl animate-wiggle animation-delay-700">🍮</div>
-        <div class="absolute top-1/3 left-2/5 text-5xl animate-spin animation-delay-500">🍡</div>
-        <div class="absolute top-1/3 right-2/5 text-4xl animate-float animation-delay-1000">🍰</div>
-        
-        <div class="absolute top-1/2 left-1/10 text-5xl animate-wiggle animation-delay-500">🍬</div>
-        <div class="absolute top-1/2 right-1/10 text-4xl animate-float animation-delay-300">🍭</div>
-        <div class="absolute top-1/2 left-1/2 text-6xl animate-spin animation-delay-700">🍮</div>
-        <div class="absolute top-1/2 right-1/3 text-5xl animate-pulse animation-delay-1000">🍡</div>
-        
-        <div class="absolute top-2/3 left-1/5 text-6xl animate-float animation-delay-700">🍰</div>
-        <div class="absolute top-2/3 right-1/5 text-5xl animate-spin animation-delay-300">🍬</div>
-        <div class="absolute top-3/4 left-1/4 text-4xl animate-pulse animation-delay-1000">🍭</div>
-        <div class="absolute top-3/4 right-1/4 text-5xl animate-bounce animation-delay-500">🍮</div>
-        
-        <div class="absolute bottom-32 left-1/6 text-5xl animate-spin animation-delay-400">🍡</div>
-        <div class="absolute bottom-40 right-1/6 text-4xl animate-pulse animation-delay-700">🍰</div>
-        <div class="absolute bottom-48 left-1/3 text-6xl animate-bounce animation-delay-300">🍬</div>
-        <div class="absolute bottom-56 right-1/3 text-5xl animate-wiggle animation-delay-1000">🍭</div>
-        <div class="absolute bottom-24 left-2/5 text-4xl animate-float animation-delay-500">🍮</div>
-        <div class="absolute bottom-28 right-2/5 text-5xl animate-spin animation-delay-900">🍡</div>
-        
-        <!-- Extra scattered density -->
-        <div class="absolute top-1/5 left-3/4 text-4xl animate-float-slow animation-delay-300">🍰</div>
-        <div class="absolute top-2/5 right-3/4 text-5xl animate-bounce animation-delay-700">🍬</div>
-        <div class="absolute bottom-1/5 left-1/8 text-6xl animate-wiggle animation-delay-500">🍭</div>
-        <div class="absolute bottom-2/5 right-1/8 text-4xl animate-pulse animation-delay-1000">🍮</div>
-        <div class="absolute top-1/6 left-4/5 text-5xl animate-spin animation-delay-400">🍡</div>
-        <div class="absolute bottom-1/6 right-4/5 text-6xl animate-float animation-delay-900">🍰</div>
-      </div>
+    <!-- Subtle Corporate Background Patterns -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="grid-brand" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid-brand)" />
+      </svg>
     </div>
 
     <!-- Loading State -->
@@ -276,7 +167,7 @@
             @error="handleCoverError"
           >
           <!-- Rainbow Candy Gradient Overlay -->
-          <div class="absolute inset-0 bg-gradient-to-br from-blue-400/30 via-blue-500/20 to-blue-600/30"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-blue-800/20 to-blue-950/40"></div>
         </div>
         
         <!-- Fallback gradient background if no cover image -->
@@ -301,15 +192,13 @@
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div class="text-center">
-            <!-- Candy Wrapper Badge -->
+            <!-- Enterprise Badge -->
             <div class="relative mb-8">
               <div class="inline-block relative">
-                <div class="relative px-8 py-4 text-xs font-black tracking-[0.3em] uppercase bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-full shadow-xl" style="text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);">
-                  <span class="relative z-10">🍬 Brand Details 🍬</span>
+                <div class="relative px-8 py-4 text-[10px] font-black tracking-[0.4em] uppercase bg-corporate-gold text-corporate-dark rounded-full shadow-xl">
+                  <span class="relative z-10">Strategic Portfolio Insights</span>
                   <!-- Glossy shine -->
                   <div class="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-full pointer-events-none"></div>
-                  <!-- Sparkle -->
-                  <div class="absolute -top-2 -right-2 w-6 h-6 bg-white rounded-full animate-ping"></div>
                 </div>
               </div>
             </div>
@@ -326,21 +215,28 @@
               </div>
             </div>
 
-            <h1 class="text-6xl lg:text-8xl font-black text-white mb-6 leading-none tracking-tighter" style="text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 2px 6px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);">
-              {{ brand.name }}
-            </h1>
-            <div class="w-32 h-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-700 mx-auto mb-8 rounded-full shadow-lg shadow-blue-500/50"></div>
-            <p class="text-xl lg:text-2xl mb-8 text-white max-w-4xl mx-auto font-medium" style="text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(0, 0, 0, 0.3);">
-              {{ brand.description || 'Premium quality products with innovative solutions.' }}
-            </p>
+            <!-- Hero Content -->
+            <div class="text-center">
+              <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-corporate-gold/10 border border-corporate-gold/20 text-corporate-gold mb-8 animate-fade-in">
+                <span class="text-[10px] font-black tracking-[0.2em] uppercase">Private Label Selection</span>
+              </div>
+
+              <h1 class="text-6xl lg:text-9xl font-black text-white mb-8 leading-tight tracking-tight drop-shadow-2xl">
+                {{ brand.name }} 
+              </h1>
+              <div class="w-32 h-1.5 bg-corporate-gold mx-auto mb-10 rounded-full shadow-lg shadow-corporate-gold/20"></div>
+              <p class="text-2xl lg:text-4xl text-white max-w-5xl mx-auto font-medium leading-relaxed mb-12 drop-shadow-2xl">
+                A masterclass in {{ brand.name.toLowerCase() }} craftsmanship and nutritional innovation.
+              </p>
+            </div>
 
             <!-- Established Year and Website - Candy Style -->
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <div v-if="brand.established_year" class="relative inline-flex items-center px-6 py-3 rounded-full bg-white/20 backdrop-blur-sm text-white text-sm font-black tracking-wider uppercase shadow-lg" style="text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);">
+              <div v-if="brand.established_year" class="relative inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-black tracking-[0.1em] uppercase shadow-lg" style="text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                🎂 Est. {{ brand.established_year }}
+                Est. {{ brand.established_year }}
                 <div class="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-full pointer-events-none"></div>
               </div>
 
@@ -416,17 +312,26 @@
                 <div class="flex flex-col justify-center p-8 lg:p-12 lg:col-span-4 lg:order-1">
                   <!-- Candy Badge -->
                   <div class="mb-6">
-                    <span class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs font-black tracking-wider uppercase shadow-lg">
-                      <div class="w-2 h-2 bg-white rounded-full mr-3 animate-pulse"></div>
-                      🍬 Brand Story 🍬
+                    <span class="inline-flex items-center px-6 py-3 rounded-full bg-corporate-dark text-white text-[10px] font-black tracking-wider uppercase shadow-lg">
+                      <div class="w-2 h-2 bg-corporate-gold rounded-full mr-3 animate-pulse"></div>
+                      Brand Identity
                     </span>
                   </div>
                   
                   <!-- Title - Bold Candy Style -->
-                  <h3 class="text-4xl lg:text-5xl font-black mb-6 leading-none tracking-tighter">
-                    <span class="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">About</span> <span class="text-gray-900">{{ brand.name }}</span>
-                  </h3>
-                  <div class="w-24 h-1.5 bg-gradient-to-r from-blue-400 to-blue-600 mb-6 rounded-full shadow-lg shadow-blue-500/50"></div>
+                  <div class="text-center mb-24 relative">
+                    <div class="inline-block">
+                      <div class="relative px-16 py-10 border-b-2 border-corporate-gold/30">
+                        <h2 class="text-4xl lg:text-6xl font-black text-corporate-dark leading-tight">
+                          The <span class="text-corporate-gold italic">Portfolio</span> Collection
+                        </h2>
+                        <div class="absolute -bottom-1 left-0 w-24 h-1 bg-corporate-gold"></div>
+                      </div>
+                    </div>
+                    <p class="mt-8 text-xl text-corporate-slate max-w-2xl mx-auto font-medium uppercase tracking-widest">
+                      Exploring global standards of excellence in every product.
+                    </p>
+                  </div>
                   
                   <!-- Description -->
                   <div class="prose prose-gray prose-lg max-w-none text-gray-600 leading-relaxed mb-8">
@@ -504,12 +409,12 @@
             <div class="flex justify-between items-center mb-12">
               <div>
                 <div class="inline-block mb-4">
-                  <span class="inline-block px-6 py-3 text-xs font-black tracking-[0.3em] uppercase bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white rounded-full shadow-lg">
-                    🍬 Product Collection 🍬
+                  <span class="inline-block px-6 py-3 text-[10px] font-black tracking-[0.3em] uppercase bg-corporate-dark text-white rounded-full shadow-lg">
+                    Product Portfolio
                   </span>
                 </div>
                 <h2 class="text-4xl lg:text-5xl font-black mb-3 leading-none tracking-tighter">
-                  <span class="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">{{ brand.name }}</span> <span class="text-gray-900">Products</span>
+                  <span class="text-corporate-dark">{{ brand.name }}</span> <span class="text-gray-900">Catalogue</span>
                 </h2>
                 <div class="w-32 h-1.5 bg-gradient-to-r from-blue-400 to-blue-600 mb-3 rounded-full shadow-lg shadow-blue-500/50"></div>
                 <p class="text-lg text-gray-600 font-medium">Discover our premium product collection</p>
@@ -697,16 +602,14 @@
         <div class="mt-16 text-center">
           <NuxtLink 
             to="/brands" 
-            class="group relative inline-flex items-center px-12 py-6 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-black text-sm tracking-wider uppercase transition-all duration-500 hover:scale-110 hover:shadow-xl rounded-full overflow-hidden"
+            class="group relative inline-flex items-center px-12 py-6 bg-corporate-dark text-white font-black text-xs tracking-widest uppercase transition-all duration-500 hover:scale-110 hover:shadow-xl rounded-full overflow-hidden"
           >
             <svg class="mr-3 h-5 w-5 transition-transform group-hover:-translate-x-2 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            <span class="relative z-10">🍭 Explore All Brands</span>
+            <span class="relative z-10">Explore All Brands</span>
             <!-- Glossy shine -->
-            <div class="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-full pointer-events-none"></div>
-            <!-- Jelly wobble -->
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-300/30 to-blue-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full animate-pulse"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-full pointer-events-none"></div>
           </NuxtLink>
         </div>
       </div>
@@ -858,7 +761,6 @@
                       </div>
 
                       <div class="flex flex-col">
-                        <span class="text-sm font-medium text-gray-500 mb-1">Status</span>
                         <span class="text-sm text-green-700 bg-green-100 px-3 py-2 rounded-lg">Active Product</span>
                       </div>
                     </div>

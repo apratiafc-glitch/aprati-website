@@ -163,6 +163,42 @@
                 @input="markAsChanged"
               >
             </div>
+            <!-- Business Hours Section -->
+            <div class="md:col-span-2 mt-4 pt-4 border-t border-gray-100">
+              <h4 class="text-sm font-semibold text-gray-900 mb-4">Business Hours</h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Mon - Fri</label>
+                  <input
+                    v-model="formData.contact_info.business_hours_mon_fri"
+                    type="text"
+                    placeholder="8:00 AM - 6:00 PM"
+                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    @input="markAsChanged"
+                  >
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Saturday</label>
+                  <input
+                    v-model="formData.contact_info.business_hours_sat"
+                    type="text"
+                    placeholder="9:00 AM - 4:00 PM"
+                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    @input="markAsChanged"
+                  >
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Sunday</label>
+                  <input
+                    v-model="formData.contact_info.business_hours_sun"
+                    type="text"
+                    placeholder="Closed"
+                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    @input="markAsChanged"
+                  >
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -287,7 +323,10 @@ const formData = ref({
     phone: '',
     email: '',
     address: '',
-    google_maps_url: ''
+    google_maps_url: '',
+    business_hours_mon_fri: '',
+    business_hours_sat: '',
+    business_hours_sun: ''
   },
   social_links: {
     facebook: '',

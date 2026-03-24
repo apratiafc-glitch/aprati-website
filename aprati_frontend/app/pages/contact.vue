@@ -1,28 +1,21 @@
 <template>
   <div class="min-h-screen bg-gray-50 relative overflow-hidden">
-    <!-- Animated Fruit Characters -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-1/4 right-1/6 w-20 h-20 object-contain opacity-20 animate-float-delayed" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/3 right-1/4 w-16 h-16 object-contain opacity-15 animate-float" style="animation-delay: 0.5s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-1/3 left-1/4 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-1/6 right-1/6 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1.5s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-1/6 left-1/3 w-16 h-16 object-contain opacity-16 animate-float-delayed" style="animation-delay: 2s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-2/3 right-1/5 w-14 h-14 object-contain opacity-14 animate-float" style="animation-delay: 0.8s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-2/5 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 1.3s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-2/5 left-2/5 w-20 h-20 object-contain opacity-13 animate-float" style="animation-delay: 1.7s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-3/5 right-2/5 w-14 h-14 object-contain opacity-11 animate-float-delayed" style="animation-delay: 0.4s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-4/5 left-1/4 w-16 h-16 object-contain opacity-19 animate-float" style="animation-delay: 2.1s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-4/5 right-1/4 w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 0.9s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/5 left-3/5 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1.4s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-1/5 right-3/5 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 0.6s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-3/5 left-1/8 w-20 h-20 object-contain opacity-14 animate-float" style="animation-delay: 2.3s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-3/4 right-1/8 w-16 h-16 object-contain opacity-15 animate-float-delayed" style="animation-delay: 1.1s;" />
+    <!-- Subtle Corporate Background Patterns -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="grid-contact" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid-contact)" />
+      </svg>
     </div>
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
-        <p class="text-xl text-gray-600">Get in touch with Aprati Food Company</p>
+      <div class="text-center mb-16 pt-12">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-corporate-gold/10 border border-corporate-gold/20 text-corporate-gold mb-8">
+          <span class="text-[10px] font-black tracking-[0.2em] uppercase">Global Outreach</span>
+        </div>
+        <h1 class="text-5xl lg:text-7xl font-black text-corporate-dark mb-6">Contact <span class="text-corporate-gold italic">Strategic</span> Relations</h1>
+        <p class="text-xl lg:text-2xl text-corporate-slate font-medium">Professional inquiries for Aprati Food Company across the globe.</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-1 gap-12">
@@ -32,24 +25,24 @@
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
             <div class="space-y-4">
               <div class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-corporate-gold mt-1 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 <div>
-                  <h3 class="font-semibold text-gray-900">Address</h3>
-                  <p class="text-gray-600">{{ getFormattedAddress }}</p>
+                  <h3 class="font-bold text-corporate-dark uppercase tracking-wider text-sm mb-1">Address</h3>
+                  <p class="text-corporate-slate">{{ getFormattedAddress }}</p>
                 </div>
               </div>
               
               <div class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-corporate-gold mt-1 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
                 <div>
-                  <h3 class="font-semibold text-gray-900">Phone</h3>
-                  <p class="text-gray-600">
-                    <a :href="`tel:${getPhone}`" class="hover:text-blue-600 transition-colors">
+                  <h3 class="font-bold text-corporate-dark uppercase tracking-wider text-sm mb-1">Phone</h3>
+                  <p class="text-corporate-slate">
+                    <a :href="`tel:${getPhone}`" class="hover:text-corporate-gold transition-colors font-medium">
                       {{ getPhone }}
                     </a>
                   </p>
@@ -57,13 +50,13 @@
               </div>
               
               <div class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-corporate-gold mt-1 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
                 <div>
-                  <h3 class="font-semibold text-gray-900">Email</h3>
-                  <p class="text-gray-600">
-                    <a :href="`mailto:${getEmail}`" class="hover:text-blue-600 transition-colors">
+                  <h3 class="font-bold text-corporate-dark uppercase tracking-wider text-sm mb-1">Email</h3>
+                  <p class="text-corporate-slate">
+                    <a :href="`mailto:${getEmail}`" class="hover:text-corporate-gold transition-colors font-medium">
                       {{ getEmail }}
                     </a>
                   </p>

@@ -103,8 +103,8 @@
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">All Categories</option>
-              <option v-for="category in categories" :key="category" :value="category">
-                {{ category }}
+              <option v-for="category in categories" :key="category.id" :value="category.id">
+                {{ category.name }}
               </option>
             </select>
           </div>
@@ -312,7 +312,7 @@ const loadProducts = async () => {
     const params = new URLSearchParams()
     if (filters.value.search) params.append('search', filters.value.search)
     if (filters.value.brand_id) params.append('brand_id', filters.value.brand_id)
-    if (filters.value.category) params.append('category', filters.value.category)
+    if (filters.value.category) params.append('category_id', filters.value.category)
     if (filters.value.featured) params.append('featured', '1')
     params.append('page', filters.value.page.toString())
     params.append('per_page', '12')
@@ -356,7 +356,7 @@ const loadBrands = async () => {
 const loadCategories = async () => {
   try {
     const api = useApi()
-    const response = await api.request('/products/categories')
+    const response = await api.request('/categories')
     if ((response.success || response.status === 'success') && response.data) {
       const categoriesList = response.data.categories || response.data
       categories.value = Array.isArray(categoriesList) ? categoriesList : []

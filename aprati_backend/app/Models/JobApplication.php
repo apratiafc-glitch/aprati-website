@@ -17,7 +17,8 @@ class JobApplication extends Model
         'telegram_number',
         'cover_letter',
         'cv_file_path',
-        'status'
+        'status',
+        'admin_notes'
     ];
 
     public function career()

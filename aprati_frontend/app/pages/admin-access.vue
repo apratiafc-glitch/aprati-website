@@ -1,28 +1,22 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-    <!-- Animated Fruit Characters -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/4 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-1/4 right-1/6 w-20 h-20 object-contain opacity-20 animate-float-delayed" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/3 right-1/4 w-16 h-16 object-contain opacity-15 animate-float" style="animation-delay: 0.5s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-1/3 left-1/4 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-1/6 right-1/6 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1.5s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-1/6 left-1/3 w-16 h-16 object-contain opacity-16 animate-float-delayed" style="animation-delay: 2s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-2/5 left-2/5 w-14 h-14 object-contain opacity-13 animate-float" style="animation-delay: 0.8s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-2/5 right-2/5 w-20 h-20 object-contain opacity-17 animate-float-delayed" style="animation-delay: 1.3s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-3/5 left-1/5 w-16 h-16 object-contain opacity-11 animate-float" style="animation-delay: 1.8s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-3/5 right-1/5 w-14 h-14 object-contain opacity-19 animate-float-delayed" style="animation-delay: 0.3s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-4/5 left-3/5 w-16 h-16 object-contain opacity-14 animate-float" style="animation-delay: 2.2s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-4/5 right-3/5 w-20 h-20 object-contain opacity-16 animate-float-delayed" style="animation-delay: 0.6s;" />
+    <!-- Subtle Corporate Background Patterns -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="grid-admin" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid-admin)" />
+      </svg>
     </div>
 
     <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
       <div class="text-center">
-        <NuxtLink to="/" class="text-3xl font-bold text-blue-600">
-          Aprati Foods Cambodia
+        <NuxtLink to="/" class="text-3xl font-display font-bold text-corporate-dark transition-colors hover:text-corporate-gold">
+          Aprati Food Company
         </NuxtLink>
-        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-          {{ showOtpForm ? 'Enter Verification Code' : 'Administrative Access' }}
+        <h2 class="mt-8 text-4xl font-display text-corporate-dark">
+          {{ showOtpForm ? 'Identity Verification' : 'Institutional Access' }}
         </h2>
         <p class="mt-2 text-sm text-gray-600">
           {{ showOtpForm ? 'A 6-digit code has been sent to your Gmail' : 'Authorized personnel only' }}
@@ -65,8 +59,8 @@
           </a>
 
           <div class="mt-4 text-center">
-            <NuxtLink to="/" class="text-sm font-medium text-blue-600 hover:text-blue-500">
-              Return to website
+            <NuxtLink to="/" class="text-xs font-black tracking-widest uppercase text-corporate-slate hover:text-corporate-gold transition-colors">
+              Return to Corporate Homepage
             </NuxtLink>
           </div>
         </div>
@@ -122,13 +116,13 @@
             <button
               type="submit"
               :disabled="loading || otpCode.length !== 6"
-              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              class="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-xl text-xs font-black tracking-widest uppercase text-white bg-corporate-dark hover:bg-slate-800 transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg v-if="loading" class="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {{ loading ? 'Verifying...' : 'Verify & Access System' }}
+              {{ loading ? 'Authenticating...' : 'Secure Authorization' }}
             </button>
 
             <button

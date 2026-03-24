@@ -1,51 +1,33 @@
 <template>
   <div class="min-h-screen bg-gray-50 relative overflow-hidden">
-    <!-- Animated Fruit Characters -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/6 left-1/6 w-20 h-20 object-contain opacity-15 animate-float" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-1/4 right-1/6 w-20 h-20 object-contain opacity-18 animate-float-delayed" style="animation-delay: 0.5s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute bottom-1/3 left-1/4 w-16 h-16 object-contain opacity-12 animate-float" style="animation-delay: 1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute top-1/2 right-1/4 w-16 h-16 object-contain opacity-20 animate-float-delayed" style="animation-delay: 1.5s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute bottom-1/6 right-1/3 w-14 h-14 object-contain opacity-16 animate-float" style="animation-delay: 2s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute top-2/3 left-1/6 w-20 h-20 object-contain opacity-14 animate-float-delayed" style="animation-delay: 0.8s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute bottom-1/4 right-1/6 w-14 h-14 object-contain opacity-15 animate-float" style="animation-delay: 1.2s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute top-3/4 left-1/3 w-16 h-16 object-contain opacity-18 animate-float-delayed" style="animation-delay: 1.8s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/5 right-1/5 w-14 h-14 object-contain opacity-13 animate-float" style="animation-delay: 2.3s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-2/5 left-1/5 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 0.3s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-2/5 left-2/5 w-20 h-20 object-contain opacity-10 animate-float" style="animation-delay: 1.4s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-3/5 right-2/5 w-16 h-16 object-contain opacity-16 animate-float-delayed" style="animation-delay: 0.7s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-4/5 left-1/4 w-14 h-14 object-contain opacity-12 animate-float" style="animation-delay: 1.9s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-4/5 right-1/4 w-20 h-20 object-contain opacity-15 animate-float-delayed" style="animation-delay: 0.4s;" />
-      <img src="/images/Guava Charactor.png" alt="" class="absolute top-1/3 left-2/3 w-16 h-16 object-contain opacity-18 animate-float" style="animation-delay: 2.1s;" />
-      <img src="/images/Plum CHARACTER.png" alt="" class="absolute bottom-1/5 right-2/3 w-14 h-14 object-contain opacity-14 animate-float-delayed" style="animation-delay: 1.6s;" />
-      <img src="/images/Pineapple Character copy.png" alt="" class="absolute top-3/5 right-1/5 w-20 h-20 object-contain opacity-11 animate-float" style="animation-delay: 0.9s;" />
-      <img src="/images/Tamarin Character.png" alt="" class="absolute bottom-2/3 left-3/5 w-16 h-16 object-contain opacity-19 animate-float-delayed" style="animation-delay: 2.2s;" />
-      <img src="/images/Grape Character.png" alt="" class="absolute top-1/8 right-3/4 w-14 h-14 object-contain opacity-13 animate-float" style="animation-delay: 1.1s;" />
-      <img src="/images/Orange Charactor.png" alt="" class="absolute bottom-1/8 left-3/4 w-16 h-16 object-contain opacity-17 animate-float-delayed" style="animation-delay: 0.2s;" />
+    <!-- Subtle Corporate Background Patterns -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-[0.03]">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="grid-management" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#grid-management)" />
+      </svg>
     </div>
     <!-- Hero Section -->
-    <section class="bg-blue-200 relative overflow-hidden py-24">
+    <section class="bg-[#0a0e27] relative h-[70vh] flex items-center justify-center overflow-hidden">
       <!-- Animated Background Elements -->
       <div class="absolute inset-0">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/30 to-blue-700/30 rounded-full blur-3xl animate-pulse"></div>
-        <div class="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-orange-500/30 to-red-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-corporate-gold/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] animate-pulse delay-1000"></div>
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
       </div>
       
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center">
-          <!-- Hero Content Bar -->
-          <div class="relative mb-8">  
-            <div class="inline-flex items-center px-6 py-3 rounded-full bg-blue-100 border border-blue-200 text-blue-800 mb-6">
-              <div class="w-2 h-2 bg-emerald-500 rounded-full mr-3 animate-pulse"></div>
-              <span class="text-sm font-semibold tracking-wide uppercase">Leadership Team</span>
-            </div>
-          </div>
+          
 
-          <h1 class="text-4xl lg:text-6xl font-black text-blue-600 mb-6 leading-tight">
-            Top <span class="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Management</span>
+          <h1 class="text-6xl lg:text-9xl font-black text-white mb-8 leading-tight tracking-tight drop-shadow-2xl">
+            Our <span class="text-corporate-gold italic">Visionary</span> Leadership
           </h1>
-          <p class="text-xl lg:text-2xl mb-8 text-blue-500 max-w-4xl mx-auto">
-            Meet the visionary leaders driving innovation and excellence at Aprati Food Company.
+          <div class="w-32 h-1.5 bg-corporate-gold mx-auto mb-10 rounded-full shadow-lg shadow-corporate-gold/20"></div>
+          <p class="text-2xl lg:text-4xl text-blue-100/90 max-w-5xl mx-auto font-medium leading-relaxed drop-shadow-lg">
+            Meet the strategic minds driving innovation and global excellence at Aprati Food Company.
           </p>
         </div>
       </div>
@@ -109,10 +91,10 @@
                 <div class="flex items-center justify-center">
                   <button 
                     @click.stop="openModal(post)"
-                    class="group/btn relative inline-flex items-center px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 transform hover:scale-105 hover:-translate-y-1"
+                    class="group/btn relative inline-flex items-center px-10 py-4 rounded-xl bg-corporate-dark text-white font-black text-xs tracking-widest uppercase transition-all duration-300 hover:bg-slate-800 shadow-xl shadow-corporate-dark/10 transform hover:-translate-y-1"
                   >
-                    <span class="relative z-10">View Detail</span>
-                    <svg class="relative z-10 ml-3 w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span class="relative z-10">Detailed Profile</span>
+                    <svg class="relative z-10 ml-3 w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                   </button>
@@ -124,21 +106,23 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else class="text-center py-20">
+      <div v-else class="text-center py-32">
         <div class="max-w-3xl mx-auto">
           <!-- Icon -->
           <div class="relative mb-12">
-            <div class="w-32 h-32 mx-auto relative">
-              <div class="absolute inset-0 rounded-full bg-gray-200"></div>
-              <div class="absolute inset-2 rounded-full bg-white flex items-center justify-center shadow-lg">
-                <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            <div class="w-40 h-40 mx-auto relative group">
+              <div class="absolute inset-0 rounded-full bg-corporate-dark/5 group-hover:bg-corporate-gold/10 transition-colors duration-500 animate-pulse"></div>
+              <div class="absolute inset-4 rounded-full bg-white flex items-center justify-center shadow-2xl border border-gray-100">
+                <svg class="w-20 h-20 text-corporate-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
               </div>
             </div>
           </div>
-          <h3 class="text-2xl font-semibold text-gray-900 mb-2">Leadership Team Coming Soon</h3>
-          <p class="text-gray-600">Meet our leadership team information will be available soon.</p>
+          <h3 class="text-3xl lg:text-4xl font-black text-corporate-dark mb-4">Leadership Team Information Pending</h3>
+          <p class="text-xl text-corporate-slate font-medium max-w-2xl mx-auto leading-relaxed">
+            Our strategic leadership profiles are currently being curated to meet our global standards of excellence.
+          </p>
         </div>
       </div>
     </div>
@@ -178,7 +162,8 @@
     <div v-if="showModal && selectedPost" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn" @click="closeModal">
       <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[85vh] overflow-hidden shadow-2xl animate-slideUp" @click.stop>
         <!-- Header -->
-        <div class="relative bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6">
+        <div class="relative bg-corporate-dark px-10 py-10">
+          <div class="absolute inset-0 bg-gradient-to-br from-corporate-gold/10 via-transparent to-transparent"></div>
           <button 
             @click="closeModal" 
             class="absolute top-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition-all duration-200 hover:scale-110"

@@ -16,7 +16,7 @@ console.log('   ✅ Fallback to Companylogo.ico');
 console.log('');
 console.log('🧪 Test your favicon:');
 console.log('   1. Start your Nuxt development server: npm run dev');
-console.log('   2. Open http://localhost:3001/favicon-test.html');
+console.log('   2. Open http://localhost:3000/favicon-test.html');
 console.log('   3. Check if favicon appears in browser tab');
 console.log('');
 console.log('📱 Browser Support:');

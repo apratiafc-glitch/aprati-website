@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="min-h-screen bg-gray-50 relative">
     <!-- Subtle Background Pattern -->
     <div class="absolute inset-0 opacity-5">
@@ -6,25 +6,25 @@
     </div>
 
     <!-- Modern Hero Section -->
-    <section class="relative py-12 sm:py-16 lg:py-24 xl:py-32 overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800">
-      <!-- Animated Background Shapes -->
-      <div class="absolute inset-0 overflow-hidden opacity-20">
-        <div class="absolute -top-1/2 -left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-1/2 -right-1/4 w-96 h-96 bg-indigo-300 rounded-full blur-3xl"></div>
+    <section class="relative py-24 sm:py-32 overflow-hidden bg-corporate-dark">
+      <!-- Animated Background Elements -->
+      <div class="absolute inset-0">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-corporate-gold/10 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center">
-          <div class="inline-flex items-center px-4 py-2 mb-8 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-            <span class="text-sm font-semibold text-white tracking-wide">Premium Collection</span>
+          <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-corporate-gold/10 border border-corporate-gold/20 text-corporate-gold mb-8">
+            <span class="text-[10px] font-black tracking-[0.2em] uppercase">Strategic Portfolio</span>
           </div>
 
-          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight tracking-tight text-white px-4">
-            Our Premium Brands
+          <h1 class="text-5xl lg:text-8xl font-black text-white mb-8 leading-tight">
+            Our <span class="text-corporate-gold italic">Elite</span> Brands
           </h1>
-          <div class="w-16 sm:w-20 md:w-24 h-1 bg-white/50 mx-auto mb-4 sm:mb-6 md:mb-8 rounded-full"></div>
-          <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-6 sm:mb-8 text-blue-100 max-w-3xl mx-auto px-4">
-            Discover our premium food brand collection crafted with excellence and innovation.
+          <div class="w-24 h-1.5 bg-corporate-gold mx-auto mb-10 rounded-full shadow-lg shadow-corporate-gold/20"></div>
+          <p class="text-xl lg:text-3xl text-blue-100/90 max-w-4xl mx-auto font-medium leading-relaxed">
+            Discover a curated collection of premium food and health sectors, defined by scientific integrity and global excellence.
           </p>
         </div>
       </div>
@@ -34,55 +34,15 @@
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 relative z-10">
       
       <!-- Loading State -->
-      <div v-if="loading" class="text-center py-20">
-        <!-- Circular Orbit Animation -->
-        <div class="relative mx-auto w-72 h-72 mb-12">
-          <!-- Orbit path circle -->
-          <div class="absolute inset-0 rounded-full border-2 border-dashed border-blue-300 opacity-30"></div>
-          
-          <!-- Center logo -->
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl animate-pulse">
-              <span class="text-white text-3xl font-bold">A</span>
-            </div>
-          </div>
-          
-          <!-- Spinning characters container -->
-          <div class="absolute inset-0 animate-spin" style="animation-duration: 8s;">
-            <!-- Character 1 - Top -->
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-              <img src="/images/Grape Character.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-            </div>
-            
-            <!-- Character 2 - Top Right -->
-            <div class="absolute top-[14.6%] right-[14.6%] -translate-x-1/2 -translate-y-1/2">
-              <img src="/images/Orange Charactor.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-            </div>
-            
-            <!-- Character 3 - Right -->
-            <div class="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2">
-              <img src="/images/Pineapple Character copy.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-            </div>
-            
-            <!-- Character 4 - Bottom Right -->
-            <div class="absolute bottom-[14.6%] right-[14.6%] translate-x-1/2 translate-y-1/2">
-              <img src="/images/Guava Charactor.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-            </div>
-            
-            <!-- Character 5 - Bottom -->
-            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-              <img src="/images/Tamarin Character.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-            </div>
-            
-            <!-- Character 6 - Bottom Left -->
-            <div class="absolute bottom-[14.6%] left-[14.6%] -translate-x-1/2 translate-y-1/2">
-              <img src="/images/Plum CHARACTER.png" alt="" class="w-16 h-16 object-contain drop-shadow-xl" />
-            </div>
+      <div v-if="loading" class="text-center py-40">
+        <div class="inline-block relative">
+          <div class="w-24 h-24 border-2 border-corporate-gold/20 rounded-full animate-ping opacity-20"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-16 h-16 border-4 border-corporate-gold border-t-transparent rounded-full animate-spin"></div>
           </div>
         </div>
-        
-        <p class="text-gray-700 text-xl font-semibold animate-pulse">Loading our premium brands...</p>
-        <p class="mt-2 text-gray-500 text-sm">Preparing something delicious for you</p>
+        <p class="mt-10 text-corporate-dark text-xl font-bold tracking-widest uppercase">Initializing Portfolio...</p>
+        <p class="mt-2 text-corporate-slate text-sm font-medium">Accessing global brand standards</p>
       </div>
 
       <!-- Error State -->
@@ -225,40 +185,42 @@
     </div>
 
     <!-- Call to Action Section -->
-    <section class="relative py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 overflow-hidden" v-if="!loading && brands.length > 0">
-      <!-- Subtle Background Shapes -->
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute -top-24 -left-24 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-300 rounded-full blur-3xl"></div>
+    <section class="relative py-32 lg:py-48 bg-corporate-dark overflow-hidden scroll-smooth" v-if="!loading && brands.length > 0">
+      <!-- Subtle Background Elements -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-corporate-gold/5 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
       
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div class="inline-flex items-center px-4 py-2 mb-6 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-          <span class="text-sm font-semibold text-white tracking-wide">Ready to Explore</span>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-corporate-gold/10 border border-corporate-gold/20 text-corporate-gold mb-10">
+          <span class="text-[10px] font-black tracking-[0.2em] uppercase">Enterprise Growth</span>
         </div>
         
-        <h2 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6 text-white px-4">
-          Discover Our Premium Products
+        <h2 class="text-5xl lg:text-7xl font-black mb-10 text-white leading-tight">
+          Ready to <span class="text-corporate-gold italic">Strategic</span> Partner?
         </h2>
-        <p class="text-sm sm:text-base lg:text-lg text-blue-100 mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto px-4">
-          Bring quality and excellence to your table with our carefully crafted food brands.
+        
+        <div class="w-20 h-1 bg-corporate-gold mx-auto mb-12"></div>
+        
+        <p class="text-2xl text-blue-100/90 mb-20 max-w-4xl mx-auto font-medium leading-relaxed">
+          Collaborate with a global market leader. Discover how our premium brand portfolio can elevate your institutional standards.
         </p>
-        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+        
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
           <NuxtLink 
             to="/contact" 
-            class="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 rounded-lg bg-white text-blue-700 font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all duration-300 hover:shadow-xl"
+            class="group px-12 py-5 bg-corporate-gold text-corporate-dark font-black text-xs tracking-widest uppercase rounded-xl transition-all duration-300 hover:bg-white hover:shadow-2xl flex items-center justify-center"
           >
-            Contact Us
-            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
+            <span>Partner with Us</span>
+            <ArrowRightIcon class="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1" />
           </NuxtLink>
           
           <NuxtLink 
             to="/" 
-            class="inline-flex items-center px-8 py-4 rounded-lg bg-white/10 backdrop-blur-sm text-white font-semibold hover:bg-white/20 transition-all duration-300 border border-white/30"
+            class="group px-12 py-5 bg-white/10 text-white font-black text-xs tracking-widest uppercase rounded-xl border border-white/20 transition-all duration-300 hover:bg-white/20 flex items-center justify-center"
           >
-            Back to Home
+            <span>Back to Corporate</span>
           </NuxtLink>
         </div>
       </div>

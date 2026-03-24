@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Modern Page Header -->
-      <div class="mb-8 relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-500 shadow-2xl">
+      <div class="mb-12 relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-[#0a0e27] to-[#1e293b] shadow-2xl border border-white/5">
         <div class="absolute inset-0 bg-black/10"></div>
         <div class="relative px-6 sm:px-8 lg:px-10 py-8">
           <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
@@ -13,7 +13,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                   </svg>
                 </div>
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Job Applications</h1>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight drop-shadow-lg">Job Applications</h1>
               </div>
               <p class="text-base sm:text-lg text-white/90 font-medium">Manage job applications and candidates</p>
             </div>
@@ -65,7 +65,7 @@
             <span class="px-2 py-1 text-xs font-semibold text-indigo-600 bg-indigo-50 rounded-full">Total</span>
           </div>
           <p class="text-sm font-medium text-gray-500 mb-1">Total</p>
-          <p class="text-3xl font-bold text-gray-900">{{ statistics.total || 0 }}</p>
+          <p class="text-4xl lg:text-5xl font-black text-gray-900 drop-shadow-sm tracking-tighter">{{ statistics.total || 0 }}</p>
         </div>
 
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-yellow-200 transform hover:-translate-y-1">
@@ -78,7 +78,7 @@
             <span class="px-2 py-1 text-xs font-semibold text-yellow-600 bg-yellow-50 rounded-full">Pending</span>
           </div>
           <p class="text-sm font-medium text-gray-500 mb-1">Pending</p>
-          <p class="text-3xl font-bold text-gray-900">{{ statistics.pending || 0 }}</p>
+          <p class="text-4xl lg:text-5xl font-black text-gray-900 drop-shadow-sm tracking-tighter">{{ statistics.pending || 0 }}</p>
         </div>
 
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-purple-200 transform hover:-translate-y-1">
@@ -91,8 +91,8 @@
             </div>
             <span class="px-2 py-1 text-xs font-semibold text-purple-600 bg-purple-50 rounded-full">Reviewed</span>
           </div>
-          <p class="text-sm font-medium text-gray-500 mb-1">Reviewed</p>
-          <p class="text-3xl font-bold text-gray-900">{{ statistics.reviewed || 0 }}</p>
+          <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Reviewed</p>
+          <p class="text-4xl lg:text-5xl font-black text-gray-900 drop-shadow-sm tracking-tighter">{{ statistics.reviewed || 0 }}</p>
         </div>
 
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-emerald-200 transform hover:-translate-y-1">
@@ -104,8 +104,8 @@
             </div>
             <span class="px-2 py-1 text-xs font-semibold text-emerald-600 bg-emerald-50 rounded-full">Shortlisted</span>
           </div>
-          <p class="text-sm font-medium text-gray-500 mb-1">Shortlisted</p>
-          <p class="text-3xl font-bold text-gray-900">{{ statistics.shortlisted || 0 }}</p>
+          <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Shortlisted</p>
+          <p class="text-4xl lg:text-5xl font-black text-gray-900 drop-shadow-sm tracking-tighter">{{ statistics.shortlisted || 0 }}</p>
         </div>
 
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-teal-200 transform hover:-translate-y-1">
@@ -117,8 +117,8 @@
             </div>
             <span class="px-2 py-1 text-xs font-semibold text-teal-600 bg-teal-50 rounded-full">Hired</span>
           </div>
-          <p class="text-sm font-medium text-gray-500 mb-1">Hired</p>
-          <p class="text-3xl font-bold text-gray-900">{{ statistics.hired || 0 }}</p>
+          <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Hired</p>
+          <p class="text-4xl lg:text-5xl font-black text-gray-900 drop-shadow-sm tracking-tighter">{{ statistics.hired || 0 }}</p>
         </div>
 
         <div class="group relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 hover:border-red-200 transform hover:-translate-y-1">
@@ -130,8 +130,8 @@
             </div>
             <span class="px-2 py-1 text-xs font-semibold text-red-600 bg-red-50 rounded-full">Rejected</span>
           </div>
-          <p class="text-sm font-medium text-gray-500 mb-1">Rejected</p>
-          <p class="text-3xl font-bold text-gray-900">{{ statistics.rejected || 0 }}</p>
+          <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Rejected</p>
+          <p class="text-4xl lg:text-5xl font-black text-gray-900 drop-shadow-sm tracking-tighter">{{ statistics.rejected || 0 }}</p>
         </div>
       </div>
 
@@ -307,7 +307,7 @@
       <div class="bg-white rounded-lg max-w-6xl w-full max-h-[95vh] overflow-y-auto">
         <div class="p-6">
           <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900">Application Details</h2>
+            <h2 class="text-3xl font-black text-corporate-dark tracking-tight">Application Details</h2>
             <button @click="showViewModal = false" class="text-gray-400 hover:text-gray-600">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -319,7 +319,7 @@
             <!-- Left Column: Applicant Information -->
             <div class="lg:col-span-1 space-y-6">
               <div>
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Applicant Information</h3>
+                <h3 class="text-xl font-black text-corporate-dark mb-4 border-b border-corporate-gold/20 pb-2">Applicant Information</h3>
                 <div class="bg-gray-50 p-4 rounded-lg space-y-4">
                   <div>
                     <p class="text-sm text-gray-600">Full Name</p>

@@ -63,18 +63,19 @@ export default {
           800: '#9a3412',
           900: '#7c2d12'
         },
-        // Red Bull Style Palette
-        rb: {
-          dark: '#111111',       // Main background (near black)
-          paper: '#1a1a1a',      // Card background
-          red: '#db0a40',        // Red Bull Red (accent)
-          silver: '#d1d5db',     // Text secondary
-          blue: '#0f172a'        // Deep navy accent
+        // Professional Corporate Palette
+        corporate: {
+          dark: '#0022ffff',      // Midnight Navy
+          gold: '#dd9207ff',      // Silk Gold
+          emerald: '#065f46',   // Deep Emerald
+          slate: '#0018f2ff',     // Slate Gray
+          light: '#f8fafc'      // Off-White
         }
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Impact', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif'] // For bold headlines
+        display: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Inter', 'system-ui', 'sans-serif']
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
