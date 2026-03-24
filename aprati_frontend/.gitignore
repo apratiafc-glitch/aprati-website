@@ -4,7 +4,9 @@
 .nuxt
 .nitro
 .cache
-dist
+# dist (uncomment if you need to push built files to Git)
+# dist
+
 
 # Node dependencies
 node_modules

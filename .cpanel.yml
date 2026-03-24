@@ -1,0 +1,13 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/apratifoodscom/public_html/sdev.apratifoods.asia/
+    - /bin/mkdir -p $DEPLOYPATH
+    
+    # 1. Deploy Frontend (Static files from the dist folder)
+    # Note: We use the 'dist' folder which contains the generated static website
+    - /bin/cp -rf aprati_frontend/dist/. $DEPLOYPATH/
+    
+    # 2. Deploy Backend (Laravel API)
+    # This puts the backend code into the /api subdirectory as requested
+    - /bin/mkdir -p $DEPLOYPATH/api
+    - /bin/cp -rf aprati_backend/. $DEPLOYPATH/api/
