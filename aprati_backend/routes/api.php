@@ -11,6 +11,18 @@ Route::get('/test', function () {
     return response()->json(['message' => 'Backend is working!']);
 });
 
+Route::get('/view-logs', function () {
+    $path = storage_path('logs/laravel.log');
+    if (!file_exists($path)) return response()->json(['status' => 'error', 'message' => 'Log file not found.']);
+    
+    // Read last 100 lines
+    $content = file_get_contents($path);
+    $lines = explode("\n", $content);
+    $lastLines = array_slice($lines, -100);
+    
+    return response()->json(['status' => 'success', 'logs' => $lastLines]);
+});
+
 Route::get('/clear-cache', function () {
     try {
         // Ensure required framework directories exist (often missing due to .gitignore)
