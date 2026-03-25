@@ -13,7 +13,22 @@ Route::get('/test', function () {
 
 Route::get('/clear-cache', function () {
     try {
+        // Ensure required framework directories exist (often missing due to .gitignore)
+        $dirs = [
+            storage_path('framework/views'),
+            storage_path('framework/cache/data'),
+            storage_path('framework/sessions'),
+            base_path('bootstrap/cache')
+        ];
+        
+        foreach ($dirs as $dir) {
+            if (!file_exists($dir)) {
+                mkdir($dir, 0755, true);
+            }
+        }
+
         \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        
         return response()->json([
             'status' => 'success',
             'message' => 'Application cache cleared successfully. Environment variables reloaded.'
