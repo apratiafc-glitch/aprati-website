@@ -24,8 +24,8 @@ export default defineNuxtConfig({
     }
   },
 
+  // App configuration
   app: {
-    buildAssetsDir: 'assets',
     head: {
       title: 'Aprati Foods Cambodia',
       meta: [

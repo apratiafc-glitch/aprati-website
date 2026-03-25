@@ -15,13 +15,14 @@ class ProductController extends Controller
     {
         $query = \App\Models\Product::with(['brand', 'category', 'variants'])->where('is_active', true);
 
-        $query->when($request->search, function ($q, $search) {
-            $q->whereNested(function ($q) use ($search) {
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('sku', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
             });
-        });
+        }
 
         if ($request->has('brand_id') && $request->brand_id) {
             $query->where('brand_id', $request->brand_id);
