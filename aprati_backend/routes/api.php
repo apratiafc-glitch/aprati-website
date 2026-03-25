@@ -11,6 +11,21 @@ Route::get('/test', function () {
     return response()->json(['message' => 'Backend is working!']);
 });
 
+Route::get('/clear-cache', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Application cache cleared successfully. Environment variables reloaded.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to clear cache: ' . $e->getMessage()
+        ], 500);
+    }
+});
+
 Route::apiResource('brands', \App\Http\Controllers\Api\BrandController::class);
 Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::class);
 Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class);
