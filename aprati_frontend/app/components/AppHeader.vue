@@ -137,7 +137,7 @@
           </NuxtLink>
           
           <!-- Search Button -->
-          <div class="ml-2 pl-2 border-l border-white/20">
+          <div class="ml-2 pl-2 border-l border-white/20 flex items-center gap-2">
              <button 
                @click="toggleSearch"
                class="p-2.5 text-white hover:bg-white/10 rounded-lg transition-all duration-200"
@@ -145,6 +145,25 @@
              >
                <MagnifyingGlassIcon class="w-5 h-5" />
              </button>
+
+             <!-- Login/Admin Button -->
+             <NuxtLink 
+               v-if="!isAuthenticated"
+               to="/admin/login"
+               class="p-2.5 text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+               title="Login"
+             >
+               <UserCircleIcon class="w-5 h-5" />
+             </NuxtLink>
+             <NuxtLink 
+               v-else
+               to="/admin"
+               class="p-2.5 text-white hover:bg-blue-600/50 bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-2"
+               title="Admin Dashboard"
+             >
+               <UserCircleIcon class="w-5 h-5" />
+               <span v-if="isAdmin" class="text-[10px] font-bold uppercase tracking-tighter">Admin</span>
+             </NuxtLink>
           </div>
         </div>
 
@@ -263,6 +282,31 @@
           >
             About Us
           </NuxtLink>
+
+          <!-- Mobile Auth Link -->
+          <div class="pt-4 mt-4 border-t border-white/10">
+            <NuxtLink 
+              v-if="!isAuthenticated"
+              to="/admin/login" 
+              class="flex items-center space-x-3 px-4 py-3 text-base font-semibold text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+              @click="mobileMenuOpen = false"
+            >
+              <UserCircleIcon class="w-6 h-6" />
+              <span>LOGIN</span>
+            </NuxtLink>
+            <NuxtLink 
+              v-else
+              to="/admin" 
+              class="flex items-center justify-between px-4 py-3 text-base font-semibold text-white bg-white/10 rounded-lg transition-all duration-200"
+              @click="mobileMenuOpen = false"
+            >
+              <div class="flex items-center space-x-3">
+                <UserCircleIcon class="w-6 h-6 text-blue-300" />
+                <span>ADMIN DASHBOARD</span>
+              </div>
+              <span v-if="isAdmin" class="px-2 py-0.5 bg-blue-500 text-[10px] rounded text-white tracking-widest">PRO</span>
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>
@@ -288,9 +332,12 @@ const brands = useState('brands-list', () => [])
 const brandsLoading = ref(false)
 const headerSettings = useState('header-settings', () => ({}))
 const adminProfileImage = useState('admin-profile-image', () => null)
-const isScrolled = ref(false)
 const isSearchOpen = ref(false)
 const searchInputRef = ref(null)
+
+// Auth states
+const isAuthenticated = ref(false)
+const isAdmin = ref(false)
 
 // Scroll Handler
 const handleScroll = () => {
@@ -434,6 +481,16 @@ onMounted(async () => {
     loadBrands(),
     loadAdminProfileImage()
   ])
+  
+  // Check auth status
+  if (process.client) {
+    const api = useApi()
+    isAuthenticated.value = api.utils.isAuthenticated()
+    isAdmin.value = api.utils.isAdmin()
+    
+    // Periodically sync auth
+    api.utils.syncAuth()
+  }
   
   if (process.client) {
     window.addEventListener('scroll', handleScroll)
