@@ -15,14 +15,13 @@ class ProductController extends Controller
     {
         $query = \App\Models\Product::with(['brand', 'category', 'variants'])->where('is_active', true);
 
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
+        $query->when($request->search, function ($q, $search) {
+            $q->whereNested(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('sku', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
             });
-        }
+        });
 
         if ($request->has('brand_id') && $request->brand_id) {
             $query->where('brand_id', $request->brand_id);
@@ -33,7 +32,7 @@ class ProductController extends Controller
         }
 
         // Return structured response as expected by frontend
-        $products = $query->paginate((int) $request->input('per_page', 12));
+        $products = $query->orderBy('created_at', 'desc')->paginate((int) $request->input('per_page', 12));
 
         return response()->json([
             'status' => 'success',
