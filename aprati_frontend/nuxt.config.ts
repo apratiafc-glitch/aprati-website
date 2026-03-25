@@ -65,8 +65,8 @@ export default defineNuxtConfig({
   // Output directory for static generation - directly to public/
   nitro: {
     output: {
-      dir: '../aprati_backend/.output',
-      publicDir: '../aprati_backend/.output/public'
+      dir: './dist',
+      publicDir: './dist'
     },
     prerender: {
       crawlLinks: true,
