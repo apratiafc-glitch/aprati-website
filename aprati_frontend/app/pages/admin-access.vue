@@ -46,7 +46,7 @@
 
           <!-- Google Sign-In Button -->
           <a
-            :href="`${apiBase}/auth/google`"
+            href="/api/auth/google"
             class="w-full flex items-center justify-center gap-3 py-3 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
             <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -189,7 +189,7 @@ const handleVerifyOTP = async () => {
   loading.value = true
   errorMessage.value = ''
   try {
-    const response = await $fetch(`${apiBase}/admin/verify-otp`, {
+    const response = await $fetch('/api/admin/verify-otp', {
       method: 'POST',
       body: { user_id: userId.value, otp_code: otpCode.value },
     })
