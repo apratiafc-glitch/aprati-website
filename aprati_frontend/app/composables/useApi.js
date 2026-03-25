@@ -266,10 +266,7 @@ export const useApi = () => {
     }),
 
     // Search products
-    search: (query) => request('/products/search', {
-      method: 'POST',
-      body: { query }
-    })
+    search: (query) => request(`/products?search=${encodeURIComponent(query)}`)
   }
 
   // Dashboard API methods
