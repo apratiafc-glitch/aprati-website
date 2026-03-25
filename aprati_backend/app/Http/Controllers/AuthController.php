@@ -168,6 +168,21 @@ class AuthController extends Controller
             'message' => 'Invalid or expired token',
         ], 401);
     }
+    
+    /**
+     * Log the user out (Revoke the token).
+     */
+    public function logout(Request $request)
+    {
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully logged out.',
+        ]);
+    }
 
     /**
      * Send OTP to admin email.

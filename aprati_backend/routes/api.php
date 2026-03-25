@@ -115,6 +115,9 @@ Route::post('/admin/verify-otp', [\App\Http\Controllers\AuthController::class , 
 // Token validation
 Route::get('/admin/validate-token', [\App\Http\Controllers\AuthController::class , 'validateToken']);
 
+// Logout
+Route::post('/logout', [\App\Http\Controllers\AuthController::class , 'logout'])->middleware('auth:sanctum');
+
 // --- Admin Dashboard Routes ---
 
 Route::middleware('auth:sanctum')->group(function () {
