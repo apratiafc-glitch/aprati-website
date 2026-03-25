@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         // Force correct APP_URL if accessed via the live domain (bypasses stale .env or cache)
         if (str_contains(request()->getHost(), 'apratifoods.asia')) {
             config(['app.url' => 'https://sdev.apratifoods.asia']);
+            config(['filesystems.disks.public.url' => 'https://sdev.apratifoods.asia/storage']);
         }
     }
 }
