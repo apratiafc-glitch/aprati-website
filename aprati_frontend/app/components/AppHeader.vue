@@ -358,9 +358,18 @@ const isScrolled = ref(false)
 const isSearchOpen = ref(false)
 const searchInputRef = ref(null)
 
-// Auth states
-const isAuthenticated = ref(false)
-const isAdmin = ref(false)
+// Auth states - use computed for reactivity with cookies
+const isAuthenticated = computed(() => {
+  if (!process.client) return false
+  const api = useApi()
+  return api.utils.isAuthenticated()
+})
+
+const isAdmin = computed(() => {
+  if (!process.client) return false
+  const api = useApi()
+  return api.utils.isAdmin()
+})
 
 // Logout handler
 const handleLogout = async () => {
@@ -532,12 +541,9 @@ onMounted(async () => {
     loadAdminProfileImage()
   ])
   
-  // Check auth status
+  // Sync auth on mount
   if (process.client) {
     const api = useApi()
-    isAuthenticated.value = api.utils.isAuthenticated()
-    isAdmin.value = api.utils.isAdmin()
-    
     // Periodically sync auth
     api.utils.syncAuth()
   }
