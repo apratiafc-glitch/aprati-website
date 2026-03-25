@@ -23,6 +23,7 @@ class AuthController extends Controller
         return Socialite::driver('google')
             ->stateless()
             ->redirectUrl($redirectUrl)
+            ->with(['prompt' => 'select_account'])
             ->redirect();
     }
 
