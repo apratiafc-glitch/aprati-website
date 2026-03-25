@@ -332,6 +332,7 @@ const brands = useState('brands-list', () => [])
 const brandsLoading = ref(false)
 const headerSettings = useState('header-settings', () => ({}))
 const adminProfileImage = useState('admin-profile-image', () => null)
+const isScrolled = ref(false)
 const isSearchOpen = ref(false)
 const searchInputRef = ref(null)
 
