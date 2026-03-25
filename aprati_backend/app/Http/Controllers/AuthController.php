@@ -71,7 +71,7 @@ class AuthController extends Controller
         AdminOtp::create([
             'user_id' => $user->id,
             'otp_code' => $otp,
-            'expires_at' => Carbon::now()->addMinutes(30),
+            'expires_at' => Carbon::now()->addMinutes(2),
             'used' => false,
         ]);
 

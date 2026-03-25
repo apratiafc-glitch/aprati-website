@@ -158,14 +158,14 @@ const otpCode = ref('')
 const userId = ref(null)
 const loading = ref(false)
 const errorMessage = ref('')
-const otpExpiresIn = ref(1800)
+const otpExpiresIn = ref(120)
 const callbackError = ref(false)
 const callbackErrorMessage = ref('')
 
 let otpTimer = null
 
 const startOTPTimer = () => {
-  otpExpiresIn.value = 600
+  otpExpiresIn.value = 120
   otpTimer = setInterval(() => {
     otpExpiresIn.value--
     if (otpExpiresIn.value <= 0) {
