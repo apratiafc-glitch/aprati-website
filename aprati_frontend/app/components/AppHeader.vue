@@ -155,15 +155,26 @@
              >
                <UserCircleIcon class="w-5 h-5" />
              </NuxtLink>
-             <NuxtLink 
-               v-else
-               to="/admin"
-               class="p-2.5 text-white hover:bg-blue-600/50 bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-2"
-               title="Admin Dashboard"
-             >
-               <UserCircleIcon class="w-5 h-5" />
-               <span v-if="isAdmin" class="text-[10px] font-bold uppercase tracking-tighter">Admin</span>
-             </NuxtLink>
+              <!-- Admin Dashboard link: Only for admins -->
+              <NuxtLink 
+                v-if="isAuthenticated && isAdmin"
+                to="/admin"
+                class="p-2.5 text-white hover:bg-blue-600/50 bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-2"
+                title="Admin Dashboard"
+              >
+                <UserCircleIcon class="w-5 h-5" />
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Admin</span>
+              </NuxtLink>
+              
+              <!-- Logout button: Only for logged in users (redundancy check for admin too) -->
+              <button 
+                v-if="isAuthenticated"
+                @click="handleLogout"
+                class="p-2.5 text-white hover:bg-red-600/50 bg-white/10 rounded-lg transition-all duration-200"
+                title="Logout"
+              >
+                <ArrowRightOnRectangleIcon class="w-5 h-5" />
+              </button>
           </div>
         </div>
 
@@ -295,7 +306,7 @@
               <span>LOGIN</span>
             </NuxtLink>
             <NuxtLink 
-              v-else
+              v-else-if="isAuthenticated && isAdmin"
               to="/admin" 
               class="flex items-center justify-between px-4 py-3 text-base font-semibold text-white bg-white/10 rounded-lg transition-all duration-200"
               @click="mobileMenuOpen = false"
@@ -304,8 +315,18 @@
                 <UserCircleIcon class="w-6 h-6 text-blue-300" />
                 <span>ADMIN DASHBOARD</span>
               </div>
-              <span v-if="isAdmin" class="px-2 py-0.5 bg-blue-500 text-[10px] rounded text-white tracking-widest">PRO</span>
+              <span class="px-2 py-0.5 bg-blue-500 text-[10px] rounded text-white tracking-widest">PRO</span>
             </NuxtLink>
+
+            <!-- Mobile Logout Button -->
+            <button 
+              v-if="isAuthenticated"
+              @click="handleLogout" 
+              class="w-full mt-2 flex items-center space-x-3 px-4 py-3 text-base font-semibold text-white bg-red-600/20 hover:bg-red-600/40 rounded-lg transition-all duration-200"
+            >
+              <ArrowRightOnRectangleIcon class="w-6 h-6 text-red-400" />
+              <span>LOGOUT</span>
+            </button>
           </div>
         </div>
       </div>
@@ -320,7 +341,8 @@ import {
   UserCircleIcon,
   Bars3Icon,
   XMarkIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  ArrowRightOnRectangleIcon
 } from '@heroicons/vue/24/outline'
 
 // Reactive data
@@ -339,6 +361,33 @@ const searchInputRef = ref(null)
 // Auth states
 const isAuthenticated = ref(false)
 const isAdmin = ref(false)
+
+// Logout handler
+const handleLogout = async () => {
+  try {
+    const api = useApi()
+    // Call API logout
+    await api.auth.logout()
+    // Clear local auth
+    api.utils.clearAuth()
+    
+    // Update local state
+    isAuthenticated.value = false
+    isAdmin.value = false
+    
+    // Redirect to home
+    mobileMenuOpen.value = false
+    navigateTo('/')
+  } catch (error) {
+    console.error('Logout failed:', error)
+    // Still clear local auth as fallback
+    const api = useApi()
+    api.utils.clearAuth()
+    isAuthenticated.value = false
+    isAdmin.value = false
+    navigateTo('/')
+  }
+}
 
 // Scroll Handler
 const handleScroll = () => {
