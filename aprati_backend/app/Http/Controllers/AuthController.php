@@ -33,7 +33,7 @@ class AuthController extends Controller
      */
     public function googleCallback(Request $request)
     {
-        $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
+        $frontendUrl = env('FRONTEND_URL', 'https://sdev.apratifoods.asia');
 
         try {
             $redirectUrl = env('GOOGLE_REDIRECT_URI', 'https://sdev.apratifoods.asia/api/auth/google/callback');
@@ -43,7 +43,7 @@ class AuthController extends Controller
                 ->user();
         } catch (\Exception $e) {
             Log::error('Google OAuth error: ' . $e->getMessage());
-            return redirect($frontendUrl . '/admin/login?error=google_auth_failed');
+            return redirect($frontendUrl . '/admin-access?error=google_auth_failed');
         }
 
         // Find admin user by email
