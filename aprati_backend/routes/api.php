@@ -20,7 +20,16 @@ Route::get('/view-logs', function () {
     $lines = explode("\n", $content);
     $lastLines = array_slice($lines, -100);
     
-    return response()->json(['status' => 'success', 'logs' => $lastLines]);
+    // Also show redacted .env for verification
+    $env_debug = [
+        'MAIL_HOST' => env('MAIL_HOST'),
+        'MAIL_PORT' => env('MAIL_PORT'),
+        'MAIL_ENCRYPTION' => env('MAIL_ENCRYPTION'),
+        'MAIL_FROM_ADDRESS' => env('MAIL_FROM_ADDRESS'),
+        'APP_ENV' => env('APP_ENV'),
+    ];
+    
+    return response()->json(['status' => 'success', 'env' => $env_debug, 'logs' => $lastLines]);
 });
 
 Route::get('/clear-cache', function () {
