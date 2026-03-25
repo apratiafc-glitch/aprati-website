@@ -1,13 +1,13 @@
 # ========================
 # Laravel Backend
 # ========================
-aprati_backend/vendor/
+# aprati_backend/vendor/ (Un-ignored for cPanel deployment without terminal)
 aprati_backend/.env
 aprati_backend/storage/framework/
 aprati_backend/storage/logs/
 aprati_backend/.output/
 aprati_backend/bootstrap/cache/
-aprati_backend/composer.lock
+# aprati_backend/composer.lock
 
 # Debug & test scripts
 aprati_backend/accessor-results.txt
@@ -29,7 +29,7 @@ aprati_frontend/node_modules/
 aprati_frontend/.env
 aprati_frontend/.nuxt/
 aprati_frontend/.output/
-aprati_frontend/dist/
+# aprati_frontend/dist/ (Un-ignored for cPanel deployment)
 aprati_frontend/package-lock.json
 
 # ========================
